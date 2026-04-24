@@ -13,3 +13,30 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Nora: model files (too large for git)
+model/*.pte
+model/*.json
+
+# Build outputs
+app/build/
+build/
+
+# Screenshots and logs
+*.png
+*.log
+*.txt
+chat_dump.xml
+full_logcat.txt
+logcat.txt
+screen_*.png
+screenshot*.png
+diag_log.txt
+test_log.txt
+build_log.txt
+build_output.txt
+build.log
+
+# .workbuddy (automation state, not source)
+.workbuddy/
+!.workbuddy/memory/
