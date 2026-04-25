@@ -53,6 +53,9 @@
 - FontFamily("String") 在某些 Compose 版本报错 "expected Boolean"：改用 FontFamily.Default / FontFamily.Monospace 替代
 - build.bat 只执行 assembleDebug，不传参数；Instrument 测试需直接调用 gradlew.bat 并在 cmd /c 中 set 环境变量
 - MessageDao: 不存在独立文件，实为 `ConversationDao.kt` 同包内嵌的 DAO 接口
+- NoraIcons.kt: ImageVector 属性（val）不能当 Composable 函数调用，需用 `Icon(imageVector = NoraXxx, ...)` 包装
+- Navigation.kt: `collectAsStateWithLifecycle(initialValue=false)` 导致首次渲染默认 Setup；改用 `initialValue=null as Boolean?` + `if(modelLoaded==false) Setup else Chat`
+- PreferencesManager.setModelLoaded() 之前从未被调用，导致 DataStore modelLoaded 永远为 false；已在 SetupViewModel EngineLoadState.Loaded 时调用
 
 ### 环境
 - JDK: `C:\Program Files\Eclipse Adoptium\jdk-17.0.18.8-hotspot`
