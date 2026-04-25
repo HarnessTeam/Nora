@@ -39,12 +39,16 @@ android {
       shaders = false
     }
 
-    packaging {
+packaging {
       resources {
         excludes += "/META-INF/{AL2.0,LGPL2.1}"
       }
     }
-}
+
+    lint {
+      disable += "Instantiatable"
+    }
+  }
 
 kotlin {
     jvmToolchain(17)

@@ -1,9 +1,11 @@
 # Built application files
-*.apk
 *.aar
 *.ap_
 *.dex
 *.class
+
+# Exception: Nora Release APK (for GitHub Release distribution)
+!/Nora-*.apk
 
 # Build files
 build/
