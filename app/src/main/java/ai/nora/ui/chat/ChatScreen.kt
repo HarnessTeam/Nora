@@ -38,7 +38,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
@@ -79,6 +79,10 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import ai.nora.model.ChatMessage
 import ai.nora.model.ConversationEntity
+import ai.nora.theme.NoraColors
+import ai.nora.ui.design.NoraLogo
+import ai.nora.ui.design.NoraStatus
+import ai.nora.ui.design.NoraStatusIndicator
 
 // ============================================================
 // Nora App v2 - 核心设计原则
@@ -99,15 +103,15 @@ data class QuickAction(
 val quickActions = listOf(
     QuickAction(Icons.Default.Description, "读文件", "加载本地文件", "read_file"),
     QuickAction(Icons.Default.Notifications, "看通知", "聚合通知摘要", "notifications"),
-    QuickAction(Icons.Default.Settings, "写代码", "代码生成解释", "code"),
+    QuickAction(Icons.Default.Code, "写代码", "代码生成解释", "code"),
 )
 
-// ============ TopBar - 简化品牌标识 ============
+// ============ TopBar - Apple HIG 标准（56dp，无设置入口） ============
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoraTopBar(
     onMenuClick: () -> Unit,
-    onSettingsClick: () -> Unit,
+    noraStatus: NoraStatus = NoraStatus.READY,
     modelStatus: ModelStatus = ModelStatus.READY
 ) {
     TopAppBar(
@@ -116,28 +120,8 @@ fun NoraTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.clickable { onMenuClick() }
             ) {
-                // Nora Logo 标识
-                Box(
-                    modifier = Modifier
-                        .size(32.dp)
-                        .clip(CircleShape)
-                        .background(
-                            Brush.linearGradient(
-                                colors = listOf(
-                                    NoraColors.NoraOrange,
-                                    NoraColors.NoraOrange.copy(alpha = 0.7f)
-                                )
-                            )
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        "N",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                }
+                // Nora 品牌 Logo — Apple 简洁策略
+                NoraLogo(size = 32.dp)
                 Spacer(Modifier.width(10.dp))
                 Text(
                     "Nora",
@@ -146,19 +130,12 @@ fun NoraTopBar(
                     color = NoraColors.NoraOrange
                 )
                 Spacer(Modifier.width(8.dp))
-                // 模型状态指示器
+                // Apple 风格状态指示器
                 ModelStatusIndicator(status = modelStatus)
             }
         },
-        actions = {
-            IconButton(onClick = onSettingsClick) {
-                Icon(
-                    Icons.Default.Settings,
-                    contentDescription = "设置",
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        },
+        // 🚫 禁止：设置入口 — Apple Clarity 原则
+        actions = { },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.background
         )
@@ -170,9 +147,9 @@ enum class ModelStatus { READY, LOADING, ERROR }
 @Composable
 private fun ModelStatusIndicator(status: ModelStatus) {
     val (color, text) = when (status) {
-        ModelStatus.READY -> NoraColors.MatrixGreen to "就绪"
-        ModelStatus.LOADING -> Color(0xFFFFB74D) to "加载中"
-        ModelStatus.ERROR -> MaterialTheme.colorScheme.error to "异常"
+        ModelStatus.READY -> NoraColors.NoraReady to "就绪"
+        ModelStatus.LOADING -> NoraColors.NoraThinking to "加载中"
+        ModelStatus.ERROR -> NoraColors.NoraError to "异常"
     }
 
     Row(
@@ -282,7 +259,7 @@ private fun QuickActionCard(
             .width(120.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant,
+        color = NoraColors.SurfaceElevated,
         shadowElevation = 0.dp
     ) {
         Column(
@@ -313,7 +290,9 @@ private fun QuickActionCard(
     }
 }
 
-// ============ 消息气泡 - NoraOrange 用户消息 ============
+// ============ 消息气泡 - Apple HIG + Nora 宪法 ============
+// 用户：NoraOrange 背景 + 白字
+// 助手：Surface 背景 + Divider 描边 + PrimaryText
 @Composable
 fun MessageBubble(message: ChatMessage) {
     val isUser = message.role == "user"
@@ -324,18 +303,21 @@ fun MessageBubble(message: ChatMessage) {
         horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
     ) {
         Surface(
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(16.dp),
             color = when {
                 isError -> MaterialTheme.colorScheme.errorContainer
-                isUser -> NoraColors.NoraOrange  // 用户消息使用 NoraOrange
-                else -> MaterialTheme.colorScheme.surfaceVariant
+                isUser -> NoraColors.NoraOrange  // 用户消息：NoraOrange
+                else -> NoraColors.AssistantBubbleBg  // 助手消息：Surface (#1E1E1E)
             },
+            border = if (!isUser && !isError) {
+                androidx.compose.foundation.BorderStroke(1.dp, NoraColors.AssistantBubbleBorder)
+            } else null,
             modifier = Modifier.widthIn(max = 280.dp)
         ) {
             val textColor = when {
                 isError -> MaterialTheme.colorScheme.onErrorContainer
-                isUser -> Color.White  // 用户消息白字
-                else -> MaterialTheme.colorScheme.onSurfaceVariant
+                isUser -> NoraColors.UserBubbleText  // 白字
+                else -> NoraColors.AssistantBubbleText  // PrimaryText
             }
 
             Row(
@@ -414,7 +396,7 @@ fun NoraInputBar(
                     )
                 },
                 maxLines = 4,
-                shape = RoundedCornerShape(28.dp),
+                shape = RoundedCornerShape(24.dp),  // Apple HIG 标准大圆角
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = NoraColors.NoraOrange,
                     unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -596,18 +578,7 @@ private fun formatTimestamp(timestamp: Long): String {
     }
 }
 
-// ============ Nora 颜色扩展 ============
-object NoraColors {
-    val NoraOrange = Color(0xFFFF6B6B)
-    val MatrixGreen = Color(0xFF00FF41)
-    val Surface = Color(0xFF1E1E1E)
-    val SurfaceEdge = Color(0xFF2C2C2C)
-    val Background = Color(0xFF121212)
-    val TextPrimary = Color(0xFFE0E0E0)
-    val TextSecondary = Color(0xFF9E9E9E)
-}
-
-// ============ 主 ChatScreen 整合 ============
+// ============ 主 ChatScreen 整合（使用 theme.NoraColors） ============
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
@@ -637,7 +608,6 @@ fun ChatScreen(
         topBar = {
             NoraTopBar(
                 onMenuClick = { showConversationSheet = true },
-                onSettingsClick = { /* TODO: 设置页 */ },
                 modelStatus = modelStatus
             )
         },

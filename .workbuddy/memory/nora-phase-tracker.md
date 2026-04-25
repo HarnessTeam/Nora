@@ -184,6 +184,12 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 目标：消息不丢失，对话可恢复
 
+> **设计系统验收点**：Phase 1 所有 UI 改动必须符合 `nora-design-system.md` 规范
+> - [ ] Apple 清晰原则：首屏能否用一句话描述？（应该是"和 Nora 聊天"）
+> - [ ] 无模型选择下拉框
+> - [ ] 大圆角输入框（24dp cornerRadius）
+> - [ ] NoraOrange (#FF6B6B) 用于用户消息气泡
+
 - [x] Step 1: Application 级初始化 Room（NoraApp.kt）✅ (2026-04-25 10:55)
   - 添加 `database` 和 `dataRepository` lateinit 属性
   - Room.databaseBuilder 创建 `nora_database`
@@ -227,9 +233,71 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 ---
 
+### Phase Design 🔲 NEW — Apple HIG 设计系统验收
+
+目标：设计逻辑焊入开发流程，Apple 简洁高级风格
+
+> 参考：`nora-design-system.md`（Apple HIG 对齐版）
+
+- [ ] Step 1: 设计系统文件创建 ✅
+  - `nora-design-system.md`：颜色/字体/组件/动效规范
+  - Apple 清晰原则落地
+  - 禁止模式清单
+- [ ] Step 2: 组件库实现（DesignKit）
+  - 创建 `ai/nora/ui/design/` 包
+  - `NoraColors.kt`：完整颜色系统
+  - `NoraTypography.kt`：字号/字重规范
+  - `NoraShapes.kt`：圆角规范（24dp 输入框、16dp 气泡）
+- [ ] Step 3: 基础组件实现
+  - `NoraTopBar.kt`：56dp 标准高度，Logo + 状态
+  - `NoraInputBar.kt`：大圆角胶囊（24dp）+ ArrowUp 按钮
+  - `NoraIcon.kt`：Nora 品牌图标组件
+- [ ] Step 4: 欢迎区块（WelcomeSection）
+  - Logo + 欢迎语
+  - 快捷功能卡片（3张）
+  - 无模型选择入口
+- [ ] Step 5: 消息组件（MessageBubble）
+  - 用户消息：NoraOrange 背景
+  - 助手消息：Surface + 呼吸头像
+  - 思考状态：「Nora 正在思考...」
+- [ ] Step 6: 状态指示器（ModelStatusIndicator）
+  - 就绪🟢 / 思考中🟡 / 异常🔴
+  - Apple 状态条风格
+- [ ] Step 7: 动效规范
+  - 消息出现：250ms easeOut
+  - 页面切换：300ms easeInOut
+  - 呼吸光点：1500ms linear repeat
+- [ ] Step 8: 设计合规审计（Gate）
+  - [ ] Apple 清晰度：首屏一句话描述
+  - [ ] 认知负荷：首次使用需学习什么？（应为 0）
+  - [ ] 状态可见性：Nora 状态用户能感知
+  - [ ] 反馈即时性：每个操作有即时反馈
+  - [ ] Nora 誓言：完全无模型选择/设置页面
+
+**Gate**: 编译通过 + `assembleDebug` + 设计规范检查 5/5 全绿
+**设计规范检查命令**：
+```bash
+# 无模型选择 UI
+grep -r "model.*select\|ModelSelector" app/src/main/ # 必须返回 0
+# 无设置入口
+grep -r "settings.*icon\|SettingsScreen" app/src/main/ # 必须返回 0
+# 输入框圆角
+grep -r "cornerRadius.*24" app/src/main/ # 必须有匹配
+# 无 Material 紫色
+grep -r "0xFF6750A4" app/src/main/ # 必须返回 0
+```
+
+---
+
 ### Phase 2 🔲 PENDING — 安全屋主界面（Sanctuary）
 
 目标：打开 Nora 进入安全屋，而非直接进入聊天
+
+> **设计系统验收点**：Phase 2 必须使用 DesignKit 组件
+> - [ ] 使用 `NoraTopBar`（非原生 TopAppBar）
+> - [ ] 使用 `WelcomeSection` 展示欢迎
+> - [ ] 呼吸光点动画流畅（1500ms）
+> - [ ] 无任何设置/模型选择入口
 
 - [ ] Step 1: 创建 SanctuaryScreen.kt — 顶部状态栏（离线指示 + Nora 状态 + 呼吸灯）
 - [ ] Step 2: 实现 Nora 呼吸光点动画（Canvas + infinite transition）
@@ -249,6 +317,12 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 ### Phase 3 🔲 PENDING — Nora 对话 UI 重塑
 
 目标：对话界面符合 Nora 宪法规范
+
+> **设计系统验收点**：Phase 3 必须使用 MessageBubble 组件
+> - [ ] 使用 `NoraInputBar` 大圆角胶囊
+> - [ ] 用户消息使用 `NoraOrange`
+> - [ ] 思考状态显示「Nora 正在思考...」
+> - [ ] 助手消息使用 Surface + 描边
 
 - [ ] Step 1: Nora 气泡 — #1E1E1E 背景 + 1px #2C2C2C 描边 + 微圆角
 - [ ] Step 2: Nora 头像呼吸光点（"N" 字母 + 呼吸动画）
@@ -271,6 +345,12 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 目标：用户完全掌控自己的数据
 
+> **设计系统验收点**：
+> - [ ] 温暖可信赖的文字描述
+> - [ ] 开关切换即时反馈
+> - [ ] 数据可视化 Apple 图表风格
+> - [ ] 无侵入式弹窗
+
 - [ ] Step 1: 创建 VaultScreen.kt — "你的数据，只有你见过。"
 - [ ] Step 2: Nora 记忆库列表（从 Room 读取，支持删除/编辑）
 - [ ] Step 3: 零日志模式开关（DataStore 持久化）
@@ -290,6 +370,11 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 目标：Nora 能力可视化 + 用户投票机制
 
+> **设计系统验收点**：
+> - [ ] 技能节点状态清晰（点亮/训练中/未点亮）
+> - [ ] 动画流畅有层次（300ms easeInOut）
+> - [ ] 交互无认知负荷（一看就懂）
+
 - [ ] Step 1: 创建 SkillTreeScreen.kt — 星图/树状结构
 - [ ] Step 2: 技能节点三种状态（已点亮/训练中/未点亮）
 - [ ] Step 3: 已点亮技能点击弹出 Nora 对话
@@ -308,6 +393,12 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 ### Phase 6 🔲 PENDING — 感知层：通知聚合 & 文件上下文
 
 目标：Nora 实现宪法「感知 (Sense)」维度 — 感知手机通知、自动摘要、读取用户授权文件。完全离线，零网络请求。
+
+> **设计系统验收点**：
+> - [ ] 通知列表 Apple 列表风格
+> - [ ] 权限引导简洁明了（用户主动触发）
+> - [ ] 文件选择无侵入（SAF）
+> - [ ] 使用 `ModelStatusIndicator` 展示状态
 
 前置依赖：Phase 1 (Room 持久化)、Phase 2 (Navigation)
 
@@ -402,9 +493,10 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 ## 状态
 
-**当前 Phase**: Phase 1 🔄 IN PROGRESS
-**NEXT_STEP**: Phase 1 Step 7 — Phase 1 Instrument 测试
-**Phase 1 进度**: 6/7 Steps 完成（85.7%）
+**当前 Phase**: Phase Design 🔲 待执行
+**NEXT_STEP**: Phase Design Step 1 — 创建设计系统文件 `nora-design-system.md`
+**Phase Design 进度**: 🔲 待执行（0/8 Steps）
+**Phase 1 进度**: 6/7 Steps 完成（85.7%）— 等待 Design System 后推进 Step 7
 **Phase 0 进度**: 18/18 Steps 完成（100%）✅ Phase 0 Gate Passed
 **Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
 **上次 Instrument 测试**: 2026-04-25 12:00 — 10 tests, 10 passed, 0 skipped, 0 failed ✅
