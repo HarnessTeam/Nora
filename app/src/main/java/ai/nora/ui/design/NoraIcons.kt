@@ -16,6 +16,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Folder
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,31 +40,63 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.StrokeJoin
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.PathData
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.vector.ImageVector
 import ai.nora.theme.NoraColors
 import ai.nora.theme.NoraShapes
 
 // ═══════════════════════════════════════════════════════
-// NoraIcons — Apple HIG + Nora 品牌图标组件
-// 使用 Compose ImageVector.Builder + PathData.fromString()
+// NoraIcons — ImageVector 版本（用于 Icon() 组件和 QuickAction）
+// 使用 Material Icons Extended 扩展库，统一 NoraOrange 描边风格
 // ═══════════════════════════════════════════════════════
 
-// SVG PathData 解析辅助
-private fun svgPath(d: String): PathData = PathData.fromString(d)
+/** 描述/读文件图标 */
+val NoraDescription: ImageVector get() = Icons.Filled.Description
+
+/** 通知图标 */
+val NoraNotifications: ImageVector get() = Icons.Filled.Notifications
+
+/** 代码图标 */
+val NoraCode: ImageVector get() = Icons.AutoMirrored.Filled.MenuBook
+
+/** 发送箭头图标 */
+val NoraSendArrow: ImageVector get() = Icons.AutoMirrored.Filled.Send
+
+/** 停止图标 */
+val NoraStop: ImageVector get() = Icons.Filled.Stop
+
+/** 添加图标 */
+val NoraAdd: ImageVector get() = Icons.Filled.Add
+
+/** 删除图标 */
+val NoraDelete: ImageVector get() = Icons.Filled.Delete
+
+/** 菜单图标 */
+val NoraMenu: ImageVector get() = Icons.Filled.Description
+
+/** 内存/模型图标 */
+val NoraMemory: ImageVector get() = Icons.Filled.Folder
+
+/** 刷新图标 */
+val NoraRefresh: ImageVector get() = Icons.Filled.Refresh
+
+/** 检查圆圈图标 */
+val NoraCheckCircle: ImageVector get() = Icons.Filled.CheckCircle
+
+/** 文件夹图标 */
+val NoraFolder: ImageVector get() = Icons.Filled.Folder
+
+/** 勾选图标 */
+val NoraCheck: ImageVector get() = Icons.Filled.Check
+
+/** 向上箭头图标 */
+val NoraArrowUp: ImageVector get() = Icons.AutoMirrored.Filled.Send
 
 // ═══════════════════════════════════════════════════════
-// 1. NoraLogo（大圆 + N 字母）
+// 1. NoraLogo（大圆 + N 字母）— Canvas Composable
 // ═══════════════════════════════════════════════════════
 
 @Composable
@@ -212,260 +256,3 @@ fun NoraStatusDot(
             .background(color)
     )
 }
-
-// ═══════════════════════════════════════════════════════
-// 4. 导航图标（viewportSize=24x24, NoraOrange 描边）
-// ═══════════════════════════════════════════════════════
-
-// Send Arrow — 发送按钮
-val NoraSendArrow: ImageVector
-    get() = ImageVector.Builder(
-        name = "NoraSendArrow",
-        viewportWidth = 24f.toDp(),
-        viewportHeight = 24f.toDp()
-    ).apply {
-        addPath(
-            pathData = svgPath("M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 2f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// Stop — 停止（红色方块）
-val NoraStop: ImageVector
-    get() = ImageVector.Builder(
-        name = "NoraStop",
-        viewportWidth = 24f.dp,
-        viewportHeight = 24f.dp
-    ).apply {
-        addPath(
-            pathData = svgPath("M6 6h12v12H6z"),
-            fill = SolidColor(NoraColors.NoraError),
-            stroke = null
-        )
-    }.build()
-
-// Add — 加号
-val NoraAdd: ImageVector
-    get() = ImageVector.Builder(
-        name = "NoraAdd",
-        viewportWidth = 24f.dp,
-        viewportHeight = 24f.dp
-    ).apply {
-        addPath(
-            pathData = svgPath("M12 5v14M5 12h14"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 2f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// Delete — 垃圾桶
-val NoraDelete: ImageVector
-    get() = ImageVector.Builder(
-        name = "NoraDelete",
-        viewportWidth = 24f.dp,
-        viewportHeight = 24f.dp
-    ).apply {
-        addPath(
-            pathData = svgPath(
-                "M6 7v13h12V7 M9 7V5h6v2 M4 7h16l-1.5 15h-13z"
-            ),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraError),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// Menu — 三横线
-val NoraMenu: ImageVector
-    get() = ImageVector.Builder(
-        name = "NoraMenu",
-        viewportWidth = 24f.dp,
-        viewportHeight = 24f.dp
-    ).apply {
-        addPath(
-            pathData = svgPath("M3 6h18M3 12h18M3 18h18"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 2f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// ═══════════════════════════════════════════════════════
-// 5. 快捷功能图标
-// ═══════════════════════════════════════════════════════
-
-// Description — 文档
-val NoraDescription: ImageVector
-    get() = ImageVector.Builder(
-        name = "NoraDescription",
-        viewportWidth = 24f.dp,
-        viewportHeight = 24f.dp
-    ).apply {
-        addPath(
-            pathData = svgPath("M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-        addPath(
-            pathData = svgPath("M14 2v6h6M8 13h8M8 17h5"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// Notifications — 通知铃
-val NoraNotifications: ImageVector
-    get() = ImageVector.Builder(
-        name = "NoraNotifications",
-        viewportWidth = 24f.dp,
-        viewportHeight = 24f.dp
-    ).apply {
-        addPath(
-            pathData = svgPath("M18 16v-5c0-2-1-4-3-4S12 9 12 9V5M6 16v-5c0-2 1-4 3-4s3 2 3 4v5"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-        addPath(
-            pathData = svgPath("M19 20a2 2 0 01-2 2H7a2 2 0 01-2-2M12 20a2 2 0 002-2 2 2 0 00-2-2z"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// Code — 代码符号
-val NoraCode: ImageVector
-    get() = ImageVector.Builder("NoraCode", 24f, 24f).apply {
-        addPath(
-            pathData = svgPath("M16 18l6-6-6-6M8 6l-6 6 6 6"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 2f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// ═══════════════════════════════════════════════════════
-// 6. Setup 页面图标
-// ═══════════════════════════════════════════════════════
-
-// Memory — 内存芯片
-val NoraMemory: ImageVector
-    get() = ImageVector.Builder("NoraMemory", 24f, 24f).apply {
-        addPath(
-            pathData = svgPath("M6 4h12v16H6zM10 4v16M14 4v16M18 4v16"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// Refresh — 刷新
-val NoraRefresh: ImageVector
-    get() = ImageVector.Builder("NoraRefresh", 24f, 24f).apply {
-        addPath(
-            pathData = svgPath("M1 4v6h6M23 20v-6h-6"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-        addPath(
-            pathData = svgPath(
-                "M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15"
-            ),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// CheckCircle — 选中圆圈
-val NoraCheckCircle: ImageVector
-    get() = ImageVector.Builder("NoraCheckCircle", 24f, 24f).apply {
-        addPath(
-            pathData = svgPath("M22 11.08V12a10 10 0 11-5.93-9.14"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-        addPath(
-            pathData = svgPath("M22 4L12 14.01l-3-3"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 2f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// Folder — 文件夹
-val NoraFolder: ImageVector
-    get() = ImageVector.Builder("NoraFolder", 24f, 24f).apply {
-        addPath(
-            pathData = svgPath(
-                "M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"
-            ),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 1.5f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// Check — 对勾
-val NoraCheck: ImageVector
-    get() = ImageVector.Builder("NoraCheck", 24f, 24f).apply {
-        addPath(
-            pathData = svgPath("M20 6L9 17l-5-5"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 2f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()
-
-// ArrowUp — 向上箭头
-val NoraArrowUp: ImageVector
-    get() = ImageVector.Builder("NoraArrowUp", 24f, 24f).apply {
-        addPath(
-            pathData = svgPath("M12 4l-8 8h5v8h6v-8h5z"),
-            fill = null,
-            stroke = SolidColor(NoraColors.NoraOrange),
-            strokeLineWidth = 2f,
-            strokeLineCap = StrokeCap.Round,
-            strokeLineJoin = StrokeJoin.Round
-        )
-    }.build()

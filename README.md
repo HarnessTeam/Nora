@@ -26,12 +26,21 @@
 
 ![Nora Screenshot](assets/screenshot.png)
 
-## 快速开始
+## 下载 APK
+
+我们提供两个预构建版本：
+
+| 版本 | 文件 | 大小 | 说明 |
+|------|------|------|------|
+| **厚集成** | [nora-bundled-release.apk](./nora-bundled-release.apk) | ~34 MB | 内置模型，启动即用（需先配置模型文件） |
+| **薄集成** | [nora-slim-release.apk](./nora-slim-release.apk) | ~34 MB | 无内置模型，体积更小 |
+
+> 📦 两个 APK 当前均不含模型文件。厚集成版本在添加 `assets/models/model.pte` 后可实现一键安装。
 
 ### 前置要求
 
 - Android 设备（API 36+）或模拟器
-- 已安装 Android SDK 和 Gradle
+- 已安装 Android SDK 和 Gradle（仅构建时需要）
 
 ### 1. 下载模型文件
 
@@ -115,18 +124,25 @@ Nora/
 ### 构建命令
 
 ```bash
-# 完整构建
+# Debug 构建（默认厚集成）
 ./gradlew assembleDebug
 
-# 清理后重新构建
-./gradlew clean assembleDebug
+# Release 构建
+./gradlew assembleRelease
+
+# 按变体构建
+./gradlew assembleBundledDebug    # 厚集成 Debug
+./gradlew assembleSlimDebug        # 薄集成 Debug
+./gradlew assembleBundledRelease   # 厚集成 Release
+./gradlew assembleSlimRelease      # 薄集成 Release
 
 # 运行测试
 ./gradlew testDebugUnitTest
 ./gradlew connectedDebugAndroidTest
 
-# 调试安装
-adb install -r app/build/outputs/apk/debug/Nora-debug.apk
+# 安装到设备
+adb install -r app/build/outputs/apk/bundled/debug/app-bundled-debug.apk
+adb install -r app/build/outputs/apk/slim/debug/app-slim-debug.apk
 ```
 
 ### 添加模型文件到源码（可选）

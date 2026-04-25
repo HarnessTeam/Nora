@@ -11,6 +11,9 @@ interface LlmEngine {
 
     val engineName: String
 
+    /** Engine's application context — exposed for ModelAssetManager access */
+    val context: android.content.Context
+
     val loadState: StateFlow<EngineLoadState>
 
     /**

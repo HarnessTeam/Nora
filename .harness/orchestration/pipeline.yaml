@@ -1,0 +1,156 @@
+# .harness Orchestration Layer — 任务管线定义
+# 定义标准任务管线，编排层根据此配置调度 Agent 执行
+
+pipelines:
+
+  # ─── 标准开发管线 ───────────────────────────────────
+  dev_step:
+    name: "执行单个开发步骤"
+    description: "读取 phase 状态 → 编码实现 → 编译验证 → 测试 → 提交"
+    stages:
+      - id: memory_load
+        agent: memory_agent
+        action: "加载 .harness/memory/ 全部上下文 + .workbuddy/memory/ 项目记忆"
+        required: true
+
+      - id: phase_read
+        agent: orchestration_agent
+        action: "读取 nora-phase-tracker.md，解析当前 phase 和 next step"
+        required: true
+
+      - id: plan
+        agent: planning_agent
+        action: "根据 step 描述制定实现计划（文件列表、改动摘要）"
+        required: true
+        gate: "plan 必须明确列出要创建/修改的文件"
+
+      - id: implement
+        agent: coding_agent
+        action: "按照计划编写/修改代码"
+        required: true
+        timeout: 600
+
+      - id: compile
+        agent: build_agent
+        action: "运行 build.bat 或 gradlew 编译"
+        required: true
+        on_failure: "记录错误到 feedback/reviews/，重试 implement 最多 3 次"
+
+      - id: test
+        agent: test_agent
+        action: "如有对应测试则运行"
+        required: false
+        condition: "step 涉及可测试逻辑"
+
+      - id: commit
+        agent: git_agent
+        action: "git add + commit，更新 phase tracker"
+        required: true
+
+      - id: feedback
+        agent: feedback_agent
+        action: "记录执行结果到 feedback/metrics.yaml"
+        required: true
+
+  # ─── 需求驱动管线 ───────────────────────────────────
+  requirement:
+    name: "从需求到交付"
+    description: "用户提需求 → 理解 → 拆解 → 逐条执行 dev_step → 验收"
+    stages:
+      - id: understand
+        agent: understanding_agent
+        action: "解析用户需求，提取：功能描述、验收标准、优先级、涉及模块"
+        required: true
+
+      - id: decompose
+        agent: planning_agent
+        action: "将需求拆解为可执行的 dev_step 序列"
+        required: true
+        gate: "每个 step 独立可编译可测试"
+
+      - id: execute_loop
+        agent: orchestration_agent
+        action: "逐个执行 dev_step 管线，直到所有 step 完成"
+        required: true
+        loop: true
+        on_step_failure: "记录到 feedback，通知用户，暂停等待决策"
+
+      - id: verify
+        agent: verification_agent
+        action: "全量编译 + 运行所有测试 + 人工检查清单"
+        required: true
+
+      - id: report
+        agent: feedback_agent
+        action: "生成需求交付报告：改动文件列表、测试结果、已知风险"
+        required: true
+
+  # ─── GitHub Issue 管线 ─────────────────────────────
+  github_issue:
+    name: "GitHub Issue 驱动开发"
+    description: "从 issue 创建 → 分析 → 开发 → PR → 关联关闭"
+    stages:
+      - id: fetch_issue
+        agent: github_agent
+        action: "gh issue view <number> 获取 issue 详情"
+        required: true
+
+      - id: analyze
+        agent: understanding_agent
+        action: "分析 issue 内容，关联已知上下文"
+        required: true
+
+      - id: branch
+        agent: git_agent
+        action: "创建 feature/issue-<number> 分支"
+        required: true
+
+      - id: develop
+        agent: orchestration_agent
+        action: "执行 requirement 管线"
+        required: true
+
+      - id: pr
+        agent: github_agent
+        action: "gh pr create 关联 issue，填写 PR 模板"
+        required: true
+
+  # ─── 代码审查管线 ───────────────────────────────────
+  review:
+    name: "代码审查"
+    description: "审查当前分支改动"
+    stages:
+      - id: diff
+        agent: git_agent
+        action: "git diff 分析所有改动"
+        required: true
+
+      - id: analyze
+        agent: review_agent
+        action: "逐文件审查：逻辑正确性、性能、安全、可读性"
+        required: true
+
+      - id: report
+        agent: feedback_agent
+        action: "生成审查报告"
+        required: true
+
+  # ─── 自演化管线 ───────────────────────────────────
+  evolve:
+    name: "框架自演化"
+    description: "根据反馈优化 .harness 框架自身"
+    stages:
+      - id: metrics
+        agent: feedback_agent
+        action: "读取 feedback/metrics.yaml，分析成功率、耗时趋势"
+        required: true
+
+      - id: identify
+        agent: analysis_agent
+        action: "识别瓶颈：哪些 stage 失败率高、哪些 pattern 需补充"
+        required: true
+
+      - id: optimize
+        agent: self_evolve_agent
+        action: "更新 memory/patterns.md 和 pitfalls.md，优化 pipeline 定义"
+        required: true

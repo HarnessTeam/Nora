@@ -1,0 +1,15 @@
+# .harness Feedback Layer — 执行指标
+# 每次管线执行后追加记录
+
+# 格式:
+# - timestamp: "ISO8601"
+#   pipeline: "管线名称"
+#   status: "success|failure|partial"
+#   duration: 秒数
+#   phase: "当前阶段"
+#   step: "步骤ID"
+#   files_changed: []
+#   commit: "hash"
+#   error: "错误描述（如有）"
+
+metrics_initialized: "2026-04-25T00:00:00Z"

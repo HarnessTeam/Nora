@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicReference
  *   - Detects repetition loops and triggers early stop
  *   - Trims trailing whitespace
  */
-class ExecuTorchEngine(private val context: Context) : LlmEngine {
+class ExecuTorchEngine(override val context: Context) : LlmEngine {
 
     override val engineName = "ExecuTorch"
 

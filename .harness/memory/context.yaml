@@ -1,0 +1,70 @@
+# .harness Memory Layer — 项目上下文
+# 本文件是 harness 的"大脑"，记录项目全量上下文，供编排层决策使用
+
+project:
+  name: Nora
+  package: ai.nora
+  description: "离线 Android AI Agent（数字生命体）"
+  repo: https://github.com/HarnessTeam/Nora
+  branch: master
+
+tech_stack:
+  language: Kotlin 2.3.20
+  ui: Jetpack Compose + Material3 (BOM 2026.03.01)
+  architecture: MVVM (ViewModel + UiState)
+  database: Room 2.7.1 (with KSP 2.3.7)
+  navigation: Navigation3 1.0.1 (Compose)
+  llm: ExecuTorch 1.2.0 + Qwen3-0.6B
+  preferences: DataStore 1.1.4
+  di: Hilt 2.57
+  build: Gradle 9.0.1
+  jdk: Eclipse Adoptium 17.0.18.8
+
+constraints:
+  - "零网络：INTERNET 权限绝对禁止"
+  - "全离线：所有数据留在设备端"
+  - "隐私优先：不收集任何用户数据"
+  - "Min SDK 26 (Android 8.0)"
+  - "Target SDK 36 (Android 15)"
+
+flavors:
+  bundled: "模型打包在 APK 内"
+  slim: "模型通过 ADB 外部加载"
+
+environment:
+  os: Windows 11
+  java_home: "C:/Program Files/Eclipse Adoptium/jdk-17.0.18.8-hotspot"
+  android_home: "C:/Users/28767/AppData/Local/Android/Sdk"
+  avd: medium_phone (API 36, x86_64)
+  gradle_opts: "-Xmx1536m"
+
+build_commands:
+  default: "build.bat"  # bundledDebug
+  variants:
+    - bundledDebug
+    - slimDebug
+    - bundledRelease
+    - slimRelease
+
+phases:
+  phase_0:
+    name: "基础设施搭建"
+    status: COMPLETE
+    steps: 18
+    instrument_score: 10/10
+    audit_score: 5/5
+  phase_1:
+    name: "数据持久化层"
+    status: IN_PROGRESS
+    completed: 6/7
+    next: "Phase 1 Step 7 — Instrument 测试"
+  phase_6:
+    name: "感知层（通知聚合 + 文件上下文）"
+    status: PLANNED
+
+known_pitfalls:
+  - "FontFamily 不能用 string 构造，必须用 FontFamily.Default 或 resource"
+  - "build.bat 不支持参数透传，需修改脚本或直接调用 gradlew"
+  - "Navigation3 初始状态为空时会白屏，需要默认路由"
+  - "Compose preview 不支持 ExecuTorch，需 mock ViewModel"
+  - "签名密码在 build.gradle.kts 明文存储（Nora2026!Release），注意 .gitignore"

@@ -1,0 +1,39 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preSlimDebugBuild UP-TO-DATE
+> Task :app:mergeSlimDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateSlimDebugBuildConfig UP-TO-DATE
+> Task :app:generateSlimDebugResources UP-TO-DATE
+> Task :app:packageSlimDebugResources UP-TO-DATE
+> Task :app:processSlimDebugNavigationResources UP-TO-DATE
+> Task :app:parseSlimDebugLocalResources UP-TO-DATE
+> Task :app:generateSlimDebugRFile UP-TO-DATE
+> Task :app:kspSlimDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileSlimDebug UP-TO-DATE
+> Task :app:generateSlimDebugAssets UP-TO-DATE
+> Task :app:mergeSlimDebugAssets UP-TO-DATE
+> Task :app:compressSlimDebugAssets UP-TO-DATE
+> Task :app:checkSlimDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarSlimDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexSlimDebug UP-TO-DATE
+> Task :app:mergeLibDexSlimDebug UP-TO-DATE
+> Task :app:checkSlimDebugAarMetadata UP-TO-DATE
+> Task :app:compileSlimDebugNavigationResources UP-TO-DATE
+> Task :app:mapSlimDebugSourceSetPaths UP-TO-DATE
+> Task :app:mergeSlimDebugResources UP-TO-DATE
+> Task :app:createSlimDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksSlimDebug UP-TO-DATE
+> Task :app:processSlimDebugMainManifest UP-TO-DATE
+> Task :app:processSlimDebugManifest UP-TO-DATE
+> Task :app:processSlimDebugManifestForPackage UP-TO-DATE
+> Task :app:processSlimDebugResources UP-TO-DATE
+> Task :app:mergeSlimDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeSlimDebugNativeLibs UP-TO-DATE
+> Task :app:stripSlimDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningSlimDebug UP-TO-DATE
+> Task :app:writeSlimDebugAppMetadata UP-TO-DATE
+> Task :app:writeSlimDebugSigningConfigVersions UP-TO-DATE
+
+> Task :app:compileSlimDebugKotlin FAILED
+31 actionable tasks: 1 executed, 30 up-to-date

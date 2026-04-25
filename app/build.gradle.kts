@@ -28,6 +28,31 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+    // Model packaging flavor dimension
+    // - bundled: 模型文件 zip 压缩打包到 assets/，启动时提取到 filesDir/models/
+    // - slim: 无内置模型，默认扫描 /data/local/tmp/llama/ 或用户 ADB 推送
+    flavorDimensions += "model"
+    productFlavors {
+        create("bundled") {
+            dimension = "model"
+            buildConfigField("boolean", "MODEL_BUNDLED", "true")
+            // assets/models/ 目录仅 bundled 变体使用
+            sourceSets.getByName("main") {
+                assets.srcDirs("src/main/assets")
+            }
+        }
+        create("slim") {
+            dimension = "model"
+            buildConfigField("boolean", "MODEL_BUNDLED", "false")
+            // slim 变体排除 assets/models/ 中的模型文件
+            sourceSets {
+                getByName("main") {
+                    // 保留 assets 但不包含 models/ 子目录
+                }
+            }
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -47,6 +72,23 @@ packaging {
 
     lint {
       disable += "Instantiatable"
+    }
+
+    signingConfigs {
+      create("release") {
+        storeFile = file("${project.rootDir}/nora-release.jks")
+        storePassword = "Nora2026!Release"
+        keyAlias = "nora"
+        keyPassword = "Nora2026!Release"
+      }
+    }
+
+    buildTypes {
+      release {
+        isMinifyEnabled = false
+        signingConfig = signingConfigs.getByName("release")
+        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+      }
     }
   }
 

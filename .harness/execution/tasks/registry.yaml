@@ -1,0 +1,109 @@
+# .harness Execution Layer — 任务注册表
+# 所有可执行任务在此注册，编排层通过 ID 引用
+
+tasks:
+
+  # ─── 构建任务 ─────────────────────────────────────
+  build_debug:
+    id: build_debug
+    name: "编译 Debug 版本"
+    type: build
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && build.bat"
+    timeout: 300
+    artifacts:
+      - "app/build/outputs/apk/bundled/debug/*.apk"
+
+  build_release:
+    id: build_release
+    name: "编译 Release 版本"
+    type: build
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && BUILD_VARIANT=bundledRelease build.bat"
+    timeout: 600
+    artifacts:
+      - "app/build/outputs/apk/bundled/release/*.apk"
+
+  build_slim_debug:
+    id: build_slim_debug
+    name: "编译 Slim Debug 版本"
+    type: build
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && BUILD_VARIANT=slimDebug build.bat"
+    timeout: 300
+
+  # ─── 测试任务 ─────────────────────────────────────
+  test_unit:
+    id: test_unit
+    name: "运行单元测试"
+    type: test
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && gradlew.bat test"
+    timeout: 300
+    reports:
+      - "app/build/reports/tests/"
+
+  test_instrument:
+    id: test_instrument
+    name: "运行 Instrument 测试"
+    type: test
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && gradlew.bat connectedAndroidTest"
+    timeout: 600
+    prerequisites:
+      - "AVD 运行中或已连接真机"
+    reports:
+      - "app/build/reports/androidTests/"
+
+  # ─── 部署任务 ─────────────────────────────────────
+  install_debug:
+    id: install_debug
+    name: "安装 Debug APK 到设备"
+    type: deploy
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && gradlew.bat installBundledDebug"
+    timeout: 120
+    prerequisites:
+      - "设备已连接"
+
+  # ─── Git 任务 ─────────────────────────────────────
+  git_status:
+    id: git_status
+    name: "查看 Git 状态"
+    type: git
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && git status --short"
+
+  git_diff:
+    id: git_diff
+    name: "查看未提交改动"
+    type: git
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && git diff"
+
+  git_log:
+    id: git_log
+    name: "查看提交历史"
+    type: git
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && git log --oneline -20"
+
+  # ─── GitHub 任务 ──────────────────────────────────
+  gh_issue_list:
+    id: gh_issue_list
+    name: "列出 GitHub Issues"
+    type: github
+    command: "gh issue list --repo HarnessTeam/Nora"
+    prerequisites:
+      - "gh CLI 已安装且已认证"
+
+  gh_issue_create:
+    id: gh_issue_create
+    name: "创建 GitHub Issue"
+    type: github
+    command_template: "gh issue create --repo HarnessTeam/Nora --title \"{title}\" --body \"{body}\" --label \"{labels}\""
+
+  gh_pr_create:
+    id: gh_pr_create
+    name: "创建 Pull Request"
+    type: github
+    command_template: "gh pr create --repo HarnessTeam/Nora --title \"{title}\" --body \"{body}\" --base master"
+
+  # ─── 清理任务 ─────────────────────────────────────
+  clean_build:
+    id: clean_build
+    name: "清理构建缓存"
+    type: clean
+    command: "cd c:/Users/28767/WorkBuddy/local-agent && gradlew.bat clean"
+    timeout: 120
