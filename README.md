@@ -24,11 +24,7 @@
 
 ## 截图预览
 
-> [!IMPORTANT]
-> 请将截图文件放置在 `assets/screenshot.png` 路径下以在 GitHub 上显示。
-
-<!-- Screenshots -->
-<!-- ![Nora Screenshot](assets/screenshot.png) -->
+![Nora Screenshot](assets/screenshot.png)
 
 ## 快速开始
 
