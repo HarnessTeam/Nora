@@ -4,10 +4,10 @@ import android.app.Application
 import android.util.Log
 import com.facebook.soloader.SoLoader
 
-class LocalAgentApp : Application() {
+class NoraApp : Application() {
 
     companion object {
-        lateinit var instance: LocalAgentApp
+        lateinit var instance: NoraApp
             private set
     }
 
@@ -16,9 +16,9 @@ class LocalAgentApp : Application() {
         instance = this
         try {
             SoLoader.init(this, false)
-            Log.i("LocalAgent", "SoLoader initialized successfully")
+            Log.i("Nora", "SoLoader initialized successfully")
         } catch (e: Exception) {
-            Log.e("LocalAgent", "SoLoader initialization failed", e)
+            Log.e("Nora", "SoLoader initialization failed", e)
         }
     }
 }

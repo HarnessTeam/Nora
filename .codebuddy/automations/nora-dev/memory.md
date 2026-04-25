@@ -1,5 +1,14 @@
 # Nora Dev Automation — Execution Memory
 
+## 2026-04-25 10:21 — 应用图标替换 + 自动化流程修复 ✅
+- **图标替换**: `app-icon.png` (1536x1024, RGB) → Pillow 裁剪为正方形 → 5 分辨率 webp → 覆盖 mipmap-*/ic_launcher*.webp
+- **移除 adaptive icon**: 删除 `mipmap-anydpi-v26/` 目录 + `drawable/ic_launcher_background.xml` + `ic_launcher_foreground.xml`（非透明背景图标不适合 adaptive 裁剪）
+- **ADB BLOCKER 消除**: 启动模拟器 medium_phone → `emulator-5554` 在线 ✅
+- **编译方案修复**: 创建 `build.bat` 脚本解决 PowerShell 环境变量问题（已加入 .gitignore）
+- **Git commit**: `7733221` — "Phase 0: replace app icon with custom Nora icon"
+- **Tracker**: BLOCKER 状态更新为 ✅ 无；BLOCKER 自动消除规则已更新 ADB 完整路径
+- **NEXT**: Phase 0 Step 4b — 应用名清理（themes.xml / SetupScreen / 其他残留）
+
 ## 2026-04-25 10:07 — Phase 0 Steps 3d/3e/4a ✅ (3 Steps)
 - **Step 3d**: XML 资源 + AndroidManifest 包名引用 — 确认零 `com.example` 残留（3a/3b/3c 已处理）
 - **Step 3e**: 测试文件 — ChatModelsTest.kt + BaseAndroidTest.kt 均已迁移到 `ai.nora` 包 ✅

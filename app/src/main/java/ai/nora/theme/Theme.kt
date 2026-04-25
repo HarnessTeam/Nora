@@ -36,7 +36,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun LocalAgentTheme(
+fun NoraTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

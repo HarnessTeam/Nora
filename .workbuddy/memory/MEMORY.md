@@ -26,10 +26,12 @@
 ### 环境
 - JDK: `C:\Program Files\Eclipse Adoptium\jdk-17.0.18.8-hotspot`
 - Gradle opts: `-Xmx1536m`
-- ADB: `C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe`（⚠️ 不在 PATH）
+- ADB: `C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe`（不在 PATH，需用完整路径）
 - 模拟器: medium_phone（API 36, x86_64）
+- 编译方案: `build.bat` 脚本（PowerShell 直接调 gradlew 有环境变量问题）
 
 ### 踩坑记录
 - MessageDao: 不存在独立文件，实为 `ConversationDao.kt` 同包内嵌的 DAO 接口
 - Type.kt / Color.kt: 已在之前 Step 中删除，无需重复操作
 - MainScreenViewModelTest.kt: 已删除，无需操作
+- 应用图标: 已替换为自定义 Nora 图标（git commit 7733221），删除了 adaptive icon（mipmap-anydpi-v26）

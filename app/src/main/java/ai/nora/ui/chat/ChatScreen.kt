@@ -73,7 +73,7 @@ fun ChatScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text("Local Agent", style = MaterialTheme.typography.titleLarge)
+                        Text("Nora", style = MaterialTheme.typography.titleLarge)
                         if (uiState.isGenerating) {
                             Text(
                                 "Generating...",

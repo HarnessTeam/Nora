@@ -34,7 +34,7 @@ fun SetupScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.Memory, contentDescription = null, modifier = Modifier.size(28.dp))
                         Spacer(Modifier.width(8.dp))
-                        Text("Local Agent", fontWeight = FontWeight.Bold)
+                        Text("Nora", fontWeight = FontWeight.Bold)
                     }
                 },
                 actions = {

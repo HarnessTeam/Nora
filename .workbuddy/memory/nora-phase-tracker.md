@@ -27,18 +27,26 @@
 ### 测试运行命令
 
 ```bash
-# 环境变量
+# 环境变量（必须在 cmd /c 中 set，不能依赖 PowerShell $env:JAVA_HOME）
 set GRADLE_OPTS=-Xmx1536m
 set JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.18.8-hotspot
+set ANDROID_HOME=C:\Users\28767\AppData\Local\Android\Sdk
+set PATH=%JAVA_HOME%\bin;%ANDROID_HOME%\platform-tools;%ANDROID_HOME%\emulator;%PATH%
+
+# 编译
+gradlew.bat assembleDebug
 
 # Unit 测试（快速反馈）
-gradlew testDebugUnitTest
+gradlew.bat testDebugUnitTest
 
 # Instrument 测试（需要设备/模拟器）
-gradlew connectedDebugAndroidTest
+gradlew.bat connectedDebugAndroidTest
 
 # 单个测试类
-gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
+gradlew.bat connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
+
+# ADB（完整路径，不在 PATH）
+C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 ```
 
 ### 测试基础设施前置（Phase 0 Step 0）
@@ -294,7 +302,15 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
   - Step 平均完成时间：~3 min/Step
   - Session 内 Step 吞吐量：4 Steps in ~10 min（0.4 Steps/min）
   - 宪法合规度：4/9（44%，目标 Phase 0 完成后 7/9）
-**BLOCKER 状态**：⚠️ ADB 不在 PATH，Instrument 测试待补
+**BLOCKER 状态**: ✅ 无（ADB emulator-5554 在线，2026-04-25 10:21 确认）
+
+### 自动化执行修复记录
+
+| 日期 | 修复项 | 说明 |
+|------|--------|------|
+| 2026-04-25 | ADB BLOCKER | ADB 完整路径 `C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe`，不在系统 PATH |
+| 2026-04-25 | 编译命令 | PowerShell 直接调用 gradlew 有环境变量问题；改用 `build.bat` 脚本（cmd /c set 环境变量后执行） |
+| 2026-04-25 | 应用图标 | 替换为自定义 Nora 图标（1536x1024 → 裁剪正方形 → 5 分辨率 webp），删除 adaptive icon（非透明背景图标不适合 adaptive 裁剪） |
 
 ## 自动化执行纪律（美团味·标准化拆解）
 
@@ -304,7 +320,7 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
 1. 读状态 → 确认 NEXT_STEP
 2. 检查前置 → 如果有 BLOCKER，先消除 BLOCKER 再执行 Step
    - git 不存在 → git init + commit
-   - ADB 离线 → 标记 BLOCKER，跳过测试
+   - ADB 离线 → 用完整路径 `adb.exe devices` 检查；无设备则启动模拟器
    - 编译失败 → 先修编译再继续
 3. 执行 Step → 最小原子改动
 4. 验证 → 编译 + 测试（Unit 或 Instrument 视 Phase 要求）
@@ -318,7 +334,7 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
 | BLOCKER | 自动消除动作 | 消除后状态 |
 |---------|------------|-----------|
 | git 不存在 | `git init && git add -A && git commit` | Step 1a 完成 |
-| ADB 离线 | 跳过 Instrument 测试，标记 ⚠️ ADB_BLOCKER | Step 可继续，测试待补 |
+| ADB 离线 | 用完整路径检查：`C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices`；无设备则启动 `emulator -avd medium_phone` | ADB_BLOCKER 消除 |
 | 编译失败 | 读报错 → 修编译 → 重新 `gradlew assembleDebug` | BLOCKER 消除 |
 | 模拟器未启动 | `adb -s emulator-5554 emu kill` → `avdmanager` → `emulator -avd medium_phone` | ADB_BLOCKER 消除 |
 

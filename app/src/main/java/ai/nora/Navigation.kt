@@ -20,7 +20,7 @@ fun MainNavigation() {
     val backStack = rememberNavBackStack(if (modelLoaded) Chat else Setup)
 
     // Shared engine and scanner instances (manual DI)
-    val app = LocalAgentApp.instance
+    val app = NoraApp.instance
     val engine = remember { ai.nora.llm.ExecuTorchEngine(app) }
     val scanner = remember { ai.nora.model.ModelScanner(app) }
 
