@@ -34,8 +34,9 @@
   - ChatUiState: `conversations` + `currentConversationTitle`
   - ChatScreen: TopAppBar 可点击 → ModalBottomSheet 对话列表
   - 踩坑: Column 内 forEach 替代 items()；`by mutableStateOf` 需 setValue
-- **NEXT_STEP**: Phase 1 Step 7 — Phase 1 Instrument 测试
-- **Phase 1 进度**: 6/7 Steps（85.7%）
+- **NEXT_STEP**: Phase 2 Step 4 — 底部三按钮导航路由连接
+- **Phase 2 进度**: 3/6 Steps（50%）
+- **Phase 1 进度**: ✅ 7/7 Steps（100%）— Gate Passed 2026-04-25 19:31
 
 ### Phase 0 归档
 - ✅ 全部 18 Steps 完成

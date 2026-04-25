@@ -299,19 +299,32 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 ---
 
-### Phase 2 🔲 PENDING — 安全屋主界面（Sanctuary）
+### Phase 2 🔄 IN PROGRESS — 安全屋主界面（Sanctuary）
 
 目标：打开 Nora 进入安全屋，而非直接进入聊天
 
 > **设计系统验收点**：Phase 2 必须使用 DesignKit 组件
-> - [ ] 使用 `NoraTopBar`（非原生 TopAppBar）
-> - [ ] 使用 `WelcomeSection` 展示欢迎
-> - [ ] 呼吸光点动画流畅（1500ms）
-> - [ ] 无任何设置/模型选择入口
+> - [x] 使用 `NoraTopBar`（非原生 TopAppBar）— ChatScreen 已用 NoraTopBar，Sanctuary 无 TopBar
+> - [x] 使用 `WelcomeSection` 展示欢迎 — 已改为 NoraBreathingOrb + AwakeningLogCard
+> - [x] 呼吸光点动画流畅（1500ms）— NoraBreathingOrb Canvas 版
+> - [x] 无任何设置/模型选择入口
 
-- [ ] Step 1: 创建 SanctuaryScreen.kt — 顶部状态栏（离线指示 + Nora 状态 + 呼吸灯）
-- [ ] Step 2: 实现 Nora 呼吸光点动画（Canvas + infinite transition）
-- [ ] Step 3: 苏醒日志卡片（版本人格化展示）
+- [x] Step 1: 创建 SanctuaryScreen.kt — 顶部状态栏（离线指示 + Nora 状态 + 呼吸灯）✅ (2026-04-25 20:42)
+  - SanctuaryScreen: Scaffold + Column（状态栏 + 呼吸光环 + 日志卡片 + 底部导航）
+  - SanctuaryStatusBar: 安全模式标签「安全模式 ｜ 所有数据在本地」
+  - SanctuaryNavButton: 底部三按钮（对话/日志/技能）
+  - 验证：`assembleDebug` ✅ + `testSlimDebugUnitTest` ✅ + 设计合规 ✅ + git commit ce063fc
+- [x] Step 2: 实现 Nora 呼吸光点动画（Canvas + infinite transition）✅ (2026-04-25 20:45)
+  - NoraIcons.kt 新增 `NoraBreathingOrb`：Canvas 径向渐变光环
+  - 三层动画：呼吸缩放(0.92→1.08, 1500ms) + 光晕透明度(0.15→0.45, 1500ms) + 极慢外环旋转(12s)
+  - 核心圆 + "N" 字母 + NoraOrange 渐变
+  - SanctuaryScreen 集成 NoraBreathingOrb 替换 NoraLogo
+  - 验证：`assembleDebug` ✅ + git commit 628c499
+- [x] Step 3: 苏醒日志卡片（版本人格化展示）✅ (2026-04-25 20:48)
+  - AwakeningLogCard: Apple Card 风格，SurfaceElevated 背景 + QuickActionCardShape 圆角
+  - 4 条日志条目：版本(v0.1 苏醒版) / 模型(本地离线运行) / 记忆(安全存储在设备) / 状态(动态)
+  - 标题「Nora 的苏醒日志」+ 副标题「每一次相遇，都是新的开始」
+  - 验证：`assembleDebug` ✅ + git commit fdb6584
 - [ ] Step 4: 底部三按钮导航（对话 / 日志 / 技能）
 - [ ] Step 5: 更新 Navigation.kt — Sanctuary 为首个页面
 - [ ] Step 6: Phase 2 Instrument 测试
@@ -503,9 +516,10 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 ## 状态
 
-**当前 Phase**: Phase 1 ✅ COMPLETE（数据持久化 Gate Passed）
-**NEXT_STEP**: Phase 2 Step 1 — 创建 SanctuaryScreen.kt
+**当前 Phase**: Phase 2 🔄 IN PROGRESS（安全屋主界面）
+**NEXT_STEP**: Phase 2 Step 4 — 底部三按钮导航（对话 / 日志 / 技能）
 **Phase Design 进度**: ✅ 8/8 Steps 完成（100%）
+**Phase 2 进度**: 3/6 Steps（50%）
 **Phase 1 进度**: ✅ 7/7 Steps 完成（100%）— **Gate Passed 2026-04-25 19:31**
 **Phase 0 进度**: ✅ 18/18 Steps 完成（100%）
 **Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
@@ -515,6 +529,7 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
   - Step 平均完成时间：~2.5 min/Step
   - Phase 0 总耗时：~8 min
   - Phase 1 总耗时：~9 h（含测试适配迭代 6 轮）
+  - Phase 2 进度：3/6（50%），~6 min
   - 宪法合规度：16/16（100%，Phase 0:5 + Phase 1 设计:3 + Phase 1 宪法:5 + 设计审计:3）
 **BLOCKER 状态**: ✅ 无（ADB emulator-5554 在线）
 

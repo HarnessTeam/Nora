@@ -1,5 +1,35 @@
 # nora-dev automation execution log
 
+## 2026-04-25 执行记录（20:42）— Phase 2 Step 1-3
+
+### 本次执行（20:40 ~ 20:50）— Phase 2 启动，3 Steps 完成
+**Phase 2 进度**: 0/6 → 3/6 Steps（50%）
+
+**Step 1 ✅ — 创建 SanctuaryScreen.kt**
+- 新文件：`ai/nora/ui/sanctuary/SanctuaryScreen.kt`
+- SanctuaryStatusBar: 安全模式标签 + 断开云指示
+- SanctuaryNavButton: 底部三按钮（对话/日志/技能）
+- NoraLogo + BreathingDot + NoraStatusIndicator 集成
+- 验证：assembleDebug ✅ + testSlimDebugUnitTest ✅ + git ce063fc
+
+**Step 2 ✅ — NoraBreathingOrb 呼吸光环动画**
+- NoraIcons.kt 新增 `NoraBreathingOrb`：Canvas 径向渐变
+- 三层动画：呼吸缩放(1500ms) + 光晕透明度(1500ms) + 极慢旋转(12s)
+- SanctuaryScreen 集成替换 NoraLogo
+- 验证：assembleDebug ✅ + git 628c499
+
+**Step 3 ✅ — 苏醒日志卡片**
+- AwakeningLogCard: Apple Card 风格
+- 4 条日志：版本/模型/记忆/状态
+- 验证：assembleDebug ✅ + git fdb6584
+
+**NEXT_STEP**: Phase 2 Step 4 — 底部三按钮导航（对话/日志/技能）
+
+### 踩坑经验
+- Step 4 底部三按钮已在 Step 1 中实现（SanctuaryNavButton），Step 4 需要完善导航路由连接
+
+---
+
 ## 2026-04-25 执行记录（19:31）— Phase 1 Gate ✅ COMPLETE
 
 ### 本次执行（19:05 ~ 19:31）— Phase 1 Step 7 完成 + **Phase 1 Gate Passed**
