@@ -13,7 +13,11 @@
 - ✅ Step 1a: Git 初始化
 - ✅ Step 1b/1c/1d: 死代码清理
 - ✅ Step 2a/2b: DataRepository + AppDatabase 验证
-- ⬜ Step 3a-3e: 包名迁移（com.example.localagent → ai.nora）
+- ✅ Step 3a: build.gradle.kts namespace + applicationId → ai.nora
+- ✅ Step 3b: 源文件 package 声明 + imports 替换（17 文件）
+- ✅ Step 3c: 目录结构 com.example.localagent → ai.nora（rename）
+- ⬜ Step 3d: XML 资源和 AndroidManifest（包名引用清理）
+- ⬜ Step 3e: 测试文件引用更新
 - ⬜ Step 4a/4b: 应用名清理
 - ⬜ Step 5-7: Nora 色彩/Theme/Typography
 - ⬜ Step 8: Phase 0 Gate（宪法合规审计）

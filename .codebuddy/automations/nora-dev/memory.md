@@ -1,5 +1,14 @@
 # Nora Dev Automation — Execution Memory
 
+## 2026-04-25 09:39-09:44 — Phase 0 Steps 3a/3b/3c ✅ (3 Steps)
+- **Step 3a**: build.gradle.kts — namespace + applicationId `com.example.localagent` → `ai.nora` ✅ 编译通过
+- **Step 3b**: 17 个 .kt 源文件 package 声明 + imports 全部替换；测试目录结构同步迁移 ✅ Unit test 全绿
+- **Step 3c**: 目录树 `com/example/localagent/` → `ai/nora/`（17 个源文件 rename）✅ 编译 + 单元测试全绿
+- **Git commits**: `b181230` (3a) → `6ea5bae` (3b) → `3ad61bb` (3c) — 3ad61bb 删除临时脚本
+- **Tracker**: Phase 0 进度 10/18（55.6%），NEXT = Step 3d（XML 资源 + AndroidManifest）
+- **注意**: 测试文件 ChatModelsTest.kt 被 `fix_package.py` 清空，后从 git 恢复并重新写入正确内容
+- **踩坑**: Python `fix_package.py` 操作需小心处理文件内容，避免意外清空
+
 ## 2026-04-25 04:32 — Phase 0 Steps 1-2 验证 ✅
 - **完成**: 验证 Steps 1a/1b/1c/1d/2a/2b 全部自动完成（git 已有历史，死代码已删除，MessageDao 实为 ConversationDao.kt 同包内嵌）
 - **验证**: `assembleDebug` ✅ | `testDebugUnitTest` ✅ (BUILD SUCCESSFUL)

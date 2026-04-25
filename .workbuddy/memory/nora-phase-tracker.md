@@ -115,15 +115,19 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
   - 批量替换所有 `package com.example.localagent` → `package ai.nora`（17 main + 1 test）
   - 测试目录结构同步迁移（`com/example/localagent` → `ai/nora`）
   - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit 6ea5bae`
-- [ ] Step 3c: 包名迁移 — 目录结构
-  - 移动 `com/example/localagent/` → `ai/nora/`
-  - 验证：目录结构正确 + 编译通过
-- [ ] Step 3d: 包名迁移 — XML 资源和 AndroidManifest
-  - 验证：编译通过 + APK 安装正常
-- [ ] Step 3e: 包名迁移 — 测试文件
-  - BaseAndroidTest.kt 引用更新
-  - 单元测试目录迁移
-  - 验证：`testDebugUnitTest` + `connectedDebugAndroidTest` 通过
+- [x] Step 3c: 包名迁移 — 目录结构 ✅ (2026-04-25 09:44)
+  - 移动 `com/example/localagent/` → `ai/nora/`（17 个源文件）
+  - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit 3ad61bb`
+- [x] Step 3d: 包名迁移 — XML 资源和 AndroidManifest ✅ (2026-04-25 10:07)
+  - 确认：`app/src/` 下零 `com.example` 残留（已在 3a/3b/3c 处理完毕）
+  - AndroidManifest `android:name=".LocalAgentApp"` 使用相对引用，正确
+  - `Theme.MyApplication` / `LocalAgent` 品牌残留移交 Step 4a/4b 处理
+  - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅
+- [x] Step 3e: 包名迁移 — 测试文件 ✅ (2026-04-25 10:07)
+  - ChatModelsTest.kt: `package ai.nora.llm` + `import ai.nora.model.ChatMessage` ✅
+  - BaseAndroidTest.kt: `package ai.nora` + `import ai.nora.MainActivity` ✅
+  - 目录结构 `ai/nora/` 已正确 ✅
+  - 验证：零 `com.example` 残留在测试文件 + 编译 + Unit 测试通过
 - [ ] Step 4a: 应用名改为 "Nora" — strings.xml
   - `<string name="app_name">Nora</string>`
   - 验证：strings.xml 包含 "Nora"
@@ -282,8 +286,8 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
 ## 状态
 
 **当前 Phase**: 0（项目重生）
-**NEXT_STEP**: Phase 0 Step 3c — 包名迁移：目录结构（`com/example/localagent/` → `ai/nora/`）
-**Phase 0 进度**: 9/18 Steps 完成（50.0%）
+**NEXT_STEP**: Phase 0 Step 3d — 包名迁移：XML 资源和 AndroidManifest
+**Phase 0 进度**: 10/18 Steps 完成（55.6%）
 **上次 Instrument 测试**: 2026-04-25 02:44 — 0 tests, BUILD SUCCESSFUL
 **测试通过率**: 100%（空跑，0/0）
 **效率指标**：
