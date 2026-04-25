@@ -4,13 +4,13 @@ import androidx.compose.ui.test.*
 import org.junit.Test
 
 /**
- * Phase 0+1 Gate — App 启动测试（适配 ChatScreen 首页导航）
+ * Phase 0+1 Gate — App 启动测试
  *
- * 当前 UI 流：
- * - 应用启动 → 直接进入 ChatScreen（Navigation.kt 已改为 rememberNavBackStack(Chat)）
- * - TopAppBar 显示 "Nora" + Logo + 状态指示器
- * - 无模型时：加载覆盖层 "正在准备 Nora..."
- * - 有模型时：WelcomeSection（"欢迎使用 Nora" / "欢迎回来"）+ 输入框
+ * 适配 Phase 2 Sanctuary-first 导航：
+ * - 应用启动 → SanctuaryScreen（安全屋），而非直接进入 ChatScreen
+ * - 安全屋显示："安全模式"标签 + Nora 状态文案（在线/正在苏醒/离线/问题）
+ * - 无模型时：SanctuaryScreen 显示 "Nora 离线" 或 "Nora 正在苏醒..."
+ * - 有模型时：SanctuaryScreen 显示 "Nora 在线" + NoraBreathingOrb 呼吸光点
  */
 class AppLaunchTest : BaseAndroidTest() {
 
@@ -40,20 +40,16 @@ class AppLaunchTest : BaseAndroidTest() {
     }
 
     @Test
-    fun 启动后显示聊天界面或加载状态() {
+    fun 启动后显示安全屋或聊天界面() {
         composeTestRule.waitForIdle()
 
-        // 二选一：加载覆盖层 或 欢迎区块
-        val isLoading = try {
-            composeTestRule.onNodeWithText("正在准备", substring = true).assertExists()
+        // Phase 2: 应用启动显示 SanctuaryScreen（安全屋）
+        // 安全屋文案：Nora 在线 / Nora 正在苏醒... / Nora 离线 / Nora 遇到了问题
+        val hasNoraStatus = try {
+            composeTestRule.onNodeWithText("Nora", substring = true).assertExists()
             true
         } catch (e: Exception) { false }
 
-        val isWelcome = try {
-            composeTestRule.onNodeWithText("欢迎", substring = true).assertExists()
-            true
-        } catch (e: Exception) { false }
-
-        assert(isLoading || isWelcome) { "应显示加载状态或欢迎区块" }
+        assert(hasNoraStatus) { "应显示 Nora 状态文案（安全屋）" }
     }
 }

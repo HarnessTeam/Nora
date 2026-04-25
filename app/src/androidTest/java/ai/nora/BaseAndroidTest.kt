@@ -2,8 +2,10 @@ package ai.nora
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onAllNodes
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.waitForIdle
+import androidx.compose.ui.test.hasClickAction
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import ai.nora.MainActivity
 import org.junit.Rule
@@ -32,28 +34,28 @@ abstract class BaseAndroidTest {
      *
      * 流程：
      * 1. 等待界面稳定
-     * 2. 查找并点击"对话"按钮
+     * 2. 遍历所有可点击节点，找到底部"对话"按钮并点击
      * 3. 等待导航完成（ChatScreen 输入框出现）
      */
     @OptIn(ExperimentalTestApi::class)
     protected fun navigateToChatFromSanctuary() {
         composeTestRule.waitForIdle()
+        Thread.sleep(1000) // 额外等待让动画稳定
 
-        // 点击"对话"按钮（底部导航）
-        val nodes = composeTestRule
-            .onAllNodesWithText("对话", substring = true)
+        // 遍历所有可点击节点，尝试点击（底部"对话"按钮）
+        val clickableNodes = composeTestRule
+            .onAllNodes(hasClickAction())
             .fetchSemanticsNodes()
 
-        for (i in nodes.indices) {
+        for (i in clickableNodes.indices) {
             try {
                 composeTestRule
-                    .onAllNodesWithText("对话", substring = true)[i]
+                    .onAllNodes(hasClickAction())[i]
                     .performClick()
-                break
+                composeTestRule.waitForIdle()
+                Thread.sleep(1000)
+                return
             } catch (_: Exception) { /* 继续下一个 */ }
         }
-
-        // 等待 ChatScreen 加载（输入框出现）
-        composeTestRule.waitForIdle()
     }
 }

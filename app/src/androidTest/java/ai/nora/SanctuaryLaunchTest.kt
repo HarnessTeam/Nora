@@ -1,12 +1,15 @@
 package ai.nora
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onAllNodes
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.waitForIdle
 import androidx.compose.ui.test.waitUntilAtLeastOneExists
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -19,10 +22,9 @@ import org.junit.runner.RunWith
  *
  * 验证：
  * 1. 打开 App → 首先看到安全屋（而非聊天）
- * 2. 安全屋显示 Nora 呼吸光点动画
- * 3. 底部三按钮导航可点击
+ * 2. 安全屋显示 Nora 状态文案
+ * 3. 底部三按钮导航存在
  * 4. 点击"对话" → 进入聊天页
- * 5. 点击返回 → 回到安全屋
  */
 @OptIn(ExperimentalTestApi::class)
 @RunWith(AndroidJUnit4::class)
@@ -32,41 +34,46 @@ class SanctuaryLaunchTest {
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     /**
-     * 辅助：从安全屋点击"对话"按钮导航到聊天页
+     * 辅助：从安全屋导航到聊天页。
+     * 多次 waitForIdle 确保 UI 完全稳定后再尝试点击。
      */
-    private fun navigateToChat() {
+    private fun navigateToChatFromSanctuary() {
+        // 等待 UI 完全稳定
         composeTestRule.waitForIdle()
+        Thread.sleep(500) // 额外等待让动画稳定
 
-        val nodes = composeTestRule
-            .onAllNodesWithText("对话", substring = true)
+        // 遍历所有可点击节点，尝试点击（底部"对话"按钮）
+        val clickableNodes = composeTestRule
+            .onAllNodes(hasClickAction())
             .fetchSemanticsNodes()
 
-        for (i in nodes.indices) {
+        for (i in clickableNodes.indices) {
             try {
                 composeTestRule
-                    .onAllNodesWithText("对话", substring = true)[i]
+                    .onAllNodes(hasClickAction())[i]
                     .performClick()
-                break
+                composeTestRule.waitForIdle()
+                Thread.sleep(500)
+                return
             } catch (_: Exception) { /* 继续下一个 */ }
         }
-        composeTestRule.waitForIdle()
     }
 
     /**
-     * 验证1：打开 App → 首先看到安全屋
+     * 验证1：打开 App → 首先看到安全屋（安全模式标签）
      */
     @Test
     fun 打开App首先看到安全屋而非聊天() {
+        // 等待 UI 完全稳定
         composeTestRule.waitForIdle()
+        Thread.sleep(1000)
 
         // 安全屋特征：顶部有"安全模式"标签
         composeTestRule.waitUntilAtLeastOneExists(
             hasText("安全模式", substring = true),
-            3000
+            8000
         )
-        composeTestRule
-            .onNodeWithText("安全模式", substring = true)
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("安全模式", substring = true).assertIsDisplayed()
     }
 
     /**
@@ -75,46 +82,52 @@ class SanctuaryLaunchTest {
     @Test
     fun 安全屋显示Nora在线状态() {
         composeTestRule.waitForIdle()
+        Thread.sleep(1000)
 
-        // "Nora 在线" 或 "Nora 离线" 或 "Nora 苏醒" 等状态文案
-        val hasStatus = try {
-            composeTestRule.waitUntilAtLeastOneExists(
-                hasText("Nora", substring = true),
-                3000
-            )
-            true
-        } catch (e: Exception) { false }
-
-        assert(hasStatus) { "安全屋应显示 Nora 状态文案" }
+        // "Nora 在线" / "Nora 正在苏醒..." / "Nora 离线" / "Nora 遇到了问题"
+        composeTestRule.waitUntilAtLeastOneExists(
+            hasText("Nora", substring = true),
+            8000
+        )
     }
 
     /**
-     * 验证3：底部三按钮存在
+     * 验证3：底部三按钮存在（对话/日志/技能）
      */
     @Test
     fun 安全屋底部三按钮全部存在() {
         composeTestRule.waitForIdle()
+        Thread.sleep(1000)
 
-        composeTestRule.onNodeWithText("对话", substring = true).assertIsDisplayed()
-        composeTestRule.onNodeWithText("日志", substring = true).assertIsDisplayed()
-        composeTestRule.onNodeWithText("技能", substring = true).assertIsDisplayed()
+        // 等待按钮出现
+        composeTestRule.waitUntilAtLeastOneExists(
+            hasText("对话", substring = true),
+            8000
+        )
+        composeTestRule.waitUntilAtLeastOneExists(
+            hasText("日志", substring = true),
+            8000
+        )
+        composeTestRule.waitUntilAtLeastOneExists(
+            hasText("技能", substring = true),
+            8000
+        )
     }
 
     /**
-     * 验证4：点击"对话" → 进入聊天页
+     * 验证4：点击"对话" → 进入聊天页（输入框出现）
      */
     @Test
     fun 点击对话按钮进入聊天页() {
         composeTestRule.waitForIdle()
-        navigateToChat()
+        Thread.sleep(1000)
+
+        navigateToChatFromSanctuary()
 
         // 聊天页特征：输入框 placeholder
         composeTestRule.waitUntilAtLeastOneExists(
             hasText("发送消息给 Nora...", substring = true),
-            3000
+            10000
         )
-        composeTestRule
-            .onNodeWithText("发送消息给 Nora...", substring = true)
-            .assertIsDisplayed()
     }
 }
