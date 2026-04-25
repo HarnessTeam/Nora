@@ -6,6 +6,7 @@ import androidx.room.Room
 import com.facebook.soloader.SoLoader
 import ai.nora.data.AppDatabase
 import ai.nora.data.DataRepository
+import ai.nora.data.PreferencesManager
 
 class NoraApp : Application() {
 
@@ -18,6 +19,9 @@ class NoraApp : Application() {
         private set
 
     lateinit var dataRepository: DataRepository
+        private set
+
+    lateinit var preferencesManager: PreferencesManager
         private set
 
     override fun onCreate() {
@@ -36,6 +40,9 @@ class NoraApp : Application() {
             conversationDao = database.conversationDao(),
             messageDao = database.messageDao()
         )
+
+        // Initialize PreferencesManager (DataStore)
+        preferencesManager = PreferencesManager(this)
 
         Log.i("Nora", "Room database initialized: nora_database")
 

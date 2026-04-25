@@ -4,9 +4,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import ai.nora.ui.design.NoraCheckCircle
+import ai.nora.ui.design.NoraFolder
+import ai.nora.ui.design.NoraMemory
+import ai.nora.ui.design.NoraRefresh
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,14 +34,14 @@ fun SetupScreen(
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Memory, contentDescription = null, modifier = Modifier.size(28.dp))
+                        Icon(NoraMemory, contentDescription = null, modifier = Modifier.size(28.dp))
                         Spacer(Modifier.width(8.dp))
                         Text("Nora", fontWeight = FontWeight.Bold)
                     }
                 },
                 actions = {
                     IconButton(onClick = { viewModel.scanForModels() }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Rescan")
+                        Icon(NoraRefresh, contentDescription = "Rescan")
                     }
                 }
             )
@@ -93,7 +95,7 @@ fun SetupScreen(
                                 Text(model.ptePath.absolutePath, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             if (model == uiState.selectedModel) {
-                                Icon(Icons.Default.CheckCircle, contentDescription = "Selected", tint = MaterialTheme.colorScheme.primary)
+                                Icon(NoraCheckCircle, contentDescription = "Selected", tint = MaterialTheme.colorScheme.primary)
                             }
                         }
                     }
@@ -107,7 +109,7 @@ fun SetupScreen(
             ) { Text("Load Model & Start Chat") }
 
             OutlinedButton(onClick = { viewModel.scanForModels() }, modifier = Modifier.fillMaxWidth()) {
-                Icon(Icons.Default.Folder, contentDescription = null, modifier = Modifier.size(18.dp))
+                Icon(NoraFolder, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.width(8.dp))
                 Text("Rescan /data/local/tmp/llama/")
             }

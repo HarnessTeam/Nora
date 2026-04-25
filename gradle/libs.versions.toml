@@ -56,6 +56,7 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 # SoLoader + fbjni (ExecuTorch deps)
 soloader = { module = "com.facebook.soloader:soloader", version.ref = "soloader" }
 fbjni = { module = "com.facebook.fbjni:fbjni", version.ref = "fbjni" }

@@ -29,16 +29,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.automirrored.filled.MenuOpen
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,12 +54,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -80,9 +73,16 @@ import ai.nora.model.ChatMessage
 import ai.nora.model.ConversationEntity
 import ai.nora.theme.NoraColors
 import ai.nora.theme.NoraShapes
+import ai.nora.ui.design.NoraAdd
+import ai.nora.ui.design.NoraCode
+import ai.nora.ui.design.NoraDelete
+import ai.nora.ui.design.NoraDescription
 import ai.nora.ui.design.NoraLogo
+import ai.nora.ui.design.NoraNotifications
+import ai.nora.ui.design.NoraSendArrow
 import ai.nora.ui.design.NoraStatus
 import ai.nora.ui.design.NoraStatusIndicator
+import ai.nora.ui.design.NoraStop
 
 // ============================================================
 // Nora App v2 - 核心设计原则
@@ -101,9 +101,9 @@ data class QuickAction(
 )
 
 val quickActions = listOf(
-    QuickAction(Icons.Default.Description, "读文件", "加载本地文件", "read_file"),
-    QuickAction(Icons.Default.Notifications, "看通知", "聚合通知摘要", "notifications"),
-    QuickAction(Icons.Default.Code, "写代码", "代码生成解释", "code"),
+    QuickAction(NoraDescription, "读文件", "加载本地文件", "read_file"),
+    QuickAction(NoraNotifications, "看通知", "聚合通知摘要", "notifications"),
+    QuickAction(NoraCode, "写代码", "代码生成解释", "code"),
 )
 
 // ============ TopBar - Apple HIG 标准（56dp，无设置入口） ============
@@ -405,9 +405,9 @@ fun NoraInputBar(
                 ),
                 trailingIcon = {
                     if (isGenerating) {
-                        IconButton(onClick = onStop) {
+                            IconButton(onClick = onStop) {
                             Icon(
-                                Icons.Default.Stop,
+                                NoraStop,
                                 contentDescription = "停止生成",
                                 tint = MaterialTheme.colorScheme.error
                             )
@@ -438,7 +438,7 @@ fun NoraInputBar(
                         )
                     } else {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowForward,
+                            NoraSendArrow,
                             contentDescription = "发送",
                             tint = if (inputText.isNotBlank())
                                 Color.White
@@ -483,7 +483,7 @@ fun ConversationListSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    Icons.Default.Add,
+                    NoraAdd,
                     contentDescription = null,
                     tint = NoraColors.NoraOrange,
                     modifier = Modifier.size(24.dp)
@@ -554,7 +554,7 @@ fun ConversationListSheet(
 
                         IconButton(onClick = { onDeleteConversation(conv.id) }) {
                             Icon(
-                                Icons.Default.Delete,
+                                NoraDelete,
                                 contentDescription = "删除对话",
                                 tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
                             )
@@ -590,6 +590,10 @@ fun ChatScreen(
     val listState = rememberLazyListState()
     var showConversationSheet by remember { mutableStateOf(false) }
 
+    // Rime 键盘适配：点击消息区域时清除焦点 + 隐藏键盘
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     // 自动滚动到底部
     LaunchedEffect(uiState.messages.size) {
         if (uiState.messages.isNotEmpty()) {
@@ -621,13 +625,24 @@ fun ChatScreen(
             )
         }
     ) { padding ->
+        // Rime 兼容：点击消息区域时清除焦点 + 隐藏软键盘
+        val dismissKeyboard: () -> Unit = {
+            focusManager.clearFocus()
+            keyboardController?.hide()
+        }
+
         LazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(horizontal = 16.dp)
-                .imePadding(),
+                .imePadding()
+                .clickable(
+                    interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
+                    indication = null,
+                    onClick = dismissKeyboard
+                ),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {

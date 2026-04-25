@@ -5,15 +5,16 @@
 - **核心组件路径**：`ai/nora/ui/design/NoraIcons.kt`（NoraLogo/BreathingDot/NoraStatusIndicator）
 - **色彩系统**：`ai/nora/theme/NoraColors.kt`（PrimaryText/SecondaryText/Divider 是新属性名）
 - **圆角规范**：`ai/nora/theme/NoraShapes.kt`（InputBar=24dp, MessageBubble=16dp, Tag=8dp）
-- **Bug 记录**：ChatScreen.kt 有重复 NoraColors object（已修复），Theme.kt 引用旧颜色名（已同步）
+- **Bug 记录**：ChatScreen.kt 有重复 NoraColors object（已修复），Theme.kt 引用旧颜色名（已同步），OutlinedTextField trailing comma 漏掉（已修复）
 - **编译注意**：Material3 1.7+ (BOM 2026) Typography 不支持 displayLarge/displayMedium/displaySmall 参数
+- **Phase Design 进度**：✅ 8/8 Steps 完成（100%）— Gate Passed（2026-04-25 16:01）
 
 ## Nora Android 项目（C:\Users\28767\WorkBuddy\local-agent）
 
 ### 项目概述
 - **产品**: Nora — 离线 Android AI 智能体（数字生命）
 - **包名**: `ai.nora`
-- **Phase 状态**: Phase 1 🔄 IN PROGRESS（数据持久化层搭建中）
+- **Phase 状态**: Phase 1 🔄 IN PROGRESS（设计系统已就绪，Step 7 测试待推进）
 - **技术栈**: Kotlin + Jetpack Compose + Room + ExecuTorch + Navigation3
 
 ### 当前 Phase 1 进度

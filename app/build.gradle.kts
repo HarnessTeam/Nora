@@ -91,6 +91,9 @@ dependencies {
   implementation(libs.soloader)
   implementation(libs.fbjni)
 
+  // DataStore (persist modelLoaded state for startup navigation)
+  implementation(libs.datastore.preferences)
+
   // ExecuTorch AAR (real LLM inference)
   implementation(libs.executorch)
 
