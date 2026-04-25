@@ -278,7 +278,87 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 ---
 
-## Instrument 测试矩阵总览
+### Phase 6 🔲 PENDING — 感知层：通知聚合 & 文件上下文
+
+目标：Nora 实现宪法「感知 (Sense)」维度 — 感知手机通知、自动摘要、读取用户授权文件。完全离线，零网络请求。
+
+前置依赖：Phase 1 (Room 持久化)、Phase 2 (Navigation)
+
+- [ ] Step 1: NotificationListenerService 实现（AndroidManifest service declaration + NoraNotificationService.kt）
+  - 创建 `ai/nora/notification/NoraNotificationService.kt`
+  - `onNotificationPosted` → 解析 sbn → 存入 Room
+  - AndroidManifest 添加 `<service>` 声明（`BIND_NOTIFICATION_LISTENER_SERVICE`）
+  - 验证：模拟器通知出现时 log 有输出
+- [ ] Step 2: Room NotificationEntity + NotificationDao
+  - `NotificationEntity`: id, packageName, appName, title, text, timestamp, isRead, summary, category, isOngoing
+  - `NotificationDao`: insert, queryAll, queryByPackage, updateSummary, deleteOld (保留1000条)
+  - AppDatabase 添加 `notificationDao()`
+  - 验证：`testDebugUnitTest` DAO 测试通过
+- [ ] Step 3: DataRepository 通知增删改查
+  - `NotificationRepository` 单例（复用 Phase 1 架构模式）
+  - 方法：`addNotification`, `getNotifications(limit)`, `getUnreadCount`, `markAsRead`, `cleanupOld`
+  - 验证：编译 + Unit 测试
+- [ ] Step 4: 通知列表 UI — NotificationScreen
+  - 创建 `ai/nora/ui/notification/NotificationScreen.kt`
+  - LazyColumn 展示通知卡片（App图标 + 标题 + 正文 + 摘要 + 时间）
+  - 过滤 Tab：全部 / 未读 / 按 App 分组
+  - 权限未授权时显示引导占位页
+  - 验证：编译 + Instrument 测试
+- [ ] Step 5: 通知权限引导页
+  - 权限未授权检测：`NotificationManagerCompat.getEnabledListenerPackages()`
+  - 未授权时显示引导页，带「开启通知监听」按钮 → `ACTION_NOTIFICATION_LISTENER_SETTINGS` DeepLink
+  - 授权后自动刷新列表
+  - 验证：Instrument 测试权限引导流程
+- [ ] Step 6: 权限状态检测 & 通知 Badge
+  - `isNotificationListenerEnabled()` 工具函数
+  - 安全屋 Tab3（感知）显示未读通知 Badge
+  - 验证：Instrument 测试 Badge 显示逻辑
+- [ ] Step 7: WorkManager PeriodicWork — NotificationSummaryWorker
+  - 依赖：`androidx.work:work-runtime-ktx`
+  - `PeriodicWorkRequestBuilder<NotificationSummaryWorker>(15, TimeUnit.MINUTES)`
+  - Worker 读取未摘要通知（`summary == null`），批量处理
+  - `Result.retry()` on failure
+  - 验证：编译 + Worker enqueue 成功
+- [ ] Step 8: LLM 摘要 prompt + 解析 + Room 更新
+  - Prompt 设计：JSON 格式输出 `[{"index": 0, "summary": "...", "category": "..."}]`
+  - 复用现有 `LlmModule.inference()`
+  - 解析 JSON → 更新 `NotificationEntity.summary` + `category`
+  - 容错：超时/解析失败 → 跳过该批次
+  - 验证：Mock LLM 测试 + Room 数据验证
+- [ ] Step 9: 摘要展示（NotificationCard 更新）
+  - 有摘要时：显示「💡 摘要：...」行，category tag（工作/社交/金融等）
+  - 无摘要时：显示原始标题+正文
+  - Loading 态：显示「Nora 正在整理...」
+  - 验证：Instrument 测试摘要卡片渲染
+- [ ] Step 10: SAF 文件选择器 + FileContextEntity
+  - `FileContextEntity`: id, uri, fileName, previewText, lastUsed, isActive
+  - `ACTION_OPEN_DOCUMENT` → `takePersistableUriPermission`
+  - `FileAccessManager` 单例管理持久化 URI 列表
+  - 验证：SAF 返回 URI → 持久化成功 → 跨会话保留
+- [ ] Step 11: 文件上下文注入对话
+  - 聊天输入框旁「📎」按钮 → 打开文件选择器
+  - 已选文件列表（Badge）+ 移除按钮
+  - 发送消息时：文件内容前缀拼入 prompt
+  - 验证：对话中加入文件上下文 → LLM 引用文件内容
+- [ ] Step 12: Phase 6 Instrument 测试
+  - `NotificationListenerTest.kt`：模拟通知 → 写入 Room → 列表显示
+  - `NotificationSummaryTest.kt`：Worker 执行 → 摘要生成 → category 分类
+  - `FileAccessTest.kt`：SAF → URI 持久化 → 内容读取 → 上下文注入
+  - `PermissionFlowTest.kt`：权限引导 → 授权 → 通知读取 → Badge 更新
+  - `DeduplicationTest.kt`：相同通知5min内去重，仅保留最新
+  - `DataCleanupTest.kt`：存储超过1000条 → 自动淘汰最旧
+
+**Gate**: 编译通过 + `connectedDebugAndroidTest` Phase 0-6 全绿 + 宪法合规审计 7/7
+**宪法合规新增检查**:
+  - [x] NLS service declaration present
+  - [x] INTERNET permission: 0 matches (strictly enforced)
+  - [x] NotificationEntity schema: no PII leakage
+  - [x] SAF: no file directory scanning
+**回滚**: `git checkout .`
+
+---
+
+## Instrument 测试矩阵总览（更新后）
 
 | Phase | 测试文件数 | 核心覆盖 | 宪法审计项 |
 |-------|-----------|---------|-----------|
@@ -288,7 +368,8 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 | Phase 3 | 1 类（4 cases） | 气泡样式、流式指示、消息交互、滚动行为 | — |
 | Phase 4 | 1 类（3 cases） | 隐私仪表盘、记忆管理、零日志模式 | — |
 | Phase 5 | 1 类（3 cases） | 技能树渲染、技能交互、技能详情 | — |
-| **合计** | **6 类（19 cases）** | | **5 项宪法审计** |
+| Phase 6 | 2 类（5 cases） | 通知监听/摘要、SAF/文件上下文、权限流程、去重/淘汰 | 2 项新增 |
+| **合计** | **8 类（24 cases）** | | **7 项宪法审计** |
 
 ---
 
@@ -296,6 +377,7 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 **当前 Phase**: Phase 0 ✅ Complete
 **NEXT_STEP**: Phase 1 Step 1 — Application 级初始化 Room（NoraApp.kt）
+**Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
 **Phase 0 进度**: 18/18 Steps 完成（100%）✅ Phase 0 Gate Passed
 **上次 Instrument 测试**: 2026-04-25 10:48 — 10 tests, 10 passed, 0 skipped, 0 failed ✅
 **测试通过率**: 100%（10/10）
