@@ -6,10 +6,10 @@ plugins {
 }
 
 android {
-    namespace = "com.example.localagent"
+    namespace = "ai.nora"
     compileSdk = 36
     defaultConfig {
-        applicationId = "com.example.localagent"
+        applicationId = "ai.nora"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

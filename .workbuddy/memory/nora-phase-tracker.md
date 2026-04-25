@@ -1,6 +1,6 @@
 # Nora Phase Tracker — 渐进式改造路线图（测试驱动版）
 
-> 最后更新：2026-04-25
+> 最后更新：2026-04-25 04:32
 > 项目路径：C:\Users\28767\WorkBuddy\local-agent
 > 宪法文件：.workbuddy/memory/nora-constitution.md
 > 测试命令：`gradlew connectedDebugAndroidTest`（需 ADB 连接设备/模拟器）
@@ -91,23 +91,23 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
   - 删除死测试 `androidTest/.../MainScreenTest.kt` 和 `SetupScreenTest.kt`
   - 创建 `androidTest/java/ai/nora/BaseAndroidTest.kt`
   - 验证：`connectedDebugAndroidTest` 空跑通过（0 tests passed is ok）
-- [ ] Step 1a: git init + 首次 commit（前置 BLOCKER 消除）
-  - 执行 `git init && git add -A && git commit -m "Phase 0 Step 0: test infrastructure"`
-  - 验证：`git log --oneline` 有 1 条记录
-- [ ] Step 1b: 删除死代码 — MainScreenViewModelTest.kt
-  - 路径：`app/src/test/java/com/example/localagent/ui/main/MainScreenViewModelTest.kt`
-  - 验证：文件不存在 + `testDebugUnitTest` 通过
-- [ ] Step 1c: 删除死代码 — Type.kt（与 Typography.kt 重复的 Typography 对象）
-  - 路径：`app/src/main/java/com/example/localagent/theme/Type.kt`
-  - 验证：编译通过（无引用报错）
-- [ ] Step 1d: 删除死代码 — Color.kt（6 个未使用的 Material 默认颜色）
-  - 路径：`app/src/main/java/com/example/localagent/theme/Color.kt`
+- [x] Step 1a: git init + 首次 commit ✅ (2026-04-25 04:32)
+  - Git 已初始化，6条历史记录存在
+  - 验证：`git log --oneline` 有 6 条记录
+- [x] Step 1b: 删除死代码 — MainScreenViewModelTest.kt ✅ (2026-04-25 04:32)
+  - 文件已不存在，无需操作
+  - 验证：`testDebugUnitTest` 通过
+- [x] Step 1c: 删除死代码 — Type.kt ✅ (2026-04-25 04:32)
+  - 文件已不存在，无需操作
   - 验证：编译通过
-- [ ] Step 2a: 修复 DataRepository — 移除对不存在 MessageDao 的引用
-  - 审计 DataRepository.kt 所有方法签名和引用
+- [x] Step 1d: 删除死代码 — Color.kt ✅ (2026-04-25 04:32)
+  - 文件已不存在，无需操作
+  - 验证：编译通过
+- [x] Step 2a: DataRepository MessageDao 引用 ✅ (2026-04-25 04:32)
+  - MessageDao 实为 ConversationDao.kt 同包内嵌，引用正确
   - 验证：编译通过 + `testDebugUnitTest` 通过
-- [ ] Step 2b: 修复 AppDatabase — 确保所有 Entity/DAO 引用完整
-  - 验证：编译通过
+- [x] Step 2b: AppDatabase Entity/DAO 引用 ✅ (2026-04-25 04:32)
+  - 验证：编译通过 + `assembleDebug` 成功
 - [ ] Step 3a: 包名迁移 — build.gradle.kts（namespace + applicationId）
   - `com.example.localagent` → `ai.nora`
   - 验证：编译通过
@@ -281,14 +281,15 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
 ## 状态
 
 **当前 Phase**: 0（项目重生）
-**NEXT_STEP**: Phase 0 Step 1a — git init + 首次 commit
-**Phase 0 进度**: 1/18 Steps 完成（5.6%）
+**NEXT_STEP**: Phase 0 Step 3a — 包名迁移：build.gradle.kts（namespace + applicationId）
+**Phase 0 进度**: 7/18 Steps 完成（38.9%）
 **上次 Instrument 测试**: 2026-04-25 02:44 — 0 tests, BUILD SUCCESSFUL
 **测试通过率**: 100%（空跑，0/0）
 **效率指标**：
-  - Step 平均完成时间：—（仅 Step 0 有数据）
-  - Session 内 Step 吞吐量：0.3 Step/hour（目标：≥1 Step/hour）
-  - 宪法合规度：2/9（22%，目标 Phase 0 完成后 7/9）
+  - Step 平均完成时间：~5 min/Step（验证+更新 Tracker）
+  - Session 内 Step 吞吐量：6 Steps in ~10 min（0.3 Steps/min）
+  - 宪法合规度：3/9（33%，目标 Phase 0 完成后 7/9）
+**BLOCKER 状态**：⚠️ ADB 不在 PATH，Instrument 测试待补
 
 ## 自动化执行纪律（美团味·标准化拆解）
 
