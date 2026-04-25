@@ -28,14 +28,11 @@
 
 ## 下载 APK
 
-我们提供两个预构建版本：
-
-| 版本 | 文件 | 大小 | 说明 |
-|------|------|------|------|
-| **厚集成** | [nora-bundled-release.apk](./nora-bundled-release.apk) | ~34 MB | 内置模型，启动即用（需先配置模型文件） |
-| **薄集成** | [nora-slim-release.apk](./nora-slim-release.apk) | ~34 MB | 无内置模型，体积更小 |
-
-> 📦 两个 APK 当前均不含模型文件。厚集成版本在添加 `assets/models/model.pte` 后可实现一键安装。
+| 版本 | 文件 | 大小 | 内置模型 | 说明 |
+|------|------|------|----------|------|
+| **Qwen3 厚集成** | [nora-qwen-release.apk](./nora-qwen-release.apk) | 512.66 MB | ✅ Qwen3-0.6B PTE | 启动即用，内置 469MB 模型 |
+| **厚集成（空）** | [nora-bundled-release.apk](./nora-bundled-release.apk) | 34.45 MB | ❌ | 需手动放入模型文件 |
+| **薄集成** | [nora-slim-release.apk](./nora-slim-release.apk) | 34.45 MB | ❌ | 极简版，支持 ADB/SAF 加载模型 |
 
 ### 前置要求
 
