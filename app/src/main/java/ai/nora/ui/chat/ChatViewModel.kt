@@ -6,6 +6,7 @@ import ai.nora.data.DataRepository
 import ai.nora.llm.ExecuTorchEngine
 import ai.nora.llm.LlmEngine
 import ai.nora.model.ChatMessage
+import ai.nora.model.ConversationEntity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +18,9 @@ data class ChatUiState(
     val messages: List<ChatMessage> = emptyList(),
     val inputText: String = "",
     val isGenerating: Boolean = false,
-    val currentConversationId: Long? = null
+    val currentConversationId: Long? = null,
+    val conversations: List<ConversationEntity> = emptyList(),
+    val currentConversationTitle: String = "Nora"
 )
 
 class ChatViewModel(
@@ -31,13 +34,20 @@ class ChatViewModel(
     private var streamJob: Job? = null
 
     init {
-        // Restore most recent conversation from Room on startup
+        // Load conversation list and restore most recent conversation from Room on startup
         viewModelScope.launch {
-            val lastConvId = withContext(ioDispatcher) {
-                dataRepository.getMostRecentConversationId()
-            }
-            if (lastConvId != null) {
-                loadConversation(lastConvId)
+            // Load all conversations for the sidebar
+            dataRepository.getConversations().collect { convs ->
+                val lastConvId = _uiState.value.currentConversationId
+                    ?: withContext(ioDispatcher) { dataRepository.getMostRecentConversationId() }
+                _uiState.value = _uiState.value.copy(conversations = convs)
+                if (lastConvId != null && lastConvId != _uiState.value.currentConversationId) {
+                    val title = withContext(ioDispatcher) {
+                        dataRepository.getConversationTitle(lastConvId) ?: "对话"
+                    }
+                    loadConversation(lastConvId)
+                    _uiState.value = _uiState.value.copy(currentConversationTitle = title)
+                }
             }
         }
     }
@@ -50,9 +60,13 @@ class ChatViewModel(
         val messages = withContext(ioDispatcher) {
             dataRepository.getMessagesSync(conversationId)
         }
+        val title = withContext(ioDispatcher) {
+            dataRepository.getConversationTitle(conversationId) ?: "对话"
+        }
         _uiState.value = _uiState.value.copy(
             currentConversationId = conversationId,
-            messages = messages
+            messages = messages,
+            currentConversationTitle = title
         )
     }
 
@@ -188,6 +202,61 @@ class ChatViewModel(
 
     fun updateInput(text: String) { _uiState.value = _uiState.value.copy(inputText = text) }
     fun clearChat() { _uiState.value = ChatUiState() }
+
+    /**
+     * Create a new conversation and switch to it.
+     */
+    fun createNewConversation() {
+        viewModelScope.launch {
+            val convId = withContext(ioDispatcher) {
+                dataRepository.createConversation(title = "新对话")
+            }
+            // Load empty conversation
+            _uiState.value = _uiState.value.copy(
+                currentConversationId = convId,
+                messages = emptyList(),
+                conversations = _uiState.value.conversations,
+                currentConversationTitle = "新对话"
+            )
+        }
+    }
+
+    /**
+     * Switch to a different conversation, loading its history.
+     */
+    fun switchConversation(conversationId: Long) {
+        viewModelScope.launch {
+            val title = withContext(ioDispatcher) {
+                dataRepository.getConversationTitle(conversationId) ?: "对话"
+            }
+            loadConversation(conversationId)
+            // Also update the title after loadConversation overwrites it
+            _uiState.value = _uiState.value.copy(currentConversationTitle = title)
+        }
+    }
+
+    /**
+     * Delete a conversation and switch to the most recent remaining one.
+     */
+    fun deleteConversation(conversationId: Long) {
+        viewModelScope.launch {
+            val convs = _uiState.value.conversations.filter { it.id != conversationId }
+            withContext(ioDispatcher) {
+                dataRepository.deleteConversation(conversationId)
+            }
+            if (conversationId == _uiState.value.currentConversationId) {
+                // Switch to the most recent remaining conversation (or create new one)
+                val mostRecent = convs.firstOrNull()
+                if (mostRecent != null) {
+                    switchConversation(mostRecent.id)
+                } else {
+                    createNewConversation()
+                }
+            } else {
+                _uiState.value = _uiState.value.copy(conversations = convs)
+            }
+        }
+    }
 
     /**
      * Final cleanup for streamed output — strips any residual special tokens

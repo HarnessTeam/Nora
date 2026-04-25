@@ -39,4 +39,19 @@ class DataRepository(
     suspend fun updateConversationTimestamp(conversationId: Long) {
         conversationDao.updateTimestamp(conversationId)
     }
+
+    /**
+     * Delete a conversation and all its messages.
+     */
+    suspend fun deleteConversation(conversationId: Long) {
+        messageDao.deleteByConversation(conversationId)
+        conversationDao.delete(conversationId)
+    }
+
+    /**
+     * Get the title of a specific conversation.
+     */
+    suspend fun getConversationTitle(conversationId: Long): String? {
+        return conversationDao.getConversation(conversationId)?.title
+    }
 }
