@@ -2,108 +2,54 @@
 *.apk
 *.aar
 *.ap_
-*.aab
-
-# Files for the ART/Dalvik VM
 *.dex
-
-# Java class files
 *.class
 
-# Generated files
-bin/
-gen/
-out/
-
-# Gradle files
-.gradle/
+# Build files
 build/
-
-# Local configuration file (sdk path, etc)
+.gradle/
+*.lock
+*.log
 local.properties
 
-# Log Files
-*.log
-
-# Android Studio Navigation editor temp files
-.navigation/
-
-# Android Studio captures folder
-captures/
-
-# IntelliJ
-*.iml
+# Android Studio / IntelliJ IDEA
 .idea/
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/gradle.xml
-.idea/assetWizardSettings.xml
-.idea/dictionaries
-.idea/libraries
-.idea/caches
-.idea/shelf
+*.iml
+*.iws
+out/
+.project
+.settings/
+.cproject
 
-# Keystore files
-*.jks
-*.keystore
+# Eclipse
+bin/
+gen/
+.externalToolBuilders/
+.metadata
+Local.java
+*.pydevproject
+.pydevproject
+.settings/
+*.swp
+*~
 
-# External native build folder generated in Android Studio 2.2 and later
-.externalNativeBuild
-.cxx/
+# JNI
+*.o
+*.so
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
+# Model files (downloaded separately)
+# model/
+*.pte
+*.bin
 
-# Android Commit Hook (ACRA)
-acra-api.txt
-acra-settings.json
+# Debug
+*.db
+*.sqlite
 
-# Version control
-vcs.xml
-
-# Lint
-lint_intermediates/
-lint-generated/
-lint-results.html
-lint-results.xml
-
-# OS-specific files
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
+Desktop.ini
 
-# Build logs and temporary files
-build*.txt
-build*.log
-build*.xml
-build_err*.txt
-diag_*.txt
-full_logcat*.txt
-logcat*.txt
-screen*.png
-window*.xml
-ui*.xml
-chat_dump*.xml
-ut_*.txt
-ut_*.log
-verify*_log.txt
-
-# Model files (large binary files - not to be committed)
-model/
-
-# Local development credentials
-secrets.properties
-credentials.json
-api_key.gradle
-
-# Crashlytics
-crashlytics.properties
-crashlytics-build.properties
-
-# Backup files
-*.bak
-*.backup
+# Screenshots (for reference only, not tracked)
+Screenshot*.png

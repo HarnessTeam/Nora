@@ -1,170 +1,169 @@
 # Nora — 本地离线 AI 智能体
 
-**Nora** is a **local-first, privacy-first** personal AI agent that runs entirely on your Android device. No cloud. No data collection. No internet required.
+> 隐私优先，数据永不离开设备。运行于 Android，基于 Qwen3-0.6B 本地推理，零网络请求。
 
----
+[![Android](https://img.shields.io/badge/Android-36%2B-brightgreen.svg)](https://developer.android.com/about/versions/15)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Model](https://img.shields.io/badge/Model-Qwen3--0.6B-orange.svg)](https://huggingface.co/Qwen)
 
-## Your Data Stays With You
+## 核心特性
 
-Unlike cloud AI assistants, Nora processes everything locally using on-device LLMs. Your conversations, notifications, and files never leave your phone.
+| 特性 | 描述 |
+|------|------|
+| **离线运行** | 完全本地推理，无需网络连接 |
+| **隐私优先** | 数据存储在设备本地，无云端同步 |
+| **通知聚合** | 自动读取并整理设备通知（需授权） |
+| **文件上下文** | 支持加载本地文件作为对话上下文 |
+| **LLM 摘要** | 基于 Qwen3-0.6B 自动生成摘要 |
 
----
+## 截图预览
 
-## Features
+> [!IMPORTANT]
+> 请将截图文件放置在 `assets/screenshot.png` 路径下以在 GitHub 上显示。
 
-- **Offline Inference** — Runs [Qwen3-0.6B](https://huggingface.co/Qwen) quantized locally via ExecuTorch. Zero network requests after setup.
-- **Notification Intelligence** — Aggregates and summarizes notifications from all apps using NotificationListenerService. No more notification overload.
-- **File Context** — Load documents (.txt, .md, .json) into conversations via SAF (Storage Access Framework). Your files, your context.
-- **Dark-Native UI** — Jetpack Compose UI with Matrix-inspired dark theme. Built for night owls.
-- **Local Persistence** — Room database for conversations and context. All data stored on-device.
-- **Modular Architecture** — Phase-driven development with full test coverage and Instrument tests.
+<!-- Screenshots -->
+<!-- ![Nora Screenshot](assets/screenshot.png) -->
 
-## Architecture
+## 快速开始
 
-```
-+---------------------------------------------------------------------+
-|                          Nora App                                     |
-+---------------------------------------------------------------------+
-|  UI Layer (Jetpack Compose)                                          |
-|  +-- Chat Screen                                                     |
-|  +-- Notification Aggregation                                        |
-|  +-- Settings & Permissions                                          |
-+---------------------------------------------------------------------+
-|  Domain Layer (ViewModels + Use Cases)                               |
-+---------------------------------------------------------------------+
-|  Data Layer (Room + Repository Pattern)                              |
-|  +-- ConversationDao                                                 |
-|  +-- NotificationDao (Phase 6)                                       |
-|  +-- FileContextDao (Phase 6)                                        |
-+---------------------------------------------------------------------+
-|  LLM Layer (ExecuTorch + Qwen3-0.6B)                                |
-|  +-- Local inference engine, no network                              |
-+---------------------------------------------------------------------+
-```
+### 前置要求
 
-## Tech Stack
+- Android 设备（API 36+）或模拟器
+- 已安装 Android SDK 和 Gradle
 
-| Layer        | Technology                              |
-|--------------|----------------------------------------|
-| Language     | Kotlin 1.9+                            |
-| UI           | Jetpack Compose (Material 3)           |
-| Architecture | MVVM + Clean Architecture             |
-| DI           | Hilt                                   |
-| Database     | Room                                   |
-| LLM          | ExecuTorch + Qwen3-0.6B               |
-| Navigation   | Navigation Compose                     |
-| Async        | Kotlin Coroutines + Flow              |
-| Background   | WorkManager                            |
+### 1. 下载模型文件
 
-## Getting Started
+Nora 需要 Qwen3-0.6B 量化模型才能运行 LLM 对话功能。
 
-### Prerequisites
+**方式 A：手动下载**
 
-- Android Studio Hedgehog (2023.1.1) or later
-- Android SDK 34+
-- JDK 17+
-- Android device or emulator (API 26+)
+访问 [Qwen3 GGUF 模型下载页面](https://huggingface.co/Qwen/Qwen3-0.6B-GGUF)，下载量化版本（如 `qwen3-0.6b-q4_k_m.gguf`），重命名为 `model.pte` 并放置到：
 
-### Build
-
-```bash
-# Clone the repo
-git clone https://github.com/HarnessTeam/Nora.git
-cd Nora
-
-# Build debug APK
-./gradlew assembleDebug
-
-# Install on connected device/emulator
-./gradlew installDebug
-```
-
-### Model Setup
-
-Place your quantized Qwen3 model at:
 ```
 /data/local/tmp/llama/model.pte
 ```
 
-The model file is not included in this repository due to size. Obtain it from:
-- [Qwen3 Official](https://huggingface.co/Qwen)
-- Or any ExecuTorch-compatible quantized format
+**方式 B：让 AI 助手帮你下载**
 
-### Run Tests
+你可以将以下提示复制给 AI 助手（如 Claude、WorkBuddy 等）：
 
-```bash
-# Unit tests
-./gradlew testDebugUnitTest
-
-# Instrument tests (requires device/emulator)
-./gradlew connectedDebugAndroidTest
+```
+请帮我下载 Qwen3-0.6B 量化模型：
+1. 访问 https://huggingface.co/Qwen/Qwen3-0.6B-GGUF
+2. 下载 q4_k_m 量化版本（推荐）
+3. 使用 ADB 将文件推送到模拟器/设备：
+   adb push qwen3-0.6b-q4_k_m.gguf /data/local/tmp/llama/model.pte
+4. 如果目录不存在，先创建：
+   adb shell mkdir -p /data/local/tmp/llama
 ```
 
-## Development
+### 2. 构建项目
 
-### Phase Roadmap
+```bash
+# 克隆仓库
+git clone https://github.com/HarnessTeam/Nora.git
+cd Nora
 
-| Phase    | Status          | Description                         |
-|----------|-----------------|-------------------------------------|
-| Phase 0  | Complete        | Foundation (package, theming, CI)  |
-| Phase 1  | In Progress     | Data persistence (Room, Repository) |
-| Phase 2  | Pending         | Navigation & UI structure          |
-| Phase 3  | Pending         | LLM integration                     |
-| Phase 4  | Pending         | Chat UI                            |
-| Phase 5  | Pending         | Settings & permissions             |
-| Phase 6  | Pending         | Notification aggregation + summary |
-| Phase 7  | Pending         | File context injection              |
+# 构建 Debug APK
+./gradlew assembleDebug
 
-### Constitution
+# 安装到设备
+adb install app/build/outputs/apk/debug/Nora-debug.apk
+```
 
-Nora follows a strict **Constitution** for privacy and security:
+### 3. 配置权限
 
-- **No INTERNET permission** - Zero network capability
-- **No data exfiltration** - All processing on-device
-- **User consent required** - Permissions requested explicitly
-- **Local-first** - Offline by design
+首次启动后，Nora 会引导你配置以下权限：
 
-See `.workbuddy/memory/nora-constitution.md` for full details.
+| 权限 | 用途 |
+|------|------|
+| 通知监听 | 读取设备通知并生成摘要 |
+| 存储访问 | SAF 文件选择器，按需授权 |
+| 后台运行 | WorkManager 定期处理 |
 
-## Security
+## 项目结构
 
-- **No network access** - INTERNET permission explicitly removed
-- **User-controlled permissions** - NotificationListener and file access require explicit user grant
-- **Local-only storage** - Room database stays on device
-- **No telemetry** - Zero analytics or crash reporting
+```
+Nora/
+├── app/
+│   ├── src/main/
+│   │   ├── java/ai/nora/
+│   │   │   ├── data/          # Room 数据库层
+│   │   │   ├── llm/           # ExecuTorch 推理引擎
+│   │   │   ├── model/         # 数据模型
+│   │   │   ├── ui/            # Compose UI
+│   │   │   ├── theme/         # 暗色主题
+│   │   │   ├── NoraApp.kt     # Application 入口
+│   │   │   └── Navigation.kt  # 导航
+│   │   └── AndroidManifest.xml
+│   └── build.gradle.kts
+├── gradle/                     # Gradle Wrapper
+├── build.gradle.kts
+└── settings.gradle.kts
+```
 
-## Contributing
+## 开发指南
 
-Contributions welcome! Please read our development guidelines:
+### 环境要求
 
-1. Fork the repo
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- JDK 17+
+- Android SDK API 36
+- Gradle 8.x
 
-### Development Standards
+### 构建命令
 
-- All phases require Instrument tests passing
-- Constitution compliance audit at each Phase Gate
-- Minimum 10 Instrument test cases per phase
-- Atomic commits per Step
+```bash
+# 完整构建
+./gradlew assembleDebug
 
-## Roadmap
+# 清理后重新构建
+./gradlew clean assembleDebug
 
-- [ ] Phase 1-5: Core chat functionality
-- [ ] Phase 6: Notification aggregation + AI summarization
-- [ ] Phase 7: File context for conversations
-- [ ] Phase 8+: Voice input, widget, etc.
+# 运行测试
+./gradlew testDebugUnitTest
+./gradlew connectedDebugAndroidTest
 
-## License
+# 调试安装
+adb install -r app/build/outputs/apk/debug/Nora-debug.apk
+```
 
-MIT License - see [LICENSE](LICENSE) for details.
+### 添加模型文件到源码（可选）
 
-## Star History
+如果你希望模型随 APK 一起打包：
 
-[![Star History Chart](https://api.star-history.com/svg?repos=HarnessTeam/Nora&type=date&legend=top-left)](https://star-history.com/#HarnessTeam/Nora&type=date&legend=top-left)
+1. 将模型文件放置到 `app/src/main/assets/model/model.pte`
+2. 修改代码中的模型加载路径
+3. 重新编译
+
+> ⚠️ 警告：量化模型约 400-500MB，打包后 APK 会很大。建议使用外部加载方式。
+
+## 技术栈
+
+| 层级 | 技术 |
+|------|------|
+| UI | Jetpack Compose + Material3 |
+| 架构 | MVVM + Clean Architecture |
+| 数据库 | Room (SQLite) |
+| 导航 | Navigation Compose |
+| LLM | ExecuTorch + Qwen3-0.6B |
+| 后台任务 | WorkManager |
+| 通知 | NotificationListenerService |
+
+## 宪法约束
+
+Nora 开发遵循以下核心原则：
+
+- **零网络** — 严禁引入 INTERNET 权限
+- **隐私优先** — 所有数据本地存储
+- **权限克制** — 权限必须用户主动授权
+- **离线优先** — 所有功能必须能在无网络环境运行
+
+## 许可证
+
+[MIT License](LICENSE)
 
 ---
 
-**Built with care for privacy-conscious users who want AI that respects their data.**
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=HarnessTeam/Nora&type=date)](https://star-history.com/#HarnessTeam/Nora&type=date)
