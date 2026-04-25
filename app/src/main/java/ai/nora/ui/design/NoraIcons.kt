@@ -191,6 +191,112 @@ fun BreathingDot(
 }
 
 // ═══════════════════════════════════════════════════════
+// 2b. 呼吸光环（Canvas 版 — 安全屋核心动效）
+// 设计规范：1500ms LinearEasing 呼吸节奏，径向渐变光环
+// 宪法 3.5: 心跳/呼吸节奏 — 待机呼吸感
+// ═══════════════════════════════════════════════════════
+
+@Composable
+fun NoraBreathingOrb(
+    modifier: Modifier = Modifier,
+    size: Dp = 160.dp,
+    color: Color = NoraColors.NoraOrange
+) {
+    val infiniteTransition = rememberInfiniteTransition(label = "orb_breathing")
+
+    // 呼吸缩放：0.9 → 1.1（微妙，不过度）
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 0.92f,
+        targetValue = 1.08f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "orb_scale"
+    )
+
+    // 光晕透明度：0.15 → 0.45（呼吸节奏）
+    val glowAlpha by infiniteTransition.animateFloat(
+        initialValue = 0.15f,
+        targetValue = 0.45f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "orb_glow"
+    )
+
+    // 外环旋转（极慢，增加生命感）
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(12000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "orb_rotation"
+    )
+
+    Box(
+        modifier = modifier.size(size),
+        contentAlignment = Alignment.Center
+    ) {
+        // 外层光晕 — Canvas 径向渐变
+        Canvas(modifier = Modifier.size(size).scale(scale)) {
+            val center = Offset(this.size.width / 2, this.size.height / 2)
+            val radius = this.size.minDimension / 2
+
+            // 最外层柔和光晕
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        color.copy(alpha = glowAlpha * 0.4f),
+                        color.copy(alpha = glowAlpha * 0.15f),
+                        Color.Transparent
+                    ),
+                    center = center,
+                    radius = radius
+                )
+            )
+
+            // 中层光环
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(
+                        color.copy(alpha = glowAlpha * 0.6f),
+                        color.copy(alpha = 0f)
+                    ),
+                    center = center,
+                    radius = radius * 0.7f
+                )
+            )
+        }
+
+        // 核心圆 — NoraOrange 渐变
+        Box(
+            modifier = Modifier
+                .size(size * 0.45f)
+                .scale(scale)
+                .clip(CircleShape)
+                .background(
+                    Brush.linearGradient(
+                        colors = listOf(color, NoraColors.NoraOrangeLight)
+                    )
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            // "N" 字母
+            Text(
+                text = "N",
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = (size.value * 0.2f).sp
+            )
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════
 // 3. 状态指示器
 // ═══════════════════════════════════════════════════════
 

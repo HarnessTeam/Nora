@@ -34,7 +34,7 @@ import ai.nora.theme.NoraShapes
 import ai.nora.ui.chat.ChatViewModel
 import ai.nora.ui.chat.ModelStatus
 import ai.nora.ui.design.BreathingDot
-import ai.nora.ui.design.NoraLogo
+import ai.nora.ui.design.NoraBreathingOrb
 import ai.nora.ui.design.NoraStatus
 import ai.nora.ui.design.NoraStatusIndicator
 
@@ -75,10 +75,16 @@ fun SanctuaryScreen(
 
             Spacer(Modifier.weight(1f))
 
-            // ── 中央：Nora Logo + 呼吸光点 ──
-            NoraLogo(
-                size = 80.dp,
-                showGlow = noraStatus == NoraStatus.READY
+            // ── 中央：Nora 呼吸光环（Canvas 版） ──
+            val orbColor = when (noraStatus) {
+                NoraStatus.READY -> NoraColors.NoraOrange
+                NoraStatus.THINKING -> NoraColors.NoraThinking
+                NoraStatus.ERROR -> NoraColors.NoraError
+                NoraStatus.OFFLINE -> NoraColors.NoraOffline
+            }
+            NoraBreathingOrb(
+                size = 160.dp,
+                color = orbColor
             )
 
             Spacer(Modifier.height(16.dp))
