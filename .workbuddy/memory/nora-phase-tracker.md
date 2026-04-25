@@ -180,13 +180,22 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 ---
 
-### Phase 1 🔲 PENDING — 数据持久化（记忆基础）
+### Phase 1 🔄 IN PROGRESS — 数据持久化（记忆基础）
 
 目标：消息不丢失，对话可恢复
 
-- [ ] Step 1: Application 级初始化 Room（LocalAgentApp.kt → NoraApp.kt）
-- [ ] Step 2: 在 Navigation.kt 中注入 AppDatabase + DataRepository
-- [ ] Step 3: ChatViewModel 接入 DataRepository（构造函数注入）
+- [x] Step 1: Application 级初始化 Room（NoraApp.kt）✅ (2026-04-25 10:55)
+  - 添加 `database` 和 `dataRepository` lateinit 属性
+  - Room.databaseBuilder 创建 `nora_database`
+  - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit 9a363b5`
+- [x] Step 2: 在 Navigation.kt 中注入 DataRepository ✅ (2026-04-25 10:57)
+  - 通过 `app.dataRepository` 获取 Repository 实例
+  - 传递给 ChatViewModel 构造函数
+  - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit ac98425`
+- [x] Step 3: ChatViewModel 接入 DataRepository（构造函数注入）✅ (2026-04-25 10:59)
+  - 构造函数添加 `dataRepository: DataRepository` 参数
+  - ChatUiState 添加 `currentConversationId: Long? = null`
+  - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit 216ff4b`
 - [ ] Step 4: 发送消息时 write-ahead（先显示后存库）
 - [ ] Step 5: 加载对话时从 Room 恢复历史消息
 - [ ] Step 6: 新建/切换对话功能
@@ -375,10 +384,11 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 ## 状态
 
-**当前 Phase**: Phase 0 ✅ Complete
-**NEXT_STEP**: Phase 1 Step 1 — Application 级初始化 Room（NoraApp.kt）
-**Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
+**当前 Phase**: Phase 1 🔄 IN PROGRESS
+**NEXT_STEP**: Phase 1 Step 4 — 发送消息时 write-ahead（先显示后存库）
+**Phase 1 进度**: 3/7 Steps 完成（42.9%）
 **Phase 0 进度**: 18/18 Steps 完成（100%）✅ Phase 0 Gate Passed
+**Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
 **上次 Instrument 测试**: 2026-04-25 10:48 — 10 tests, 10 passed, 0 skipped, 0 failed ✅
 **测试通过率**: 100%（10/10）
 **效率指标**：

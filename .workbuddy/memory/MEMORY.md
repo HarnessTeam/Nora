@@ -5,15 +5,27 @@
 ### 项目概述
 - **产品**: Nora — 离线 Android AI 智能体（数字生命）
 - **包名**: `ai.nora`
-- **Phase 状态**: Phase 0 ✅ Complete（100%，18/18 Steps + Gate passed），推进 Phase 1
+- **Phase 状态**: Phase 1 🔄 IN PROGRESS（数据持久化层搭建中）
 - **技术栈**: Kotlin + Jetpack Compose + Room + ExecuTorch + Navigation3
 
-### 当前 Phase 0 进度
+### 当前 Phase 1 进度
+- ✅ Step 1: Application 级 Room 初始化（NoraApp.kt）— git 9a363b5
+- ✅ Step 2: Navigation.kt 注入 DataRepository — git ac98425
+- ✅ Step 3: ChatViewModel 构造函数注入 DataRepository — git 216ff4b
+- **NEXT_STEP**: Phase 1 Step 4 — 发送消息时 write-ahead（先显示后存库）
+- **Phase 1 进度**: 3/7 Steps（42.9%）
+
+### Phase 0 归档
 - ✅ 全部 18 Steps 完成
 - ✅ Phase 0 Gate: Instrument 10/10 passed, 宪法合规审计 5/5 passed
 - ✅ git commit d92fb27
-- **NEXT_STEP**: Phase 1 Step 1 — Application 级初始化 Room（NoraApp.kt）
-- **Phase 6** 🔲 Pending：通知聚合 & 文件上下文（12 Steps，宪法感知维度落地）
+
+### Phase 6 概要（感知层）
+- 目标：Nora 实现「感知 (Sense)」宪法维度 — 通知监听 + 自动摘要 + 文件上下文
+- 核心技术：NotificationListenerService + WorkManager PeriodicWork + SAF + Qwen3 LLM
+- 依赖：Phase 1 (Room) → Phase 2 (Navigation) → Phase 6
+- 关键约束：INTERNET 禁令（宪法红线）、Android 15 OTP 过滤（接受）、Room ≤1000 条
+- 调研报告：`.workbuddy/memory/nora-notification-deep-research.md`
 
 ### Phase 6 概要（感知层）
 - 目标：Nora 实现「感知 (Sense)」宪法维度 — 通知监听 + 自动摘要 + 文件上下文

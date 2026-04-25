@@ -2,44 +2,46 @@
 
 ## 2026-04-25 执行记录
 
-### 本次执行（10:31 ~ 10:40）
-完成 3 个 Step，Phase 0 进度 72.2% → 83.3%
+### 本次执行（10:55 ~ 11:00）— Phase 1 启动
+**Phase 状态**: Phase 0 ✅ Complete → Phase 1 🔄 IN PROGRESS
+**Phase 1 进度**: 0/7 → 3/7 Steps 完成（42.9%）
 
-**Step 4b ✅ — 应用名清理**
-- 修改 8 个文件，删除 1 个文件（LocalAgentApp.kt → NoraApp.kt）
-- 11 处 LocalAgent/MyApplication/Theme.MyApplication 残留全清
+**Step 1 ✅ — Application 级初始化 Room（NoraApp.kt）**
+- 添加 `database` 和 `dataRepository` lateinit 属性
+- Room.databaseBuilder 创建 `nora_database`
+- DataRepository 初始化注入 conversationDao + messageDao
 - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅
-- Git: `[master f4e2538]`
+- Git: `[master 9a363b5]`
 
-**Step 5 ✅ — 建立 Nora 色彩系统**
-- 新建 `ai.nora.theme.NoraColors.kt`
-- 定义：Background=#121212, Surface=#1E1E1E, NoraOrange=#FF6B6B, TextPrimary=#E0E0E0, TextSecondary=#9E9E9E, MatrixGreen=#00FF41
+**Step 2 ✅ — Navigation.kt 注入 DataRepository**
+- 通过 `app.dataRepository` 获取 Repository 实例
+- 传递给 ChatViewModel 构造函数
 - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅
-- Git: `[master 012996d]`
+- Git: `[master ac98425]`
 
-**Step 6 ✅ — 重写 Theme.kt（强制暗色 + Nora 色板）**
-- 硬编码 `NoraDarkColorScheme`，删除 `darkTheme` 参数
-- 移除 `isSystemInDarkTheme()` 调用
-- 移除 Material 紫色（0xFF6750A4）
-- 宪法审计项 4（`isSystemInDarkTheme`）已消除
+**Step 3 ✅ — ChatViewModel 接入 DataRepository**
+- 构造函数添加 `dataRepository: DataRepository` 参数
+- ChatUiState 添加 `currentConversationId: Long? = null`
+- 为后续消息持久化做准备
 - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅
-- Git: `[master d5bad67]`
+- Git: `[master 216ff4b]`
 
-**NEXT_STEP**: Phase 0 Step 7 — 更新 Typography.kt（Inter + JetBrains Mono 字体引用）
+**NEXT_STEP**: Phase 1 Step 4 — 发送消息时 write-ahead（先显示后存库）
 
 ### 环境状态
 - ADB: emulator-5554 在线 ✅
 - 编译: BUILD SUCCESSFUL ✅
 - Unit 测试: BUILD SUCCESSFUL ✅
+- Instrument 测试: Phase 0 10/10 passed ✅
 
 ### Git 历史（本次新增）
-- `f4e2538` Phase 0 Step 4b: app name cleanup
-- `012996d` Phase 0 Step 5: establish Nora color system
-- `d5bad67` Phase 0 Step 6: rewrite Theme.kt - force dark mode
+- `9a363b5` Phase 1 Step 1: Application-level Room initialization
+- `ac98425` Phase 1 Step 2: Inject DataRepository in Navigation.kt
+- `216ff4b` Phase 1 Step 3: ChatViewModel inject DataRepository
 
 ---
 
-### 本次执行（10:40 ~ 10:50）— Phase 0 Gate 完成
+### 历史执行（10:40 ~ 10:50）— Phase 0 Gate 完成
 **Phase 0 进度**: 83.3% → 100% ✅ Phase 0 Complete
 
 **Step 7 ✅ — Typography.kt 更新**
@@ -54,24 +56,8 @@
 - 创建 `ThemeTest.kt`（3 cases）
 - 创建 `BrandingTest.kt`（4 cases）
 - Instrument 测试：10/10 全绿 ✅（medium_phone AVD，0 skipped, 0 failed）
-- 宪法合规审计 5/5 全通过：
-  1. com.example = 0 匹配 ✅
-  2. LocalAgent/MyApplication = 0 匹配 ✅
-  3. Material紫色 = 0 匹配 ✅
-  4. isSystemInDarkTheme = 0 匹配 ✅
-  5. INTERNET 权限 = 0 匹配 ✅
+- 宪法合规审计 5/5 全通过
 - Git: `[master d92fb27]` — Step 7 + Phase 0 Gate
-
-**NEXT_STEP**: Phase 1 Step 1 — Application 级初始化 Room（NoraApp.kt）
-
-### 环境状态
-- ADB: emulator-5554 在线 ✅
-- 编译: BUILD SUCCESSFUL ✅
-- Unit 测试: BUILD SUCCESSFUL ✅
-- Instrument 测试: 10/10 passed, 0 failed ✅
-
-### Git 历史（本次新增）
-- `d92fb27` Phase 0 Step 7 + Phase 0 Gate: Typography + Instrument tests + audit pass
 
 ---
 
