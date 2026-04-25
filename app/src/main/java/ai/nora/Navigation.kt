@@ -46,8 +46,9 @@ fun MainNavigation() {
         }
     }
 
-    // Shared backstack — 宪法 3.4.B：首页 = 安全屋 Sanctuary
-    val backStack = rememberNavBackStack(Sanctuary, Log, Skill)
+    // 导航根入口 = 安全屋（宪法 3.4.B）
+    // 底部按钮导航通过 backStack.add() 实现，点击"对话/日志/技能"推入对应页面
+    val backStack = rememberNavBackStack(Sanctuary)
 
     // 导航回调工厂（SanctuaryScreen 需要三个回调）
     // NavBackStack extends SnapshotStateList<NavBackStackEntry<*>>，add() 返回 Boolean
