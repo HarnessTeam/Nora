@@ -19,8 +19,14 @@
   - ConversationDao: `getAllConversationsOnce()` suspend 查询
   - DataRepository: `getMostRecentConversationId()` 返回最近对话 ID
   - ChatViewModel: `init` 块 + `loadConversation()` 恢复历史
-- **NEXT_STEP**: Phase 1 Step 6 — 新建/切换对话功能
-- **Phase 1 进度**: 5/7 Steps（71.4%）
+- ✅ Step 6: 新建/切换对话功能 — git 26f494e
+  - DataRepository: `deleteConversation()` / `getConversationTitle()`
+  - ChatViewModel: `createNewConversation()` / `switchConversation()` / `deleteConversation()`
+  - ChatUiState: `conversations` + `currentConversationTitle`
+  - ChatScreen: TopAppBar 可点击 → ModalBottomSheet 对话列表
+  - 踩坑: Column 内 forEach 替代 items()；`by mutableStateOf` 需 setValue
+- **NEXT_STEP**: Phase 1 Step 7 — Phase 1 Instrument 测试
+- **Phase 1 进度**: 6/7 Steps（85.7%）
 
 ### Phase 0 归档
 - ✅ 全部 18 Steps 完成

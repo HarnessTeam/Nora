@@ -1,5 +1,35 @@
 # nora-dev automation execution log
 
+## 2026-04-25 执行记录（14:15）
+
+### 本次执行（14:11 ~ 14:18）— Phase 1 Step 6 完成
+**Phase 1 进度**: 5/7 → 6/7 Steps（85.7%）
+
+**Step 6 ✅ — 新建/切换对话功能**
+- DataRepository: 新增 `deleteConversation()` / `getConversationTitle()`
+- ChatViewModel: 新增 `createNewConversation()` / `switchConversation()` / `deleteConversation()`
+- ChatUiState: 新增 `conversations: List<ConversationEntity>` + `currentConversationTitle`
+- ChatScreen: TopAppBar 标题可点击 → ModalBottomSheet 对话列表（新建/切换/删除）
+  - 踩坑1: `Column` 内不能用 `LazyColumn.items()` — 改用 `forEach`
+  - 踩坑2: `by mutableStateOf` 需要导入 `setValue`
+  - 踩坑3: `ConversationEntity` 需要导入 ChatScreen.kt
+- init 块改为收集 `getConversations()` Flow
+- 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `connectedDebugAndroidTest` 10/10 ✅
+- Git: `[master 26f494e]`
+
+**NEXT_STEP**: Phase 1 Step 7 — Phase 1 Instrument 测试
+
+### 环境状态
+- ADB: emulator-5554 在线 ✅
+- 编译: BUILD SUCCESSFUL ✅
+- Unit 测试: BUILD SUCCESSFUL ✅
+- Instrument 测试: 10/10 passed ✅
+
+### Git 历史（本次新增）
+- `26f494e` Phase 1 Step 6: 新建/切换对话功能
+
+---
+
 ## 2026-04-25 执行记录（13:05）
 
 ### 本次执行（13:05 ~ 13:10）— Phase 1 Step 5 完成

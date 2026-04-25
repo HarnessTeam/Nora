@@ -209,7 +209,14 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
   - ChatViewModel: `init` 块自动加载最近对话 → `loadConversation(conversationId)`
   - 效果：用户关闭 App 再打开，自动恢复最后对话历史
   - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `connectedDebugAndroidTest` 10/10 ✅ + `git commit 22670e1`
-- [ ] Step 6: 新建/切换对话功能
+- [x] Step 6: 新建/切换对话功能 ✅ (2026-04-25 14:15)
+  - DataRepository: 新增 `deleteConversation()` / `getConversationTitle()`
+  - ChatViewModel: 新增 `createNewConversation()` / `switchConversation()` / `deleteConversation()`
+  - ChatUiState: 新增 `conversations: List<ConversationEntity>` + `currentConversationTitle`
+  - ChatScreen: TopAppBar 标题可点击 → ModalBottomSheet 对话列表（新建/切换/删除）
+  - init 块改为收集 `getConversations()` Flow，自动恢复最近对话
+  - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `connectedDebugAndroidTest` 10/10 ✅
+  - Git: `[master 26f494e]`
 - [ ] Step 7: Phase 1 Instrument 测试
   - `MessagePersistenceTest.kt`：发送消息 → 关闭 App → 重新打开 → 消息仍在
   - `ConversationTest.kt`：创建新对话 → 切换 → 历史消息正确
@@ -396,8 +403,8 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 ## 状态
 
 **当前 Phase**: Phase 1 🔄 IN PROGRESS
-**NEXT_STEP**: Phase 1 Step 6 — 新建/切换对话功能
-**Phase 1 进度**: 5/7 Steps 完成（71.4%）
+**NEXT_STEP**: Phase 1 Step 7 — Phase 1 Instrument 测试
+**Phase 1 进度**: 6/7 Steps 完成（85.7%）
 **Phase 0 进度**: 18/18 Steps 完成（100%）✅ Phase 0 Gate Passed
 **Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
 **上次 Instrument 测试**: 2026-04-25 12:00 — 10 tests, 10 passed, 0 skipped, 0 failed ✅
