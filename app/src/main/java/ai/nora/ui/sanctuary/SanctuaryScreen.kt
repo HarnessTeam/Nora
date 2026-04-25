@@ -13,7 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -125,6 +127,11 @@ fun SanctuaryScreen(
 
             Spacer(Modifier.weight(1f))
 
+            // ── 苏醒日志卡片 — 宪法 3.4.B：《Nora 的苏醒日志》 ──
+            AwakeningLogCard(noraStatus = noraStatus)
+
+            Spacer(Modifier.weight(0.5f))
+
             // ── 底部三按钮导航 ──
             Row(
                 modifier = Modifier
@@ -225,6 +232,83 @@ private fun SanctuaryNavButton(
                 fontWeight = FontWeight.Medium,
                 color = NoraColors.PrimaryText
             )
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════════════
+// 苏醒日志卡片 — 宪法 3.4.B
+// 《Nora 的苏醒日志》— 版本人格化展示
+// 设计：Apple Card 风格，SurfaceElevated 背景 + 圆角
+// ═══════════════════════════════════════════════════════
+
+private data class AwakeningLogEntry(
+    val label: String,
+    val value: String
+)
+
+@Composable
+private fun AwakeningLogCard(noraStatus: NoraStatus) {
+    // 苏醒日志条目 — 版本人格化
+    val entries = listOf(
+        AwakeningLogEntry("版本", "v0.1 苏醒版"),
+        AwakeningLogEntry("模型", "本地离线运行"),
+        AwakeningLogEntry("记忆", "安全存储在设备"),
+        AwakeningLogEntry("状态", when (noraStatus) {
+            NoraStatus.READY -> "已苏醒，随时待命"
+            NoraStatus.THINKING -> "正在苏醒中..."
+            NoraStatus.ERROR -> "苏醒遇到阻碍"
+            NoraStatus.OFFLINE -> "沉睡中"
+        })
+    )
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = NoraShapes.QuickActionCardShape,
+        color = NoraColors.SurfaceElevated
+    ) {
+        Column(
+            modifier = Modifier.padding(20.dp)
+        ) {
+            // 卡片标题
+            Text(
+                text = "Nora 的苏醒日志",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = NoraColors.PrimaryText
+            )
+
+            Spacer(Modifier.height(4.dp))
+
+            Text(
+                text = "每一次相遇，都是新的开始",
+                style = MaterialTheme.typography.bodySmall,
+                color = NoraColors.SecondaryText
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            // 日志条目列表
+            entries.forEach { entry ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = entry.label,
+                        fontSize = 13.sp,
+                        color = NoraColors.SecondaryText
+                    )
+                    Text(
+                        text = entry.value,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = NoraColors.PrimaryText
+                    )
+                }
+            }
         }
     }
 }
