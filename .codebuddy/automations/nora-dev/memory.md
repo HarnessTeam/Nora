@@ -1,5 +1,14 @@
 # Nora Dev Automation — Execution Memory
 
+## 2026-04-25 10:07 — Phase 0 Steps 3d/3e/4a ✅ (3 Steps)
+- **Step 3d**: XML 资源 + AndroidManifest 包名引用 — 确认零 `com.example` 残留（3a/3b/3c 已处理）
+- **Step 3e**: 测试文件 — ChatModelsTest.kt + BaseAndroidTest.kt 均已迁移到 `ai.nora` 包 ✅
+- **Step 4a**: strings.xml `app_name` LocalAgent → Nora ✅
+- **Git commit**: `7ae00a6` (4a)
+- **Tracker**: Phase 0 进度 13/18（72.2%），NEXT = Step 4b（themes.xml / SetupScreen / 其他残留）
+- **注意**: JAVA_HOME 需通过 PowerShell `$env:JAVA_HOME` 设置（cmd /c set 受系统变量尾部 `\\` 干扰）
+- **gradle 命令**: `Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList "/c gradlew.bat ... > build_out.txt 2>&1" -Wait`
+
 ## 2026-04-25 09:39-09:44 — Phase 0 Steps 3a/3b/3c ✅ (3 Steps)
 - **Step 3a**: build.gradle.kts — namespace + applicationId `com.example.localagent` → `ai.nora` ✅ 编译通过
 - **Step 3b**: 17 个 .kt 源文件 package 声明 + imports 全部替换；测试目录结构同步迁移 ✅ Unit test 全绿

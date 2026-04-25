@@ -1,6 +1,6 @@
 # Nora Phase Tracker — 渐进式改造路线图（测试驱动版）
 
-> 最后更新：2026-04-25 04:32
+> 最后更新：2026-04-25 10:07
 > 项目路径：C:\Users\28767\WorkBuddy\local-agent
 > 宪法文件：.workbuddy/memory/nora-constitution.md
 > 测试命令：`gradlew connectedDebugAndroidTest`（需 ADB 连接设备/模拟器）
@@ -128,9 +128,9 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
   - BaseAndroidTest.kt: `package ai.nora` + `import ai.nora.MainActivity` ✅
   - 目录结构 `ai/nora/` 已正确 ✅
   - 验证：零 `com.example` 残留在测试文件 + 编译 + Unit 测试通过
-- [ ] Step 4a: 应用名改为 "Nora" — strings.xml
-  - `<string name="app_name">Nora</string>`
-  - 验证：strings.xml 包含 "Nora"
+- [x] Step 4a: 应用名改为 "Nora" — strings.xml ✅ (2026-04-25 10:07)
+  - `<string name="app_name">Nora</string>` ✅
+  - 验证：`assembleDebug` ✅ + `git commit 7ae00a6`
 - [ ] Step 4b: 应用名清理 — themes.xml / SetupScreen / 其他残留
   - `Theme.MyApplication` → `Theme.Nora`
   - `LocalAgentTheme` → `NoraTheme`
@@ -286,14 +286,14 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
 ## 状态
 
 **当前 Phase**: 0（项目重生）
-**NEXT_STEP**: Phase 0 Step 3d — 包名迁移：XML 资源和 AndroidManifest
-**Phase 0 进度**: 10/18 Steps 完成（55.6%）
+**NEXT_STEP**: Phase 0 Step 4b — 应用名清理：themes.xml / SetupScreen / 其他残留
+**Phase 0 进度**: 13/18 Steps 完成（72.2%）
 **上次 Instrument 测试**: 2026-04-25 02:44 — 0 tests, BUILD SUCCESSFUL
 **测试通过率**: 100%（空跑，0/0）
 **效率指标**：
-  - Step 平均完成时间：~5 min/Step（验证+更新 Tracker）
-  - Session 内 Step 吞吐量：6 Steps in ~10 min（0.3 Steps/min）
-  - 宪法合规度：3/9（33%，目标 Phase 0 完成后 7/9）
+  - Step 平均完成时间：~3 min/Step
+  - Session 内 Step 吞吐量：4 Steps in ~10 min（0.4 Steps/min）
+  - 宪法合规度：4/9（44%，目标 Phase 0 完成后 7/9）
 **BLOCKER 状态**：⚠️ ADB 不在 PATH，Instrument 测试待补
 
 ## 自动化执行纪律（美团味·标准化拆解）

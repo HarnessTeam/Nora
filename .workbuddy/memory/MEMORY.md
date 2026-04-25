@@ -5,7 +5,7 @@
 ### 项目概述
 - **产品**: Nora — 离线 Android AI 智能体（数字生命）
 - **包名**: `com.example.localagent`（迁移中 → `ai.nora`）
-- **Phase 状态**: Phase 0 进行中（38.9%，Step 3a 待执行）
+- **Phase 状态**: Phase 0 进行中（72.2%，Step 4b 待执行）
 - **技术栈**: Kotlin + Jetpack Compose + Room + ExecuTorch + Navigation3
 
 ### 当前 Phase 0 进度
@@ -16,9 +16,10 @@
 - ✅ Step 3a: build.gradle.kts namespace + applicationId → ai.nora
 - ✅ Step 3b: 源文件 package 声明 + imports 替换（17 文件）
 - ✅ Step 3c: 目录结构 com.example.localagent → ai.nora（rename）
-- ⬜ Step 3d: XML 资源和 AndroidManifest（包名引用清理）
-- ⬜ Step 3e: 测试文件引用更新
-- ⬜ Step 4a/4b: 应用名清理
+- ✅ Step 3d: XML 资源和 AndroidManifest 包名引用（已确认零残留）
+- ✅ Step 3e: 测试文件引用更新（ChatModelsTest + BaseAndroidTest）
+- ✅ Step 4a: 应用名 "LocalAgent" → "Nora"（strings.xml）
+- ⬜ Step 4b: 应用名清理 — themes.xml / SetupScreen / 其他残留
 - ⬜ Step 5-7: Nora 色彩/Theme/Typography
 - ⬜ Step 8: Phase 0 Gate（宪法合规审计）
 
