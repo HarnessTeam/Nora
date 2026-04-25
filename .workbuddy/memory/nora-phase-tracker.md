@@ -147,9 +147,9 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
   - SetupScreen "Local Agent" → "Nora"
   - ChatScreen "Local Agent" → "Nora"
   - 验证：全代码库零残留 + `assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit f4e2538`
-- [ ] Step 5: 建立 Nora 色彩系统（Color.kt → NoraColors.kt）
+- [x] Step 5: 建立 Nora 色彩系统（Color.kt → NoraColors.kt）✅ (2026-04-25 10:33)
   - 定义：Background=#121212, Surface=#1E1E1E, NoraOrange=#FF6B6B, PrimaryText=#E0E0E0, SecondaryText=#9E9E9E
-  - 验证：编译通过
+  - 验证：编译通过 + `assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit 012996d`
 - [ ] Step 6: 重写 Theme.kt — 强制暗色模式，Nora 色板
   - 删除 `darkTheme` 参数，硬编码暗色
   - 使用 NoraColors 替代所有 Material 紫色

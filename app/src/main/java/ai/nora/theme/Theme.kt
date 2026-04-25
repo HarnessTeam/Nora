@@ -1,48 +1,44 @@
 package ai.nora.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val Primary = Color(0xFF6750A4)
-private val OnPrimary = Color(0xFFFFFFFF)
-private val PrimaryContainer = Color(0xFFEADDFF)
-private val OnPrimaryContainer = Color(0xFF21005D)
-private val Secondary = Color(0xFF625B71)
-private val Tertiary = Color(0xFF7D5260)
+// Nora 暗色 ColorScheme — 宪法强制，不跟随系统
+// primary = NoraOrange (#FF6B6B) 是唯一暖色
+private val NoraDarkColorScheme = darkColorScheme(
+    primary = NoraColors.NoraOrange,       // #FF6B6B — 唯一暖色
+    onPrimary = Color(0xFFFFFFFF),
+    primaryContainer = NoraColors.Surface, // #1E1E1E
+    onPrimaryContainer = NoraColors.TextPrimary, // #E0E0E0
 
-private val DarkPrimary = Color(0xFFD0BCFF)
-private val DarkOnPrimary = Color(0xFF381E72)
-private val DarkPrimaryContainer = Color(0xFF4F378B)
-private val DarkOnPrimaryContainer = Color(0xFFEADDFF)
+    secondary = NoraColors.SurfaceEdge,    // #2C2C2C
+    onSecondary = NoraColors.TextPrimary, // #E0E0E0
+    secondaryContainer = NoraColors.Surface,
+    onSecondaryContainer = NoraColors.TextSecondary,
 
-private val LightColorScheme = lightColorScheme(
-    primary = Primary,
-    onPrimary = OnPrimary,
-    primaryContainer = PrimaryContainer,
-    onPrimaryContainer = OnPrimaryContainer,
-    secondary = Secondary,
-    tertiary = Tertiary
-)
+    tertiary = NoraColors.MatrixGreen,     // 可选黑客模式
+    onTertiary = Color(0xFF000000),
 
-private val DarkColorScheme = darkColorScheme(
-    primary = DarkPrimary,
-    onPrimary = DarkOnPrimary,
-    primaryContainer = DarkPrimaryContainer,
-    onPrimaryContainer = DarkOnPrimaryContainer,
+    background = NoraColors.Background,    // #121212
+    onBackground = NoraColors.TextPrimary,  // #E0E0E0
+
+    surface = NoraColors.Surface,           // #1E1E1E
+    onSurface = NoraColors.TextPrimary,
+    surfaceVariant = NoraColors.SurfaceEdge,// #2C2C2C
+    onSurfaceVariant = NoraColors.TextSecondary,
+
+    outline = NoraColors.SurfaceEdge,
 )
 
 @Composable
 fun NoraTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    // 强制暗色，永不跟随系统主题
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = NoraDarkColorScheme,
         typography = AppTypography,
         content = content
     )
