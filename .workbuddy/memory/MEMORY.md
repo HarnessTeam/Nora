@@ -4,29 +4,18 @@
 
 ### 项目概述
 - **产品**: Nora — 离线 Android AI 智能体（数字生命）
-- **包名**: `ai.nora`（Phase 3 已完成）
-- **Phase 状态**: Phase 0 进行中（83.3%，Step 7 待执行）
+- **包名**: `ai.nora`
+- **Phase 状态**: Phase 0 ✅ Complete（100%，18/18 Steps + Gate passed），推进 Phase 1
 - **技术栈**: Kotlin + Jetpack Compose + Room + ExecuTorch + Navigation3
 
 ### 当前 Phase 0 进度
-- ✅ Step 0: 测试基础设施
-- ✅ Step 1a: Git 初始化
-- ✅ Step 1b/1c/1d: 死代码清理
-- ✅ Step 2a/2b: DataRepository + AppDatabase 验证
-- ✅ Step 3a: build.gradle.kts namespace + applicationId → ai.nora
-- ✅ Step 3b: 源文件 package 声明 + imports 替换（17 文件）
-- ✅ Step 3c: 目录结构 com.example.localagent → ai.nora（rename）
-- ✅ Step 3d: XML 资源和 AndroidManifest 包名引用（已确认零残留）
-- ✅ Step 3e: 测试文件引用更新（ChatModelsTest + BaseAndroidTest）
-- ✅ Step 4a: 应用名 "LocalAgent" → "Nora"（strings.xml）
-- ✅ Step 4b: 应用名清理（NoraApp/Theme.Nora/NoraTheme/SetupScreen/ChatScreen，11处残留全清）
-- ✅ Step 5: Nora色彩系统（NoraColors.kt：Background=#121212, Surface=#1E1E1E, NoraOrange=#FF6B6B）
-- ✅ Step 6: Theme.kt重写（强制暗色，移除Material紫色，移除isSystemInDarkTheme）
-- ⬜ Step 7: Typography.kt
-- ✅ Step 4a: 应用名 "LocalAgent" → "Nora"（strings.xml）
-- ⬜ Step 4b: 应用名清理 — themes.xml / SetupScreen / 其他残留
-- ⬜ Step 5-7: Nora 色彩/Theme/Typography
-- ⬜ Step 8: Phase 0 Gate（宪法合规审计）
+- ✅ 全部 18 Steps 完成
+- ✅ Phase 0 Gate: Instrument 10/10 passed, 宪法合规审计 5/5 passed
+- ✅ git commit d92fb27
+- **NEXT_STEP**: Phase 1 Step 1 — Application 级初始化 Room（NoraApp.kt）
+
+### 踩坑记录
+- FontFamily("String") 在某些 Compose 版本报错 "expected Boolean"：改用 FontFamily.Default / FontFamily.Monospace 替代
 
 ### 环境
 - JDK: `C:\Program Files\Eclipse Adoptium\jdk-17.0.18.8-hotspot`
