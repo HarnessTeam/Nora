@@ -139,12 +139,14 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 - [x] Step 4a: 应用名改为 "Nora" — strings.xml ✅ (2026-04-25 10:07)
   - `<string name="app_name">Nora</string>` ✅
   - 验证：`assembleDebug` ✅ + `git commit 7ae00a6`
-- [ ] Step 4b: 应用名清理 — themes.xml / SetupScreen / 其他残留
-  - `Theme.MyApplication` → `Theme.Nora`
-  - `LocalAgentTheme` → `NoraTheme`
-  - `LocalAgentApp` → `NoraApp`
+- [x] Step 4b: 应用名清理 — themes.xml / SetupScreen / 其他残留 ✅ (2026-04-25 10:31)
+  - `Theme.MyApplication` → `Theme.Nora` (themes.xml)
+  - `LocalAgentTheme` → `NoraTheme` (Theme.kt)
+  - `LocalAgentApp` → `NoraApp` (rename + rewrite, 3 refs)
+  - `LocalAgentApp.instance` → `NoraApp.instance` (Navigation.kt)
   - SetupScreen "Local Agent" → "Nora"
-  - 验证：全代码库无 "LocalAgent" / "MyApplication" 残留
+  - ChatScreen "Local Agent" → "Nora"
+  - 验证：全代码库零残留 + `assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit f4e2538`
 - [ ] Step 5: 建立 Nora 色彩系统（Color.kt → NoraColors.kt）
   - 定义：Background=#121212, Surface=#1E1E1E, NoraOrange=#FF6B6B, PrimaryText=#E0E0E0, SecondaryText=#9E9E9E
   - 验证：编译通过
@@ -294,8 +296,8 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 ## 状态
 
 **当前 Phase**: 0（项目重生）
-**NEXT_STEP**: Phase 0 Step 4b — 应用名清理：themes.xml / SetupScreen / 其他残留
-**Phase 0 进度**: 13/18 Steps 完成（72.2%）
+**NEXT_STEP**: Phase 0 Step 5 — 建立 Nora 色彩系统（Color.kt → NoraColors.kt）
+**Phase 0 进度**: 14/18 Steps 完成（77.8%）
 **上次 Instrument 测试**: 2026-04-25 02:44 — 0 tests, BUILD SUCCESSFUL
 **测试通过率**: 100%（空跑，0/0）
 **效率指标**：
