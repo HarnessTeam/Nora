@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class ChatUiState(
     val messages: List<ChatMessage> = emptyList(),
@@ -29,6 +30,39 @@ class ChatViewModel(
 
     private var streamJob: Job? = null
 
+    /**
+     * Ensures an active conversation exists in Room.
+     * If currentConversationId is null, creates one and updates state.
+     */
+    private suspend fun ensureConversation(): Long {
+        return _uiState.value.currentConversationId
+            ?: withContext(ioDispatcher) {
+                val id = dataRepository.createConversation(title = "新对话")
+                _uiState.value = _uiState.value.copy(currentConversationId = id)
+                id
+            }
+    }
+
+    /**
+     * Persists user message to Room (write-ahead).
+     * Must be called AFTER ensureConversation() guarantees a valid conversationId.
+     */
+    private suspend fun persistUserMessage(conversationId: Long, content: String) {
+        withContext(ioDispatcher) {
+            dataRepository.addMessage(conversationId, role = "user", content = content)
+        }
+    }
+
+    /**
+     * Persists assistant message to Room after LLM generation completes.
+     */
+    private suspend fun persistAssistantMessage(conversationId: Long, content: String) {
+        withContext(ioDispatcher) {
+            dataRepository.addMessage(conversationId, role = "assistant", content = content)
+            dataRepository.updateConversationTimestamp(conversationId)
+        }
+    }
+
     companion object {
         /** Max tokens for streaming — 512 is reasonable for 0.6B model on mobile */
         private const val MAX_TOKENS_STREAM = 512
@@ -36,6 +70,8 @@ class ChatViewModel(
         private const val MAX_TOKENS_BATCH = 512
         /** Max conversation turns to include in prompt context */
         private const val MAX_CONTEXT_TURNS = 10
+        /** IO dispatcher for Room database operations */
+        private val ioDispatcher = kotlinx.coroutines.Dispatchers.IO
     }
 
     fun sendMessage(text: String) {
@@ -49,8 +85,16 @@ class ChatViewModel(
 
         viewModelScope.launch {
             try {
+                // Write-ahead: ensure conversation + persist user message before LLM call
+                val convId = ensureConversation()
+                persistUserMessage(convId, trimmed)
+
                 val prompt = buildQwen3Prompt(updatedMessages.filter { !it.isStreaming })
                 val reply = llmEngine.generate(prompt, maxTokens = MAX_TOKENS_BATCH)
+
+                // Post-generation: persist assistant reply
+                persistAssistantMessage(convId, reply)
+
                 val msgs = _uiState.value.messages.toMutableList()
                 val lastIdx = msgs.indexOfLast { it.isStreaming }
                 if (lastIdx >= 0) msgs[lastIdx] = msgs[lastIdx].copy(content = reply, isStreaming = false)
@@ -74,6 +118,10 @@ class ChatViewModel(
         _uiState.value = _uiState.value.copy(messages = updatedMessages, inputText = "", isGenerating = true)
 
         viewModelScope.launch {
+            // Write-ahead: ensure conversation + persist user message before streaming starts
+            val convId = ensureConversation()
+            persistUserMessage(convId, trimmed)
+
             val prompt = buildQwen3Prompt(updatedMessages.filter { !it.isStreaming })
             streamJob = llmEngine.generateStream(prompt, maxTokens = MAX_TOKENS_STREAM) { token ->
                 val msgs = _uiState.value.messages.toMutableList()
@@ -82,17 +130,22 @@ class ChatViewModel(
                 _uiState.value = _uiState.value.copy(messages = msgs)
             }
             streamJob?.join()
+
             // Final cleanup: strip any residual special tokens that leaked through streaming
             val finalMsgs = _uiState.value.messages.toMutableList()
             val lastIdx = finalMsgs.indexOfLast { it.isStreaming }
+            var finalContent = finalMsgs.getOrNull(lastIdx)?.content ?: ""
             if (lastIdx >= 0) {
-                val rawContent = finalMsgs[lastIdx].content
-                val cleanedContent = cleanStreamOutput(rawContent)
+                finalContent = cleanStreamOutput(finalContent)
                 finalMsgs[lastIdx] = finalMsgs[lastIdx].copy(
-                    content = cleanedContent,
+                    content = finalContent,
                     isStreaming = false
                 )
             }
+
+            // Post-generation: persist assistant reply to Room
+            persistAssistantMessage(convId, finalContent)
+
             _uiState.value = _uiState.value.copy(messages = finalMsgs, isGenerating = false)
         }
     }

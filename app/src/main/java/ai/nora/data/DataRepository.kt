@@ -26,4 +26,8 @@ class DataRepository(
     suspend fun addMessage(conversationId: Long, role: String, content: String): Long {
         return messageDao.insert(MessageEntity(conversationId = conversationId, role = role, content = content))
     }
+
+    suspend fun updateConversationTimestamp(conversationId: Long) {
+        conversationDao.updateTimestamp(conversationId)
+    }
 }
