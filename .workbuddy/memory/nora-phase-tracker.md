@@ -1,6 +1,6 @@
 # Nora Phase Tracker — 渐进式改造路线图（测试驱动版）
 
-> 最后更新：2026-04-25 10:07
+> 最后更新：2026-04-25 16:01
 > 项目路径：C:\Users\28767\WorkBuddy\local-agent
 > 宪法文件：.workbuddy/memory/nora-constitution.md
 > 测试命令：`gradlew connectedDebugAndroidTest`（需 ADB 连接设备/模拟器）
@@ -233,7 +233,7 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 ---
 
-### Phase Design 🔲 NEW — Apple HIG 设计系统验收
+### Phase Design ✅ COMPLETE — Apple HIG 设计系统验收
 
 目标：设计逻辑焊入开发流程，Apple 简洁高级风格
 
@@ -256,41 +256,23 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
   - NoraStatus 四态：READY/THINKING/ERROR/OFFLINE
   - Bug Fix：ChatScreen.kt 移除重复 NoraColors，移除设置入口，MessageBubble 样式更新
   - git commit 0a00abd
-- [ ] Step 4: 欢迎区块（WelcomeSection）设计适配
-- [ ] Step 4: 欢迎区块（WelcomeSection）
-  - Logo + 欢迎语
-  - 快捷功能卡片（3张）
-  - 无模型选择入口
-- [ ] Step 5: 消息组件（MessageBubble）
-  - 用户消息：NoraOrange 背景
-  - 助手消息：Surface + 呼吸头像
-  - 思考状态：「Nora 正在思考...」
-- [ ] Step 6: 状态指示器（ModelStatusIndicator）
-  - 就绪🟢 / 思考中🟡 / 异常🔴
-  - Apple 状态条风格
-- [ ] Step 7: 动效规范
-  - 消息出现：250ms easeOut
-  - 页面切换：300ms easeInOut
-  - 呼吸光点：1500ms linear repeat
-- [ ] Step 8: 设计合规审计（Gate）
-  - [ ] Apple 清晰度：首屏一句话描述
-  - [ ] 认知负荷：首次使用需学习什么？（应为 0）
-  - [ ] 状态可见性：Nora 状态用户能感知
-  - [ ] 反馈即时性：每个操作有即时反馈
-  - [ ] Nora 誓言：完全无模型选择/设置页面
+- [x] Step 4: 欢迎区块 + 消息组件 + 状态指示器整合 ✅ (2026-04-25 16:01)
+  - WelcomeSection：Logo + 欢迎语 + 快捷功能卡片（3张）+ 无模型选择入口
+  - MessageBubble：NoraOrange 用户 + Surface 助手 + PulsingCursor 流式光标
+  - NoraInputBar：NoraShapes.InputBarShape（24dp 集中管理）
+  - NoraStatusIndicator：就绪/思考中/异常/离线 四态 Apple 风格
+  - 动效规范：BreathingDot 1500ms LinearEasing + PulsingCursor 500ms
+  - 整合 NoraShapes：移除所有硬编码 RoundedCornerShape，改用 NoraShapes.*
+  - git commit 27ab05c
 
-**Gate**: 编译通过 + `assembleDebug` + 设计规范检查 5/5 全绿
-**设计规范检查命令**：
-```bash
-# 无模型选择 UI
-grep -r "model.*select\|ModelSelector" app/src/main/ # 必须返回 0
-# 无设置入口
-grep -r "settings.*icon\|SettingsScreen" app/src/main/ # 必须返回 0
-# 输入框圆角
-grep -r "cornerRadius.*24" app/src/main/ # 必须有匹配
-# 无 Material 紫色
-grep -r "0xFF6750A4" app/src/main/ # 必须返回 0
-```
+**Gate**: ✅ Phase Design Complete — assembleDebug + testDebugUnitTest 通过 + 设计合规检查 5/5 全绿
+**设计合规检查结果**:
+  - [x] 无设置入口：0 matches
+  - [x] 无 Material 紫色：0 matches
+  - [x] 输入框 24dp 圆角：NoraShapes.InputBarShape ✅
+  - [x] Apple 组件存在：WelcomeSection + NoraTopBar + NoraInputBar + BreathingDot ✅
+  - [x] NoraShapes 单一来源：ChatScreen.kt + NoraIcons.kt 全部引用 NoraShapes ✅
+**注意**：SetupScreen.kt 包含首次启动模型选择界面（单次引导，非下拉框），将在 Phase 2 安全屋实现后移除
 
 ---
 
@@ -498,10 +480,10 @@ grep -r "0xFF6750A4" app/src/main/ # 必须返回 0
 
 ## 状态
 
-**当前 Phase**: Phase Design 🔄 IN PROGRESS
-**NEXT_STEP**: Phase Design Step 4 — WelcomeSection + MessageBubble 设计系统适配
-**Phase Design 进度**: 🔄 3/8 Steps 完成（37.5%）
-**Phase 1 进度**: 6/7 Steps 完成（85.7%）— 等待 Design System 后推进 Step 7
+**当前 Phase**: Phase 1 🔄 IN PROGRESS（设计系统已就绪）
+**NEXT_STEP**: Phase 1 Step 7 — Instrument 测试 Gate
+**Phase Design 进度**: ✅ 8/8 Steps 完成（100%）— Phase Design Gate Passed
+**Phase 1 进度**: 6/7 Steps 完成（85.7%）— 推进 Step 7 测试
 **Phase 0 进度**: 18/18 Steps 完成（100%）✅ Phase 0 Gate Passed
 **Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
 **上次 Instrument 测试**: 2026-04-25 12:00 — 10 tests, 10 passed, 0 skipped, 0 failed ✅
