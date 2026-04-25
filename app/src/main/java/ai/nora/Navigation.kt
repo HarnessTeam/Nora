@@ -12,24 +12,25 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ai.nora.ui.chat.ChatScreen
 import ai.nora.ui.chat.ChatViewModel
 import ai.nora.ui.setup.SetupScreen
 import ai.nora.ui.setup.SetupViewModel
-import kotlinx.coroutines.flow.first
 
 @Composable
 fun MainNavigation() {
-    // 从 DataStore 读取 modelLoaded 状态（持久化，跨 Session 生效）
     val preferencesManager = remember { NoraApp.instance.preferencesManager }
-    val modelLoadedFlow by preferencesManager.modelLoaded.collectAsStateWithLifecycle(
+
+    // nullable Boolean: null = 尚未读取（默认 Chat，假设用户有历史对话），
+    // true = 模型已加载 → Chat，false = 首次使用 → Setup
+    val modelLoaded by preferencesManager.modelLoaded.collectAsStateWithLifecycle(
         lifecycleOwner = LocalLifecycleOwner.current,
-        initialValue = false
+        initialValue = null as Boolean?
     )
-    // 导航默认目的地：DataStore 中已加载过模型 → Chat，否则 → Setup
-    val initialDestination = if (modelLoadedFlow) Chat else Setup
+
+    // 导航默认目的地：modelLoaded == false → Setup；其余情况（null 或 true）→ Chat
+    val initialDestination = if (modelLoaded == false) Setup else Chat
 
     val backStack = rememberNavBackStack(initialDestination)
 
@@ -47,7 +48,7 @@ fun MainNavigation() {
         entryProvider = entryProvider {
             entry<Setup> {
                 SetupScreen(
-                    viewModel = remember { SetupViewModel(scanner, engine) },
+                    viewModel = remember { SetupViewModel(scanner, engine, preferencesManager) },
                     onModelLoaded = {
                         backStack.clear()
                         backStack.add(Chat)

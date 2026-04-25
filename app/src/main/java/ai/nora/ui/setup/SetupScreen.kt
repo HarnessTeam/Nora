@@ -1,9 +1,11 @@
 package ai.nora.ui.setup
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import ai.nora.ui.design.NoraCheckCircle
 import ai.nora.ui.design.NoraFolder
@@ -34,14 +36,21 @@ fun SetupScreen(
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(NoraMemory, contentDescription = null, modifier = Modifier.size(28.dp))
+                        Icon(
+                            imageVector = NoraMemory,
+                            contentDescription = null,
+                            modifier = Modifier.size(28.dp)
+                        )
                         Spacer(Modifier.width(8.dp))
                         Text("Nora", fontWeight = FontWeight.Bold)
                     }
                 },
                 actions = {
                     IconButton(onClick = { viewModel.scanForModels() }) {
-                        Icon(NoraRefresh, contentDescription = "Rescan")
+                        Icon(
+                            imageVector = NoraRefresh,
+                            contentDescription = "刷新"
+                        )
                     }
                 }
             )
@@ -62,6 +71,26 @@ fun SetupScreen(
                     Spacer(Modifier.width(8.dp))
                     Text("Scanning directories...", style = MaterialTheme.typography.bodyMedium)
                 }
+            }
+
+            // 内置模型提取进度（bundled flavor 首次启动）
+            AnimatedVisibility(visible = uiState.isExtractingBundledModel) {
+                Card(modifier = Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                            Spacer(Modifier.width(12.dp))
+                            Text("正在准备内置模型...", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                        }
+                        uiState.extractionProgress?.let { progress ->
+                            Spacer(Modifier.height(8.dp))
+                            Text(progress, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f))
+                        }
+                        Spacer(Modifier.height(8.dp))
+                        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
             }
 
             AnimatedVisibility(visible = uiState.engineState is EngineLoadState.Loading) {
@@ -90,12 +119,20 @@ fun SetupScreen(
                     ) {
                         Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text(model.name, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyLarge)
+                                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                    Text(model.name, fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyLarge)
+                                    // 模型来源标签
+                                    SourceTag(source = model.source)
+                                }
                                 Text("Model: ${model.displaySize} | Tokenizer: ${ModelScanner.formatFileSize(model.tokenizerSizeBytes)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 Text(model.ptePath.absolutePath, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             if (model == uiState.selectedModel) {
-                                Icon(NoraCheckCircle, contentDescription = "Selected", tint = MaterialTheme.colorScheme.primary)
+                                Icon(
+                                    imageVector = NoraCheckCircle,
+                                    contentDescription = "已选择",
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
                             }
                         }
                     }
@@ -109,10 +146,39 @@ fun SetupScreen(
             ) { Text("Load Model & Start Chat") }
 
             OutlinedButton(onClick = { viewModel.scanForModels() }, modifier = Modifier.fillMaxWidth()) {
-                Icon(NoraFolder, contentDescription = null, modifier = Modifier.size(18.dp))
+                Icon(
+                    imageVector = NoraFolder,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp)
+                )
                 Spacer(Modifier.width(8.dp))
                 Text("Rescan /data/local/tmp/llama/")
             }
         }
+    }
+}
+
+/**
+ * 模型来源标签 — 区分内置模型 / ADB 推送 / 下载目录
+ */
+@Composable
+private fun SourceTag(source: ModelScanner.ModelSource) {
+    val (label, color) = when (source) {
+        ModelScanner.ModelSource.BUNDLED -> "内置" to MaterialTheme.colorScheme.primary
+        ModelScanner.ModelSource.ADB -> "ADB" to MaterialTheme.colorScheme.tertiary
+        ModelScanner.ModelSource.DOWNLOAD -> "下载" to MaterialTheme.colorScheme.secondary
+    }
+
+    Surface(
+        shape = RoundedCornerShape(4.dp),
+        color = color.copy(alpha = 0.15f)
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+            style = MaterialTheme.typography.labelSmall,
+            color = color,
+            fontWeight = FontWeight.Medium
+        )
     }
 }

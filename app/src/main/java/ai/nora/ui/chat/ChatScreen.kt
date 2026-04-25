@@ -61,8 +61,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+
+
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -407,10 +407,11 @@ fun NoraInputBar(
                     if (isGenerating) {
                             IconButton(onClick = onStop) {
                             Icon(
-                                NoraStop,
-                                contentDescription = "停止生成",
-                                tint = MaterialTheme.colorScheme.error
-                            )
+                            imageVector = NoraStop,
+                            contentDescription = "停止",
+                            modifier = Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.error
+                        )
                         }
                     }
                 }
@@ -438,8 +439,9 @@ fun NoraInputBar(
                         )
                     } else {
                         Icon(
-                            NoraSendArrow,
+                            imageVector = NoraSendArrow,
                             contentDescription = "发送",
+                            modifier = Modifier.size(24.dp),
                             tint = if (inputText.isNotBlank())
                                 Color.White
                             else
@@ -483,10 +485,10 @@ fun ConversationListSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    NoraAdd,
-                    contentDescription = null,
-                    tint = NoraColors.NoraOrange,
-                    modifier = Modifier.size(24.dp)
+                    imageVector = NoraAdd,
+                    contentDescription = "新建对话",
+                    modifier = Modifier.size(24.dp),
+                    tint = NoraColors.NoraOrange
                 )
                 Spacer(Modifier.width(12.dp))
                 Text(
@@ -553,11 +555,12 @@ fun ConversationListSheet(
                         }
 
                         IconButton(onClick = { onDeleteConversation(conv.id) }) {
-                            Icon(
-                                NoraDelete,
-                                contentDescription = "删除对话",
-                                tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
-                            )
+                        Icon(
+                            imageVector = NoraDelete,
+                            contentDescription = "删除对话",
+                            modifier = Modifier.size(24.dp),
+                            tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+                        )
                         }
                     }
                 }
@@ -590,10 +593,6 @@ fun ChatScreen(
     val listState = rememberLazyListState()
     var showConversationSheet by remember { mutableStateOf(false) }
 
-    // Rime 键盘适配：点击消息区域时清除焦点 + 隐藏键盘
-    val focusManager = LocalFocusManager.current
-    val keyboardController = LocalSoftwareKeyboardController.current
-
     // 自动滚动到底部
     LaunchedEffect(uiState.messages.size) {
         if (uiState.messages.isNotEmpty()) {
@@ -625,24 +624,13 @@ fun ChatScreen(
             )
         }
     ) { padding ->
-        // Rime 兼容：点击消息区域时清除焦点 + 隐藏软键盘
-        val dismissKeyboard: () -> Unit = {
-            focusManager.clearFocus()
-            keyboardController?.hide()
-        }
-
         LazyColumn(
             state = listState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(horizontal = 16.dp)
-                .imePadding()
-                .clickable(
-                    interactionSource = remember { androidx.compose.foundation.interaction.MutableInteractionSource() },
-                    indication = null,
-                    onClick = dismissKeyboard
-                ),
+                .imePadding(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
