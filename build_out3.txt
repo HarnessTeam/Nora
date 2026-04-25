@@ -1,0 +1,90 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preBundledReleaseBuild UP-TO-DATE
+> Task :app:mergeBundledReleaseJniLibFolders UP-TO-DATE
+> Task :app:mergeBundledReleaseNativeLibs UP-TO-DATE
+> Task :app:stripBundledReleaseDebugSymbols UP-TO-DATE
+> Task :app:extractBundledReleaseNativeSymbolTables UP-TO-DATE
+> Task :app:mergeBundledReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:mergeBundledReleaseArtProfile UP-TO-DATE
+> Task :app:desugarBundledReleaseFileDependencies UP-TO-DATE
+> Task :app:generateBundledReleaseBuildConfig UP-TO-DATE
+> Task :app:generateBundledReleaseResources UP-TO-DATE
+> Task :app:packageBundledReleaseResources UP-TO-DATE
+> Task :app:processBundledReleaseNavigationResources UP-TO-DATE
+> Task :app:parseBundledReleaseLocalResources UP-TO-DATE
+> Task :app:generateBundledReleaseRFile UP-TO-DATE
+> Task :app:kspBundledReleaseKotlin UP-TO-DATE
+> Task :app:compileBundledReleaseKotlin UP-TO-DATE
+> Task :app:javaPreCompileBundledRelease UP-TO-DATE
+> Task :app:compileBundledReleaseJavaWithJavac UP-TO-DATE
+> Task :app:checkBundledReleaseAarMetadata UP-TO-DATE
+> Task :app:compileBundledReleaseNavigationResources UP-TO-DATE
+> Task :app:mapBundledReleaseSourceSetPaths UP-TO-DATE
+> Task :app:mergeBundledReleaseResources UP-TO-DATE
+> Task :app:createBundledReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksBundledRelease UP-TO-DATE
+> Task :app:processBundledReleaseMainManifest UP-TO-DATE
+> Task :app:processBundledReleaseManifest UP-TO-DATE
+> Task :app:processBundledReleaseManifestForPackage UP-TO-DATE
+> Task :app:processBundledReleaseResources UP-TO-DATE
+> Task :app:dexBuilderBundledRelease UP-TO-DATE
+> Task :app:mergeBundledReleaseGlobalSynthetics UP-TO-DATE
+> Task :app:checkBundledReleaseDuplicateClasses UP-TO-DATE
+> Task :app:mergeBundledReleaseStartupProfile UP-TO-DATE
+> Task :app:mergeExtDexBundledRelease UP-TO-DATE
+> Task :app:generateBundledReleaseAssets UP-TO-DATE
+> Task :app:mergeBundledReleaseAssets UP-TO-DATE
+> Task :app:compressBundledReleaseAssets UP-TO-DATE
+> Task :app:extractBundledReleaseVersionControlInfo UP-TO-DATE
+> Task :app:lintVitalBundledRelease
+> Task :app:processBundledReleaseJavaRes UP-TO-DATE
+> Task :app:mergeBundledReleaseJavaResource UP-TO-DATE
+> Task :app:optimizeBundledReleaseResources UP-TO-DATE
+> Task :app:collectBundledReleaseDependencies UP-TO-DATE
+> Task :app:sdkBundledReleaseDependencyData UP-TO-DATE
+> Task :app:validateSigningBundledRelease UP-TO-DATE
+> Task :app:writeBundledReleaseAppMetadata UP-TO-DATE
+> Task :app:writeBundledReleaseSigningConfigVersions UP-TO-DATE
+The message received from the daemon indicates that the daemon has disappeared.
+Build request sent: Build{id=3623f37a-fd2b-438e-abbe-5ea669f6c8e4, currentDir=C:\Users\28767\WorkBuddy\local-agent}
+Attempting to read last messages from the daemon log...
+Daemon pid: 14436
+  log file: C:\Users\28767\.gradle\daemon\9.1.0\daemon-14436.out.log
+----- Last 20 lines from daemon log file - daemon-14436.out.log -----
+2026-04-25T18:41:53.678+0800 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] Command execution: started DaemonCommandExecution[command = Build{id=3623f37a-fd2b-438e-abbe-5ea669f6c8e4, currentDir=C:\Users\28767\WorkBuddy\local-agent}, connection = DefaultDaemonConnection: socket connection from /127.0.0.1:65094 to /127.0.0.1:65095] after 0.0022500000000000003 minutes of idle
+2026-04-25T18:41:53.678+0800 [INFO] [org.gradle.launcher.daemon.server.DaemonRegistryUpdater] Marking the daemon as busy, address: [9d7d51dc-ba9e-4283-9110-f5d4cc8b1b87 port:65094, addresses:[localhost/127.0.0.1]]
+2026-04-25T18:41:53.678+0800 [DEBUG] [org.gradle.launcher.daemon.registry.PersistentDaemonRegistry] Marking busy by address: [9d7d51dc-ba9e-4283-9110-f5d4cc8b1b87 port:65094, addresses:[localhost/127.0.0.1]]
+2026-04-25T18:41:53.680+0800 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Waiting to acquire exclusive lock on daemon addresses registry.
+2026-04-25T18:41:53.681+0800 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Lock acquired on daemon addresses registry.
+2026-04-25T18:41:53.682+0800 [DEBUG] [org.gradle.cache.internal.DefaultFileLockManager] Releasing lock on daemon addresses registry.
+2026-04-25T18:41:53.683+0800 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] resetting idle timer
+2026-04-25T18:41:53.683+0800 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] daemon is running. Sleeping until state changes.
+2026-04-25T18:41:53.684+0800 [INFO] [org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy] Daemon is about to start building Build{id=3623f37a-fd2b-438e-abbe-5ea669f6c8e4, currentDir=C:\Users\28767\WorkBuddy\local-agent}. Dispatching build started information...
+2026-04-25T18:41:53.684+0800 [DEBUG] [org.gradle.launcher.daemon.server.SynchronizedDispatchConnection] thread 32: dispatching org.gradle.launcher.daemon.protocol.BuildStarted@292bd47b
+2026-04-25T18:41:53.685+0800 [DEBUG] [org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment] Configuring env variables: [USERDOMAIN_ROAMINGPROFILE, NVM_SYMLINK, PROCESSOR_LEVEL, RUBY_UNBUFFERED, CODEBUDDY_COPILOT_INTERNET_ENVIRONMENT, GIT_PAGER, SESSIONNAME, ALLUSERSPROFILE, PROCESSOR_ARCHITECTURE, ANDROID_HOME, PSModulePath, VSCODE_PID, SystemDrive, =ExitCode, EFC_8272_1592913036, DIRNAME, USERNAME, CMD_LINE_ARGS, ProgramFiles(x86), VSCODE_NLS_CONFIG, CHROME_CRASHPAD_PIPE_NAME, STDBUF_O, APP_HOME, PATHEXT, DriverData, VSCODE_CRASH_REPORTER_PROCESS_TYPE, OneDriveConsumer, PAGER, SYSTEMD_PAGER, VSCODE_CODE_CACHE_PATH, ORIGINAL_XDG_CURRENT_DESKTOP, ProgramData, ProgramW6432, HOMEPATH, PROCESSOR_IDENTIFIER, ProgramFiles, PUBLIC, windir, _SKIP, LOCALAPPDATA, VSCODE_L10N_BUNDLE_LOCATION, USERDOMAIN, VSCODE_HANDLES_UNCAUGHT_ERRORS, LOGONSERVER, JAVA_HOME, PROMPT, TERM, OneDrive, =C:, APPDATA, JAVA_EXE, CommonProgramFiles, Path, VSCODE_CWD, OS, COMPUTERNAME, MANPAGER, VSCODE_ESM_ENTRYPOINT, NVM_HOME, PROCESSOR_REVISION, CLASSPATH, CommonProgramW6432, ComSpec, APP_BASE_NAME, EDITOR, PYTHONUNBUFFERED, SystemRoot, TEMP, HOMEDRIVE, USERPROFILE, TMP, CommonProgramFiles(x86), NUMBER_OF_PROCESSORS, VSCODE_IPC_HOOK]
+2026-04-25T18:41:53.690+0800 [DEBUG] [org.gradle.launcher.daemon.server.exec.LogToClient] About to start relaying all logs to the client via the connection.
+2026-04-25T18:41:53.690+0800 [INFO] [org.gradle.launcher.daemon.server.exec.LogToClient] The client will now receive all logging from the daemon (pid: 14436). The daemon log file: C:\Users\28767\.gradle\daemon\9.1.0\daemon-14436.out.log
+2026-04-25T18:41:53.692+0800 [DEBUG] [org.gradle.launcher.daemon.server.exec.RequestStopIfSingleUsedDaemon] Requesting daemon stop after processing Build{id=3623f37a-fd2b-438e-abbe-5ea669f6c8e4, currentDir=C:\Users\28767\WorkBuddy\local-agent}
+2026-04-25T18:41:53.692+0800 [LIFECYCLE] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] Daemon will be stopped at the end of the build 
+2026-04-25T18:41:53.692+0800 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] Stop as soon as idle requested. The daemon is busy
+2026-04-25T18:41:53.692+0800 [DEBUG] [org.gradle.launcher.daemon.server.DaemonStateCoordinator] daemon stop has been requested. Sleeping until state changes.
+2026-04-25T18:41:53.697+0800 [DEBUG] [org.gradle.launcher.daemon.server.exec.ExecuteBuild] The daemon has started executing the build.
+2026-04-25T18:41:53.697+0800 [DEBUG] [org.gradle.launcher.daemon.server.exec.ExecuteBuild] Executing build with daemon context: DefaultDaemonContext[uid=6fff0f62-39e2-427d-b591-2ce5e1454962,javaHome=C:\Program Files\Eclipse Adoptium\jdk-17.0.18.8-hotspot,javaVersion=17,javaVendor=Eclipse Adoptium,daemonRegistryDir=C:\Users\28767\.gradle\daemon,pid=14436,idleTimeout=120000,priority=NORMAL,applyInstrumentationAgent=true,nativeServicesMode=ENABLED,daemonOpts=-XX:MaxMetaspaceSize=512m,-Xmx2048m,-Dfile.encoding=UTF-8,-Duser.country=CN,-Duser.language=zh,-Duser.variant]
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.----- End of the daemon log -----
+
+JVM crash log found: file:///C:/Users/28767/WorkBuddy/local-agent/hs_err_pid14436.log
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Gradle build daemon disappeared unexpectedly (it may have been killed or may have crashed)
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+> Get more help at https://help.gradle.org.
+> Task :app:mergeDexBundledRelease

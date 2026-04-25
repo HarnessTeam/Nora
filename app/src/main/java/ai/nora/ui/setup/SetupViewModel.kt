@@ -66,6 +66,7 @@ class SetupViewModel(
      * 2. 如果需要提取，显示进度
      * 3. 提取成功后自动选中内置模型
      * 4. 扫描外部路径补全列表
+     * 5. 自动加载模型到引擎
      */
     private fun extractAndSelectBundledModel() {
         viewModelScope.launch {
@@ -82,8 +83,8 @@ class SetupViewModel(
                     isExtractingBundledModel = false,
                     extractionProgress = null
                 )
-                // 已有提取结果，直接扫描并优先选中内置模型
-                scanForModelsWithBundledPriority(extractedPath)
+                // 已有提取结果，直接扫描并优先选中内置模型，然后自动加载
+                scanForModelsWithBundledPriorityAndLoad(extractedPath)
                 return@launch
             }
 
@@ -102,8 +103,8 @@ class SetupViewModel(
                             isExtractingBundledModel = false,
                             extractionProgress = null
                         )
-                        // 提取成功后，扫描并优先选中内置模型
-                        scanForModelsWithBundledPriority(extractedModelPath)
+                        // 提取成功后，扫描并优先选中内置模型，然后自动加载
+                        scanForModelsWithBundledPriorityAndLoad(extractedModelPath)
                     }
 
                     override fun onError(message: String, throwable: Throwable?) {
@@ -121,21 +122,25 @@ class SetupViewModel(
     }
 
     /**
-     * 扫描所有模型，并确保内置模型排在第一位
+     * 扫描所有模型，并确保内置模型排在第一位，然后自动加载。
+     * 用于 bundled flavor：提取成功后自动完成扫描 → 选中 → 加载全流程。
      */
-    private fun scanForModelsWithBundledPriority(bundledModelPath: String) {
+    private fun scanForModelsWithBundledPriorityAndLoad(bundledModelPath: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isScanning = true, error = null)
             try {
                 val models = modelScanner.scanModels()
                 // 确保内置模型排在最前
                 val sortedModels = models.sortedByDescending { it.ptePath.absolutePath == bundledModelPath }
+                val selected = sortedModels.firstOrNull { it.ptePath.absolutePath == bundledModelPath }
+                    ?: sortedModels.firstOrNull()
                 _uiState.value = _uiState.value.copy(
                     models = sortedModels,
-                    selectedModel = sortedModels.firstOrNull { it.ptePath.absolutePath == bundledModelPath }
-                        ?: sortedModels.firstOrNull(),
+                    selectedModel = selected,
                     isScanning = false
                 )
+                // 自动加载选中的模型
+                selected?.let { loadSelectedModel(it) }
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(
                     isScanning = false,
@@ -176,6 +181,13 @@ class SetupViewModel(
 
     fun loadSelectedModel() {
         val model = _uiState.value.selectedModel ?: return
+        loadSelectedModel(model)
+    }
+
+    /**
+     * 加载指定模型到引擎。
+     */
+    private fun loadSelectedModel(model: ModelScanner.ModelFile) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(error = null)
             llmEngine.loadModel(

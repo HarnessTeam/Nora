@@ -2,7 +2,7 @@ package ai.nora
 
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.ContextRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
@@ -24,7 +24,7 @@ class DataRepositoryTest {
     @Before
     fun setup() {
         // 使用 Instrumentation 的真实 targetContext
-        val context = ContextRegistry.getActualApplication()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         database = Room.inMemoryDatabaseBuilder(
             context,
             ai.nora.data.AppDatabase::class.java

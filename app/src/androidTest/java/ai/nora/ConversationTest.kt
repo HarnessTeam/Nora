@@ -4,7 +4,6 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.waitUntil
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Rule
 import org.junit.Test
@@ -20,6 +19,7 @@ import org.junit.runner.RunWith
  *
  * 注：模拟器中无模型时在 SetupScreen，测试会跳过（SetupScreen 测试已在 Phase 0 Gate 覆盖）
  */
+@OptIn(ExperimentalTestApi::class)
 @RunWith(AndroidJUnit4::class)
 class ConversationTest : BaseAndroidTest() {
 
@@ -33,7 +33,7 @@ class ConversationTest : BaseAndroidTest() {
         // 检查是否在 SetupScreen（有模型时跳过）
         val onSetupScreen = try {
             composeTestRule.onNodeWithText("Select a model to load").apply {
-                waitUntil(2000) { try { assertExists(); true } catch (e: Exception) { false } }
+                composeTestRule.waitUntil(2000) { try { assertExists(); true } catch (e: Exception) { false } }
             }
             true
         } catch (e: Exception) {
@@ -58,7 +58,7 @@ class ConversationTest : BaseAndroidTest() {
 
         val onSetupScreen = try {
             composeTestRule.onNodeWithText("Select a model to load").apply {
-                waitUntil(2000) { try { assertExists(); true } catch (e: Exception) { false } }
+                composeTestRule.waitUntil(2000) { try { assertExists(); true } catch (e: Exception) { false } }
             }
             true
         } catch (e: Exception) {
@@ -91,7 +91,7 @@ class ConversationTest : BaseAndroidTest() {
 
         val onSetupScreen = try {
             composeTestRule.onNodeWithText("Select a model to load").apply {
-                waitUntil(2000) { try { assertExists(); true } catch (e: Exception) { false } }
+                composeTestRule.waitUntil(2000) { try { assertExists(); true } catch (e: Exception) { false } }
             }
             true
         } catch (e: Exception) {

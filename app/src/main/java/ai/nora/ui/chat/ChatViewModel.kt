@@ -3,7 +3,7 @@ package ai.nora.ui.chat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ai.nora.data.DataRepository
-import ai.nora.llm.ExecuTorchEngine
+import ai.nora.llm.EngineLoadState
 import ai.nora.llm.LlmEngine
 import ai.nora.model.ChatMessage
 import ai.nora.model.ConversationEntity
@@ -20,7 +20,13 @@ data class ChatUiState(
     val isGenerating: Boolean = false,
     val currentConversationId: Long? = null,
     val conversations: List<ConversationEntity> = emptyList(),
-    val currentConversationTitle: String = "Nora"
+    val currentConversationTitle: String = "Nora",
+    /** 模型引擎加载状态 */
+    val engineState: EngineLoadState = EngineLoadState.Unloaded,
+    /** 模型是否已就绪（可发送消息） */
+    val isModelReady: Boolean = false,
+    /** 模型错误信息 */
+    val modelError: String? = null,
 )
 
 class ChatViewModel(
@@ -34,9 +40,19 @@ class ChatViewModel(
     private var streamJob: Job? = null
 
     init {
-        // Load conversation list and restore most recent conversation from Room on startup
+        // 监听引擎加载状态，同步到 UI State
         viewModelScope.launch {
-            // Load all conversations for the sidebar
+            llmEngine.loadState.collect { state ->
+                _uiState.value = _uiState.value.copy(
+                    engineState = state,
+                    isModelReady = state is EngineLoadState.Loaded,
+                    modelError = (state as? EngineLoadState.Error)?.message
+                )
+            }
+        }
+
+        // 加载对话列表并恢复最近对话
+        viewModelScope.launch {
             dataRepository.getConversations().collect { convs ->
                 val lastConvId = _uiState.value.currentConversationId
                     ?: withContext(ioDispatcher) { dataRepository.getMostRecentConversationId() }
@@ -117,6 +133,7 @@ class ChatViewModel(
     fun sendMessage(text: String) {
         val trimmed = text.trim()
         if (trimmed.isBlank() || _uiState.value.isGenerating) return
+        if (!_uiState.value.isModelReady) return
 
         val userMsg = ChatMessage(role = "user", content = trimmed)
         val assistantMsg = ChatMessage(role = "assistant", content = "", isStreaming = true)
@@ -151,6 +168,7 @@ class ChatViewModel(
     fun sendMessageStream(text: String) {
         val trimmed = text.trim()
         if (trimmed.isBlank() || _uiState.value.isGenerating) return
+        if (!_uiState.value.isModelReady) return
 
         val userMsg = ChatMessage(role = "user", content = trimmed)
         val assistantMsg = ChatMessage(role = "assistant", content = "", isStreaming = true)
@@ -211,7 +229,6 @@ class ChatViewModel(
             val convId = withContext(ioDispatcher) {
                 dataRepository.createConversation(title = "新对话")
             }
-            // Load empty conversation
             _uiState.value = _uiState.value.copy(
                 currentConversationId = convId,
                 messages = emptyList(),
@@ -230,7 +247,6 @@ class ChatViewModel(
                 dataRepository.getConversationTitle(conversationId) ?: "对话"
             }
             loadConversation(conversationId)
-            // Also update the title after loadConversation overwrites it
             _uiState.value = _uiState.value.copy(currentConversationTitle = title)
         }
     }
@@ -245,7 +261,6 @@ class ChatViewModel(
                 dataRepository.deleteConversation(conversationId)
             }
             if (conversationId == _uiState.value.currentConversationId) {
-                // Switch to the most recent remaining conversation (or create new one)
                 val mostRecent = convs.firstOrNull()
                 if (mostRecent != null) {
                     switchConversation(mostRecent.id)
@@ -260,7 +275,6 @@ class ChatViewModel(
 
     /**
      * Final cleanup for streamed output — strips any residual special tokens
-     * that may have leaked through during streaming.
      */
     private fun cleanStreamOutput(text: String): String {
         return text.trim()
@@ -273,19 +287,12 @@ class ChatViewModel(
 
     /**
      * Build Qwen3 ChatML prompt with:
-     * - `/no_think` system suffix to disable chain-of-thought (prevents <think|> blocks
-     *   that waste tokens on a 0.6B model and confuse the output)
-     * - Context window limiting to prevent prompt from exceeding model's effective context
-     * - Proper assistant marker at the end for generation
+     * - `/no_think` system suffix to disable chain-of-thought
      */
     private fun buildQwen3Prompt(messages: List<ChatMessage>): String {
         val sb = StringBuilder()
-
-        // System prompt with /no_think to disable thinking mode on Qwen3
-        // Qwen3-0.6B's thinking capability is weak and wastes generation budget
         sb.append("<|im_start|>system\nYou are a helpful assistant. /no_think<|im_end|>\n")
 
-        // Include only the most recent turns to stay within context limits
         val recentMessages = if (messages.size > MAX_CONTEXT_TURNS) {
             messages.takeLast(MAX_CONTEXT_TURNS)
         } else {

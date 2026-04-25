@@ -1,0 +1,63 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+> Task :app:clean
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preBundledDebugBuild UP-TO-DATE
+> Task :app:mergeBundledDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateBundledDebugBuildConfig
+> Task :app:generateBundledDebugResources
+> Task :app:packageBundledDebugResources
+> Task :app:processBundledDebugNavigationResources
+> Task :app:parseBundledDebugLocalResources
+> Task :app:generateBundledDebugRFile
+> Task :app:javaPreCompileBundledDebug
+> Task :app:generateBundledDebugAssets UP-TO-DATE
+> Task :app:mergeBundledDebugAssets
+
+> Task :app:kspBundledDebugKotlin
+w: [ksp] C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/data/AppDatabase.kt:13: Schema export directory was not provided to the annotation processor so Room cannot export the schema. You can either provide `room.schemaLocation` annotation processor argument by applying the Room Gradle plugin (id 'androidx.room') OR set exportSchema to false.
+
+> Task :app:compressBundledDebugAssets
+> Task :app:desugarBundledDebugFileDependencies
+> Task :app:checkBundledDebugAarMetadata
+> Task :app:compileBundledDebugNavigationResources
+
+> Task :app:compileBundledDebugKotlin
+w: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:89:41 The corresponding parameter in the supertype 'ExtractionProgress' is named 'extractedModelPath'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:89:60 The corresponding parameter in the supertype 'ExtractionProgress' is named 'extractedTokenizerPath'. This may cause problems when calling this function with named arguments.
+
+> Task :app:mapBundledDebugSourceSetPaths
+> Task :app:mergeBundledDebugResources
+> Task :app:compileBundledDebugJavaWithJavac
+> Task :app:createBundledDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksBundledDebug
+> Task :app:processBundledDebugMainManifest
+> Task :app:processBundledDebugManifest
+> Task :app:processBundledDebugJavaRes
+> Task :app:processBundledDebugManifestForPackage
+> Task :app:processBundledDebugResources
+> Task :app:mergeBundledDebugJavaResource
+> Task :app:dexBuilderBundledDebug
+> Task :app:mergeBundledDebugGlobalSynthetics
+> Task :app:mergeBundledDebugJniLibFolders
+> Task :app:checkBundledDebugDuplicateClasses
+> Task :app:mergeBundledDebugNativeLibs
+> Task :app:mergeLibDexBundledDebug
+> Task :app:mergeExtDexBundledDebug
+> Task :app:mergeProjectDexBundledDebug
+
+> Task :app:stripBundledDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libc++_shared.so, libdatastore_shared_counter.so, libexecutorch.so, libfbjni.so. Run with --info option to learn more.
+
+> Task :app:validateSigningBundledDebug
+> Task :app:writeBundledDebugAppMetadata
+> Task :app:writeBundledDebugSigningConfigVersions
+> Task :app:packageBundledDebug
+> Task :app:createBundledDebugApkListingFileRedirect
+> Task :app:assembleBundledDebug
+w: Detected multiple Kotlin daemon sessions at 
+
+BUILD SUCCESSFUL in 1m 5s
+40 actionable tasks: 40 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.1.0/userguide/configuration_cache_enabling.html

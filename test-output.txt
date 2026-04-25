@@ -1,102 +1,42 @@
-> Task :app:preBuild UP-TO-DATE
-> Task :app:preDebugBuild UP-TO-DATE
-> Task :app:generateDebugBuildConfig UP-TO-DATE
-> Task :app:generateDebugResources UP-TO-DATE
-> Task :app:packageDebugResources UP-TO-DATE
-> Task :app:processDebugNavigationResources UP-TO-DATE
-> Task :app:parseDebugLocalResources UP-TO-DATE
-> Task :app:generateDebugRFile UP-TO-DATE
-> Task :app:kspDebugKotlin UP-TO-DATE
-> Task :app:compileDebugKotlin UP-TO-DATE
-> Task :app:javaPreCompileDebug UP-TO-DATE
-> Task :app:compileDebugJavaWithJavac UP-TO-DATE
-> Task :app:checkDebugAarMetadata UP-TO-DATE
-> Task :app:compileDebugNavigationResources UP-TO-DATE
-> Task :app:mapDebugSourceSetPaths UP-TO-DATE
-> Task :app:mergeDebugResources UP-TO-DATE
-> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
-> Task :app:extractDeepLinksDebug UP-TO-DATE
-> Task :app:processDebugMainManifest UP-TO-DATE
-> Task :app:processDebugManifest UP-TO-DATE
-> Task :app:processDebugManifestForPackage UP-TO-DATE
-> Task :app:processDebugResources UP-TO-DATE
-> Task :app:bundleDebugClassesToCompileJar UP-TO-DATE
-> Task :app:preDebugAndroidTestBuild SKIPPED
-> Task :app:processDebugAndroidTestManifest UP-TO-DATE
-> Task :app:generateDebugAndroidTestBuildConfig UP-TO-DATE
-> Task :app:generateDebugAndroidTestResources UP-TO-DATE
-> Task :app:packageDebugAndroidTestResources UP-TO-DATE
-> Task :app:processDebugAndroidTestNavigationResources UP-TO-DATE
-> Task :app:parseDebugAndroidTestLocalResources UP-TO-DATE
-> Task :app:generateDebugAndroidTestRFile UP-TO-DATE
-> Task :app:kspDebugAndroidTestKotlin UP-TO-DATE
-> Task :app:javaPreCompileDebugAndroidTest UP-TO-DATE
-> Task :app:generateDebugAssets UP-TO-DATE
-> Task :app:mergeDebugAssets UP-TO-DATE
-> Task :app:compressDebugAssets UP-TO-DATE
-> Task :app:desugarDebugFileDependencies UP-TO-DATE
-> Task :app:dexBuilderDebug UP-TO-DATE
-> Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
-> Task :app:processDebugJavaRes UP-TO-DATE
-> Task :app:mergeDebugJavaResource UP-TO-DATE
-> Task :app:checkDebugDuplicateClasses UP-TO-DATE
-> Task :app:mergeExtDexDebug UP-TO-DATE
-> Task :app:mergeLibDexDebug UP-TO-DATE
-> Task :app:mergeProjectDexDebug UP-TO-DATE
-> Task :app:mergeDebugJniLibFolders UP-TO-DATE
-> Task :app:mergeDebugNativeLibs UP-TO-DATE
-> Task :app:stripDebugDebugSymbols UP-TO-DATE
-> Task :app:validateSigningDebug UP-TO-DATE
-> Task :app:writeDebugAppMetadata UP-TO-DATE
-> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
-> Task :app:packageDebug UP-TO-DATE
-> Task :app:createDebugApkListingFileRedirect UP-TO-DATE
-> Task :app:generateDebugAndroidTestAssets UP-TO-DATE
-> Task :app:mergeDebugAndroidTestAssets UP-TO-DATE
-> Task :app:compressDebugAndroidTestAssets UP-TO-DATE
-> Task :app:desugarDebugAndroidTestFileDependencies UP-TO-DATE
-> Task :app:checkDebugAndroidTestAarMetadata UP-TO-DATE
-> Task :app:compileDebugAndroidTestNavigationResources UP-TO-DATE
-> Task :app:mapDebugAndroidTestSourceSetPaths UP-TO-DATE
-> Task :app:mergeDebugAndroidTestResources UP-TO-DATE
-> Task :app:processDebugAndroidTestResources UP-TO-DATE
-> Task :app:checkDebugAndroidTestDuplicateClasses UP-TO-DATE
-> Task :app:mergeExtDexDebugAndroidTest UP-TO-DATE
-> Task :app:mergeLibDexDebugAndroidTest UP-TO-DATE
-> Task :app:mergeDebugAndroidTestJniLibFolders UP-TO-DATE
-> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
-> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
-> Task :app:validateSigningDebugAndroidTest UP-TO-DATE
-> Task :app:writeDebugAndroidTestSigningConfigVersions UP-TO-DATE
+Initialized native services in: C:\Users\28767\.gradle\native
+Initialized jansi services in: C:\Users\28767\.gradle\native
+The client will now receive all logging from the daemon (pid: 21224). The daemon log file: C:\Users\28767\.gradle\daemon\9.1.0\daemon-21224.out.log
+Starting 4th build in daemon [uptime: 8 mins 4.597 secs, performance: 100%, GC rate: 0.00/s, heap usage: 0% of 2 GiB]
+Using 16 worker leases.
+Now considering [C:\Users\28767\WorkBuddy\local-agent] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Resolved plugin [id: 'org.gradle.toolchains.foojay-resolver-convention', version: '1.0.0']
+Settings evaluated using settings file 'C:\Users\28767\WorkBuddy\local-agent\settings.gradle.kts'.
+Projects loaded. Root project using build file 'C:\Users\28767\WorkBuddy\local-agent\build.gradle.kts'.
+Included projects: [root project 'LocalAgent', project ':app']
 
-> Task :app:compileDebugAndroidTestKotlin FAILED
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:31:25 Unresolved reference 'waitForNode'.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:42:49 Unresolved reference 'hasPlaceholder'.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:48:45 Unresolved reference 'hasEnabled'.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:49:13 No parameter with name 'useMerge' found.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:51:61 Unresolved reference 'enabled'.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:78:13 No parameter with name 'useMerge' found.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:102:70 No parameter with name 'useMerge' found.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:110:70 No parameter with name 'useMerge' found.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:132:70 No parameter with name 'useMerge' found.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/ConversationTest.kt:146:70 No parameter with name 'useMerge' found.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/DataRepositoryTest.kt:5:35 Unresolved reference 'ContextCompat'.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/DataRepositoryTest.kt:27:23 Unresolved reference 'ContextCompat'.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/DataRepositoryTest.kt:28:40 Unresolved reference 'ContextRegistry'.
-e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/androidTest/java/ai/nora/DataRepositoryTest.kt:29:29 Unresolved reference 'InstrumentationRegistry'.
+> Configure project :
+Evaluating root project 'LocalAgent' using build file 'C:\Users\28767\WorkBuddy\local-agent\build.gradle.kts'.
+Resolved plugin [id: 'com.android.application', version: '9.0.1', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.compose', version: '2.3.20', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.3.20', apply: false]
+Resolved plugin [id: 'com.google.devtools.ksp', version: '2.3.7', apply: false]
 
-FAILURE: Build failed with an exception.
+> Configure project :app
+Evaluating project ':app' using build file 'C:\Users\28767\WorkBuddy\local-agent\app\build.gradle.kts'.
+Resolved plugin [id: 'com.android.application', version: '9.0.1']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.compose', version: '2.3.20']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.3.20']
+Resolved plugin [id: 'com.google.devtools.ksp', version: '2.3.7']
+Build f3b87f40-f1fc-4496-93cc-dd4c05aed045 is started
+Using default execution profile
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+Detected Android Gradle Plugin compose compiler configuration
+All projects evaluated.
+Build f3b87f40-f1fc-4496-93cc-dd4c05aed045 is closed
 
-* What went wrong:
-Execution failed for task ':app:compileDebugAndroidTestKotlin'.
-> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
-   > Compilation error. See log for more details
-
-* Try:
-> Run with --stacktrace option to get the stack trace.
-> Run with --info or --debug option to get more log output.
-> Run with --scan to generate a Build Scan (Powered by Develocity).
-> Get more help at https://help.gradle.org.
-
-BUILD FAILED in 2s
-64 actionable tasks: 1 executed, 63 up-to-date
+[Incubating] Problems report is available at: file:///C:/Users/28767/WorkBuddy/local-agent/build/reports/problems/problems-report.html
+Watched directory hierarchies: [C:\Users\28767\WorkBuddy\local-agent]

@@ -14,6 +14,12 @@ set -euo pipefail
 HARNESS_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 PROJECT_ROOT="$(cd "$HARNESS_ROOT/.." && pwd)"
 
+# GitHub CLI 路径（Windows 安装位置）
+GH_BIN="/c/Program Files/GitHub CLI/gh.exe"
+if [[ ! -f "$GH_BIN" ]]; then
+    GH_BIN="gh"  # fallback to PATH
+fi
+
 # 颜色
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -91,7 +97,7 @@ run_github() {
     shift || true
     case "$action" in
         issue-list)
-            gh issue list --repo HarnessTeam/Nora
+            "$GH_BIN" issue list --repo HarnessTeam/Nora
             ;;
         issue-create)
             local title="${1:-}"
@@ -100,12 +106,12 @@ run_github() {
                 err "需要 issue 标题"
                 exit 1
             fi
-            gh issue create --repo HarnessTeam/Nora --title "$title" --body "$body"
+            "$GH_BIN" issue create --repo HarnessTeam/Nora --title "$title" --body "$body"
             ;;
         pr-create)
             local title="${1:-}"
             local body="${2:-}"
-            gh pr create --repo HarnessTeam/Nora --title "$title" --body "$body" --base master
+            "$GH_BIN" pr create --repo HarnessTeam/Nora --title "$title" --body "$body" --base master
             ;;
         *)
             echo "GitHub 操作: issue-list, issue-create, pr-create"

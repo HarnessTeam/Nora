@@ -69,6 +69,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
+import ai.nora.llm.EngineLoadState
 import ai.nora.model.ChatMessage
 import ai.nora.model.ConversationEntity
 import ai.nora.theme.NoraColors
@@ -587,11 +588,19 @@ private fun formatTimestamp(timestamp: Long): String {
 fun ChatScreen(
     onUnloadModel: () -> Unit = {},
     viewModel: ChatViewModel,
-    modelStatus: ModelStatus = ModelStatus.READY
+    modelStatus: ModelStatus = ModelStatus.READY  // backward compat, now derived from uiState
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val listState = rememberLazyListState()
     var showConversationSheet by remember { mutableStateOf(false) }
+
+    // 从 engineState 推导 ModelStatus（覆盖外部传入的默认值）
+    val derivedModelStatus = when (uiState.engineState) {
+        is EngineLoadState.Loaded -> ModelStatus.READY
+        is EngineLoadState.Loading -> ModelStatus.LOADING
+        is EngineLoadState.Error -> ModelStatus.ERROR
+        EngineLoadState.Unloaded -> ModelStatus.LOADING  // 未加载时视为加载中
+    }
 
     // 自动滚动到底部
     LaunchedEffect(uiState.messages.size) {
@@ -611,7 +620,7 @@ fun ChatScreen(
         topBar = {
             NoraTopBar(
                 onMenuClick = { showConversationSheet = true },
-                modelStatus = modelStatus
+                modelStatus = derivedModelStatus
             )
         },
         bottomBar = {
@@ -679,5 +688,66 @@ fun ChatScreen(
             },
             onDismiss = { showConversationSheet = false }
         )
+    }
+
+    // 模型加载中 / 错误覆盖层
+    if (!uiState.isModelReady) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (uiState.modelError != null) {
+                    // 错误状态
+                    Box(
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape)
+                            .background(NoraColors.NoraError.copy(alpha = 0.15f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            "!",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = NoraColors.NoraError
+                        )
+                    }
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        "模型加载失败",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = NoraColors.NoraError
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        uiState.modelError ?: "",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                } else {
+                    // 加载中状态
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(40.dp),
+                        color = NoraColors.NoraOrange,
+                        strokeWidth = 3.dp
+                    )
+                    Spacer(Modifier.height(20.dp))
+                    val loadingMsg = when (val s = uiState.engineState) {
+                        is EngineLoadState.Loading -> s.message.ifEmpty { "正在加载模型..." }
+                        else -> "正在准备 Nora..."
+                    }
+                    Text(
+                        loadingMsg,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        }
     }
 }
