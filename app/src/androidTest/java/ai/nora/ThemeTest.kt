@@ -4,9 +4,11 @@ import androidx.compose.ui.test.*
 import org.junit.Test
 
 /**
- * Phase 0+1 Gate — 主题测试（适配 ChatScreen 首页导航）
+ * Phase 0+1 Gate — 主题测试
  *
- * 当前 UI 流：启动 → ChatScreen（非 SetupScreen）
+ * 适配 Phase 2 Sanctuary-first 导航：
+ * - 应用启动 → SanctuaryScreen（安全屋）
+ * - 需要先调用 navigateToChatFromSanctuary() 导航到 ChatScreen
  * - 暗色背景（#121212）
  * - NoraOrange 品牌标题
  * - 状态指示器 / 欢迎区块 / 输入框
@@ -15,6 +17,8 @@ class ThemeTest : BaseAndroidTest() {
 
     @Test
     fun 暗色模式ChatScreen正确渲染() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         // 验证 ChatScreen 核心元素存在
@@ -26,6 +30,8 @@ class ThemeTest : BaseAndroidTest() {
 
     @Test
     fun 暗色模式文字内容可读() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         // 输入框 placeholder 唯一匹配 — 证明文字渲染正常
@@ -36,6 +42,8 @@ class ThemeTest : BaseAndroidTest() {
 
     @Test
     fun 暗色模式输入框存在() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         // 输入框始终存在于 ChatScreen

@@ -8,6 +8,10 @@ import org.junit.runner.RunWith
 /**
  * Phase 1 Gate — 对话持久化与切换测试
  *
+ * 适配 Phase 2 Sanctuary-first 导航：
+ * - 应用启动 → SanctuaryScreen（安全屋）
+ * - 需要先调用 navigateToChatFromSanctuary() 导航到 ChatScreen
+ *
  * UI 约束说明：
  * 当模型未就绪时（模拟器无模型文件），ChatScreen 显示全屏加载覆盖层
  * （"正在准备 Nora..." + CircularProgressIndicator）。
@@ -36,6 +40,8 @@ class ConversationTest : BaseAndroidTest() {
 
     @Test
     fun 点击标题_对话列表BottomSheet展开() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         // 点击 Nora 标题 — 验证 TopBar 可交互
@@ -54,6 +60,8 @@ class ConversationTest : BaseAndroidTest() {
 
     @Test
     fun 新建对话功能可触发() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         clickNoraTitle()
@@ -77,6 +85,8 @@ class ConversationTest : BaseAndroidTest() {
 
     @Test
     fun 对话列表状态管理正确() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         clickNoraTitle()

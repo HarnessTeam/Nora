@@ -1,0 +1,94 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preBundledDebugBuild UP-TO-DATE
+> Task :app:mergeBundledDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateBundledDebugBuildConfig UP-TO-DATE
+> Task :app:generateBundledDebugResources UP-TO-DATE
+> Task :app:packageBundledDebugResources UP-TO-DATE
+> Task :app:processBundledDebugNavigationResources UP-TO-DATE
+> Task :app:parseBundledDebugLocalResources UP-TO-DATE
+> Task :app:generateBundledDebugRFile UP-TO-DATE
+> Task :app:kspBundledDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileBundledDebug UP-TO-DATE
+> Task :app:generateBundledDebugAssets UP-TO-DATE
+> Task :app:mergeBundledDebugAssets UP-TO-DATE
+> Task :app:compressBundledDebugAssets UP-TO-DATE
+> Task :app:desugarBundledDebugFileDependencies UP-TO-DATE
+> Task :app:checkBundledDebugAarMetadata UP-TO-DATE
+> Task :app:compileBundledDebugNavigationResources UP-TO-DATE
+> Task :app:mapBundledDebugSourceSetPaths UP-TO-DATE
+> Task :app:mergeBundledDebugResources UP-TO-DATE
+> Task :app:createBundledDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksBundledDebug UP-TO-DATE
+> Task :app:processBundledDebugMainManifest UP-TO-DATE
+> Task :app:processBundledDebugManifest UP-TO-DATE
+> Task :app:processBundledDebugManifestForPackage UP-TO-DATE
+> Task :app:processBundledDebugResources UP-TO-DATE
+> Task :app:checkBundledDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeExtDexBundledDebug UP-TO-DATE
+> Task :app:mergeLibDexBundledDebug UP-TO-DATE
+> Task :app:mergeBundledDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeBundledDebugNativeLibs UP-TO-DATE
+> Task :app:stripBundledDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningBundledDebug UP-TO-DATE
+> Task :app:writeBundledDebugAppMetadata UP-TO-DATE
+> Task :app:writeBundledDebugSigningConfigVersions UP-TO-DATE
+> Task :app:preSlimDebugBuild UP-TO-DATE
+> Task :app:mergeSlimDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateSlimDebugBuildConfig UP-TO-DATE
+> Task :app:generateSlimDebugResources UP-TO-DATE
+> Task :app:packageSlimDebugResources UP-TO-DATE
+> Task :app:processSlimDebugNavigationResources UP-TO-DATE
+> Task :app:parseSlimDebugLocalResources UP-TO-DATE
+> Task :app:generateSlimDebugRFile UP-TO-DATE
+> Task :app:kspSlimDebugKotlin UP-TO-DATE
+
+> Task :app:compileBundledDebugKotlin FAILED
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:7:37 Unresolved reference 'NavBackStackEntry'.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:55:42 Unresolved reference 'NavBackStackEntry'.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:56:41 Unresolved reference 'NavBackStackEntry'.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:57:43 Unresolved reference 'NavBackStackEntry'.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:67:40 Argument type mismatch: actual type is '() -> Boolean', but '() -> Unit' was expected.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:68:39 Argument type mismatch: actual type is '() -> Boolean', but '() -> Unit' was expected.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:69:41 Argument type mismatch: actual type is '() -> Boolean', but '() -> Unit' was expected.
+
+> Task :app:compileSlimDebugKotlin FAILED
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:7:37 Unresolved reference 'NavBackStackEntry'.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:55:42 Unresolved reference 'NavBackStackEntry'.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:56:41 Unresolved reference 'NavBackStackEntry'.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:57:43 Unresolved reference 'NavBackStackEntry'.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:67:40 Argument type mismatch: actual type is '() -> Boolean', but '() -> Unit' was expected.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:68:39 Argument type mismatch: actual type is '() -> Boolean', but '() -> Unit' was expected.
+e: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:69:41 Argument type mismatch: actual type is '() -> Boolean', but '() -> Unit' was expected.
+
+FAILURE: Build completed with 2 failures.
+
+1: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:compileBundledDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+2: Task failed with an exception.
+-----------
+* What went wrong:
+Execution failed for task ':app:compileSlimDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to generate a Build Scan (Powered by Develocity).
+> Get more help at https://help.gradle.org.
+==============================================================================
+
+BUILD FAILED in 3s
+39 actionable tasks: 2 executed, 37 up-to-date

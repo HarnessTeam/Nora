@@ -14,11 +14,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 /**
- * Phase 1 Gate — 消息持久化端到端测试（适配 ChatScreen 首页导航）
+ * Phase 1 Gate — 消息持久化端到端测试
  *
- * 当前 UI 流：启动 → ChatScreen（非 SetupScreen）
- * - 无 SetupScreen 检测逻辑（不再需要）
- * - 直接验证 ChatScreen 消息功能
+ * 适配 Phase 2 Sanctuary-first 导航：
+ * - 应用启动 → SanctuaryScreen（安全屋）
+ * - 需要先调用 navigateToChatFromSanctuary() 导航到 ChatScreen
  *
  * 测试场景：
  * 1. 空状态：欢迎区块或加载覆盖层可见
@@ -34,6 +34,8 @@ class MessagePersistenceTest : BaseAndroidTest() {
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun 空状态_欢迎区块或加载态可见() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         // 二选一：欢迎区块 或 加载覆盖层
@@ -61,6 +63,8 @@ class MessagePersistenceTest : BaseAndroidTest() {
      */
     @Test
     fun 输入框_空输入时占位符可见() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         // ChatScreen 的输入框始终存在，placeholder = "发送消息给 Nora..."
@@ -75,6 +79,8 @@ class MessagePersistenceTest : BaseAndroidTest() {
     @OptIn(ExperimentalTestApi::class)
     @Test
     fun 发送消息_输入框可交互() {
+        // Phase 2: 从安全屋导航到聊天页
+        navigateToChatFromSanctuary()
         composeTestRule.waitForIdle()
 
         // 先确认输入框存在

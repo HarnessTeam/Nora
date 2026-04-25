@@ -12,17 +12,20 @@ import ai.nora.model.ModelAssetManager
 import ai.nora.model.ModelScanner
 import ai.nora.ui.chat.ChatScreen
 import ai.nora.ui.chat.ChatViewModel
+import ai.nora.ui.log.LogScreen
+import ai.nora.ui.sanctuary.SanctuaryScreen
+import ai.nora.ui.skill.SkillTreeScreen
 import kotlinx.coroutines.launch
 
 /**
- * Nora 主导航 — 直接进入 Chat，模型在后台自动加载。
+ * Nora 主导航 — 宪法 3.4.B：打开 Nora 进入安全屋（Sanctuary）
  *
  * 流程：
  * 1. 应用启动 → MainNavigation 初始化
  * 2. ExecuTorchEngine + ModelScanner 实例化（remember，跨 recomposition 保持）
- * 3. LaunchedEffect + coroutineScope 触发模型加载流程
- * 4. ChatViewModel 监听 engine.loadState → isModelReady 变化 → UI 更新
- * 5. 模型加载完成前：ChatScreen 显示全屏加载覆盖层
+ * 3. LaunchedEffect + coroutineScope 触发模型加载流程（后台静默）
+ * 4. SanctuaryScreen（安全屋）作为首页
+ * 5. 底部三按钮导航 → 对话/日志/技能
  */
 @Composable
 fun MainNavigation() {
@@ -32,6 +35,7 @@ fun MainNavigation() {
     val engine = remember { ExecuTorchEngine(app) }
     val scanner = remember { ModelScanner(app) }
     val dataRepository = remember { app.dataRepository }
+    val chatViewModel = remember { ChatViewModel(engine, dataRepository) }
 
     val scope = rememberCoroutineScope()
 
@@ -42,18 +46,42 @@ fun MainNavigation() {
         }
     }
 
-    // Shared backstack — 始终直接进入 Chat（无需 Setup 页面）
-    val backStack = rememberNavBackStack(Chat)
+    // Shared backstack — 宪法 3.4.B：首页 = 安全屋 Sanctuary
+    val backStack = rememberNavBackStack(Sanctuary, Log, Skill)
+
+    // 导航回调工厂（SanctuaryScreen 需要三个回调）
+    // NavBackStack extends SnapshotStateList<NavBackStackEntry<*>>，add() 返回 Boolean
+    val navigateToChat: () -> Unit = { backStack.add(Chat); Unit }
+    val navigateToLog: () -> Unit = { backStack.add(Log); Unit }
+    val navigateToSkill: () -> Unit = { backStack.add(Skill); Unit }
 
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
         entryProvider = entryProvider {
+            // ── 安全屋首页 ──
+            entry<Sanctuary> {
+                SanctuaryScreen(
+                    viewModel = chatViewModel,
+                    onNavigateToChat = navigateToChat,
+                    onNavigateToLog = navigateToLog,
+                    onNavigateToSkill = navigateToSkill
+                )
+            }
+            // ── 对话页 ──
             entry<Chat> {
                 ChatScreen(
-                    viewModel = remember { ChatViewModel(engine, dataRepository) },
+                    viewModel = chatViewModel,
                     onUnloadModel = { engine.unload() }
                 )
+            }
+            // ── 日志页（Phase 4） ──
+            entry<Log> {
+                LogScreen()
+            }
+            // ── 技能页（Phase 5） ──
+            entry<Skill> {
+                SkillTreeScreen()
             }
         }
     )
