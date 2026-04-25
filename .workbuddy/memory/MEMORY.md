@@ -4,8 +4,8 @@
 
 ### 项目概述
 - **产品**: Nora — 离线 Android AI 智能体（数字生命）
-- **包名**: `com.example.localagent`（迁移中 → `ai.nora`）
-- **Phase 状态**: Phase 0 进行中（72.2%，Step 4b 待执行）
+- **包名**: `ai.nora`（Phase 3 已完成）
+- **Phase 状态**: Phase 0 进行中（83.3%，Step 7 待执行）
 - **技术栈**: Kotlin + Jetpack Compose + Room + ExecuTorch + Navigation3
 
 ### 当前 Phase 0 进度
@@ -18,6 +18,11 @@
 - ✅ Step 3c: 目录结构 com.example.localagent → ai.nora（rename）
 - ✅ Step 3d: XML 资源和 AndroidManifest 包名引用（已确认零残留）
 - ✅ Step 3e: 测试文件引用更新（ChatModelsTest + BaseAndroidTest）
+- ✅ Step 4a: 应用名 "LocalAgent" → "Nora"（strings.xml）
+- ✅ Step 4b: 应用名清理（NoraApp/Theme.Nora/NoraTheme/SetupScreen/ChatScreen，11处残留全清）
+- ✅ Step 5: Nora色彩系统（NoraColors.kt：Background=#121212, Surface=#1E1E1E, NoraOrange=#FF6B6B）
+- ✅ Step 6: Theme.kt重写（强制暗色，移除Material紫色，移除isSystemInDarkTheme）
+- ⬜ Step 7: Typography.kt
 - ✅ Step 4a: 应用名 "LocalAgent" → "Nora"（strings.xml）
 - ⬜ Step 4b: 应用名清理 — themes.xml / SetupScreen / 其他残留
 - ⬜ Step 5-7: Nora 色彩/Theme/Typography

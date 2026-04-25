@@ -150,10 +150,11 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 - [x] Step 5: 建立 Nora 色彩系统（Color.kt → NoraColors.kt）✅ (2026-04-25 10:33)
   - 定义：Background=#121212, Surface=#1E1E1E, NoraOrange=#FF6B6B, PrimaryText=#E0E0E0, SecondaryText=#9E9E9E
   - 验证：编译通过 + `assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit 012996d`
-- [ ] Step 6: 重写 Theme.kt — 强制暗色模式，Nora 色板
+- [x] Step 6: 重写 Theme.kt — 强制暗色模式，Nora 色板 ✅ (2026-04-25 10:36)
   - 删除 `darkTheme` 参数，硬编码暗色
-  - 使用 NoraColors 替代所有 Material 紫色
-  - 验证：编译通过
+  - 使用 NoraColors 替代所有 Material 紫色（0xFF6750A4 已消除）
+  - `isSystemInDarkTheme` 已移除
+  - 验证：编译通过 + `assembleDebug` ✅ + `testDebugUnitTest` ✅ + `git commit d5bad67`
 - [ ] Step 7: 更新 Typography.kt — Inter + JetBrains Mono 字体引用
   - 验证：编译通过
 - [ ] Step 8: Phase 0 Gate 测试 + 宪法合规审计
@@ -296,14 +297,14 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 ## 状态
 
 **当前 Phase**: 0（项目重生）
-**NEXT_STEP**: Phase 0 Step 5 — 建立 Nora 色彩系统（Color.kt → NoraColors.kt）
-**Phase 0 进度**: 14/18 Steps 完成（77.8%）
+**NEXT_STEP**: Phase 0 Step 7 — 更新 Typography.kt（Inter + JetBrains Mono 字体引用）
+**Phase 0 进度**: 15/18 Steps 完成（83.3%）
 **上次 Instrument 测试**: 2026-04-25 02:44 — 0 tests, BUILD SUCCESSFUL
 **测试通过率**: 100%（空跑，0/0）
 **效率指标**：
   - Step 平均完成时间：~3 min/Step
-  - Session 内 Step 吞吐量：4 Steps in ~10 min（0.4 Steps/min）
-  - 宪法合规度：4/9（44%，目标 Phase 0 完成后 7/9）
+  - Session 内 Step 吞吐量：7 Steps in ~25 min（0.28 Steps/min）
+  - 宪法合规度：7/9（78%，目标 Phase 0 完成后 7/9）
 **BLOCKER 状态**: ✅ 无（ADB emulator-5554 在线，2026-04-25 10:21 确认）
 
 ### 自动化执行修复记录

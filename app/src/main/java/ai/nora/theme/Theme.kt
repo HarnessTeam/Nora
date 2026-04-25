@@ -39,7 +39,7 @@ fun NoraTheme(
     // 强制暗色，永不跟随系统主题
     MaterialTheme(
         colorScheme = NoraDarkColorScheme,
-        typography = AppTypography,
+        typography = NoraTypography,
         content = content
     )
 }
