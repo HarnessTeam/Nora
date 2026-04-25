@@ -2,6 +2,7 @@ package ai.nora.ui.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import ai.nora.data.DataRepository
 import ai.nora.llm.ExecuTorchEngine
 import ai.nora.llm.LlmEngine
 import ai.nora.model.ChatMessage
@@ -14,11 +15,13 @@ import kotlinx.coroutines.launch
 data class ChatUiState(
     val messages: List<ChatMessage> = emptyList(),
     val inputText: String = "",
-    val isGenerating: Boolean = false
+    val isGenerating: Boolean = false,
+    val currentConversationId: Long? = null
 )
 
 class ChatViewModel(
-    private val llmEngine: LlmEngine
+    private val llmEngine: LlmEngine,
+    private val dataRepository: DataRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ChatUiState())
