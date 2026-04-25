@@ -5,6 +5,7 @@ import ai.nora.model.MessageEntity
 import ai.nora.model.ChatMessage
 import ai.nora.model.toDomain
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class DataRepository(
     private val conversationDao: ConversationDao,
@@ -15,6 +16,14 @@ class DataRepository(
 
     suspend fun createConversation(title: String, modelPath: String = ""): Long {
         return conversationDao.insert(ConversationEntity(title = title, modelPath = modelPath))
+    }
+
+    /**
+     * Returns the most recent conversation's ID, or null if none exist.
+     * Conversations are already ordered by updatedAt DESC in the DAO.
+     */
+    suspend fun getMostRecentConversationId(): Long? {
+        return conversationDao.getAllConversationsOnce().firstOrNull()?.id
     }
 
     fun getMessages(conversationId: Long): Flow<List<MessageEntity>> =

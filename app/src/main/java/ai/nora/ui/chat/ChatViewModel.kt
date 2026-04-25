@@ -30,6 +30,32 @@ class ChatViewModel(
 
     private var streamJob: Job? = null
 
+    init {
+        // Restore most recent conversation from Room on startup
+        viewModelScope.launch {
+            val lastConvId = withContext(ioDispatcher) {
+                dataRepository.getMostRecentConversationId()
+            }
+            if (lastConvId != null) {
+                loadConversation(lastConvId)
+            }
+        }
+    }
+
+    /**
+     * Loads historical messages for a given conversation and updates UI state.
+     * Called on startup to restore the last active conversation.
+     */
+    private suspend fun loadConversation(conversationId: Long) {
+        val messages = withContext(ioDispatcher) {
+            dataRepository.getMessagesSync(conversationId)
+        }
+        _uiState.value = _uiState.value.copy(
+            currentConversationId = conversationId,
+            messages = messages
+        )
+    }
+
     /**
      * Ensures an active conversation exists in Room.
      * If currentConversationId is null, creates one and updates state.

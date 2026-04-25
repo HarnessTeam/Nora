@@ -12,8 +12,11 @@
 - ✅ Step 1: Application 级 Room 初始化（NoraApp.kt）— git 9a363b5
 - ✅ Step 2: Navigation.kt 注入 DataRepository — git ac98425
 - ✅ Step 3: ChatViewModel 构造函数注入 DataRepository — git 216ff4b
-- **NEXT_STEP**: Phase 1 Step 4 — 发送消息时 write-ahead（先显示后存库）
-- **Phase 1 进度**: 3/7 Steps（42.9%）
+- ✅ Step 4: write-ahead 持久化（sendMessage/sendMessageStream）— git 4183731
+  - `ensureConversation()` / `persistUserMessage()` / `persistAssistantMessage()`
+  - DataRepository 新增 `updateConversationTimestamp()`
+- **NEXT_STEP**: Phase 1 Step 5 — 加载对话时从 Room 恢复历史消息
+- **Phase 1 进度**: 4/7 Steps（57.1%）
 
 ### Phase 0 归档
 - ✅ 全部 18 Steps 完成
