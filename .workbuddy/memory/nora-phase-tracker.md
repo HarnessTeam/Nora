@@ -493,9 +493,9 @@ grep -r "0xFF6750A4" app/src/main/ # 必须返回 0
 
 ## 状态
 
-**当前 Phase**: Phase Design 🔲 待执行
-**NEXT_STEP**: Phase Design Step 1 — 创建设计系统文件 `nora-design-system.md`
-**Phase Design 进度**: 🔲 待执行（0/8 Steps）
+**当前 Phase**: Phase Design 🔄 IN PROGRESS
+**NEXT_STEP**: Phase Design Step 4 — WelcomeSection + MessageBubble 设计系统适配
+**Phase Design 进度**: 🔄 3/8 Steps 完成（37.5%）
 **Phase 1 进度**: 6/7 Steps 完成（85.7%）— 等待 Design System 后推进 Step 7
 **Phase 0 进度**: 18/18 Steps 完成（100%）✅ Phase 0 Gate Passed
 **Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
