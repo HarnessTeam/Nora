@@ -55,3 +55,6 @@ Desktop.ini
 
 # Screenshots (for reference only, not tracked)
 Screenshot*.png
+
+# Exception: Official assets screenshot
+!assets/screenshot.png
