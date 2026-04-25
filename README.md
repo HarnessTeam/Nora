@@ -28,47 +28,27 @@
 
 ## 下载 APK
 
-| 版本 | 文件 | 大小 | 内置模型 | 说明 |
-|------|------|------|----------|------|
-| **Qwen3 厚集成** | [nora-qwen-release.apk](./nora-qwen-release.apk) | 512.66 MB | ✅ Qwen3-0.6B PTE | 启动即用，内置 469MB 模型 |
-| **厚集成（空）** | [nora-bundled-release.apk](./nora-bundled-release.apk) | 34.45 MB | ❌ | 需手动放入模型文件 |
-| **薄集成** | [nora-slim-release.apk](./nora-slim-release.apk) | 34.45 MB | ❌ | 极简版，支持 ADB/SAF 加载模型 |
+扫码下方二维码，直接下载最新版 Nora APK 安装包：
+
+![下载 APK](assets/download.png)
+
+也可以通过下方链接手动下载：
+
+| 版本 | 文件 | 内置模型 | 说明 |
+|------|------|----------|------|
+| **厚集成** | [nora-qwen-release.apk](./nora-qwen-release.apk) | ✅ Qwen3-0.6B PTE | 启动即用，内置模型 |
+| **厚集成（空）** | [nora-bundled-release.apk](./nora-bundled-release.apk) | ❌ | 需手动放入模型文件 |
+| **薄集成** | [nora-slim-release.apk](./nora-slim-release.apk) | ❌ | 极简版，支持 ADB/SAF 加载模型 |
 
 ### 前置要求
 
-- Android 设备（API 36+）或模拟器
-- 已安装 Android SDK 和 Gradle（仅构建时需要）
+- Android 设备（API 36+）
 
-### 1. 下载模型文件
+### 2. 构建项目（开发者）
 
-Nora 需要 Qwen3-0.6B 量化模型才能运行 LLM 对话功能。
-
-**方式 A：手动下载**
-
-访问 [Qwen3 GGUF 模型下载页面](https://huggingface.co/Qwen/Qwen3-0.6B-GGUF)，下载量化版本（如 `qwen3-0.6b-q4_k_m.gguf`），重命名为 `model.pte` 并放置到：
-
-```
-/data/local/tmp/llama/model.pte
-```
-
-**方式 B：让 AI 助手帮你下载**
-
-你可以将以下提示复制给 AI 助手（如 Claude、WorkBuddy 等）：
-
-```
-请帮我下载 Qwen3-0.6B 量化模型：
-1. 访问 https://huggingface.co/Qwen/Qwen3-0.6B-GGUF
-2. 下载 q4_k_m 量化版本（推荐）
-3. 使用 ADB 将文件推送到模拟器/设备：
-   adb push qwen3-0.6b-q4_k_m.gguf /data/local/tmp/llama/model.pte
-4. 如果目录不存在，先创建：
-   adb shell mkdir -p /data/local/tmp/llama
-```
-
-### 2. 构建项目
+如果你想从源码构建：
 
 ```bash
-# 克隆仓库
 git clone https://github.com/HarnessTeam/Nora.git
 cd Nora
 
