@@ -1,4 +1,4 @@
-package com.example.localagent.ui.chat
+package ai.nora.ui.chat
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +42,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalConfiguration
-import com.example.localagent.model.ChatMessage
+import ai.nora.model.ChatMessage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

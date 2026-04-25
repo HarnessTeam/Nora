@@ -1,10 +1,10 @@
-package com.example.localagent.ui.setup
+package ai.nora.ui.setup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.localagent.llm.EngineLoadState
-import com.example.localagent.llm.ExecuTorchEngine
-import com.example.localagent.model.ModelScanner
+import ai.nora.llm.EngineLoadState
+import ai.nora.llm.ExecuTorchEngine
+import ai.nora.model.ModelScanner
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

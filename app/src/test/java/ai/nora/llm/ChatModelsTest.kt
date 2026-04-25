@@ -1,6 +1,6 @@
-package com.example.localagent.llm
+package ai.nora.llm
 
-import com.example.localagent.model.ChatMessage
+import ai.nora.model.ChatMessage
 import org.junit.Assert.*
 import org.junit.Test
 

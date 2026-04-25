@@ -1,12 +1,12 @@
-package com.example.localagent.data
+package ai.nora.data
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
-import com.example.localagent.model.ConversationEntity
-import com.example.localagent.model.MessageEntity
+import ai.nora.model.ConversationEntity
+import ai.nora.model.MessageEntity
 
 @Dao
 interface ConversationDao {

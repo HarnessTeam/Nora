@@ -1,4 +1,4 @@
-package com.example.localagent.ui.setup
+package ai.nora.ui.setup
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.localagent.llm.EngineLoadState
-import com.example.localagent.model.ModelScanner
+import ai.nora.llm.EngineLoadState
+import ai.nora.model.ModelScanner
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

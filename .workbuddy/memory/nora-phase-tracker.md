@@ -108,9 +108,9 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
   - 验证：编译通过 + `testDebugUnitTest` 通过
 - [x] Step 2b: AppDatabase Entity/DAO 引用 ✅ (2026-04-25 04:32)
   - 验证：编译通过 + `assembleDebug` 成功
-- [ ] Step 3a: 包名迁移 — build.gradle.kts（namespace + applicationId）
+- [x] Step 3a: 包名迁移 — build.gradle.kts（namespace + applicationId）✅ (2026-04-25 09:39)
   - `com.example.localagent` → `ai.nora`
-  - 验证：编译通过
+  - 验证：`assembleDebug` ✅ + `git commit b181230`
 - [ ] Step 3b: 包名迁移 — 源文件（21 个 .kt 文件 package 声明）
   - 批量替换所有 `package com.example.localagent` → `package ai.nora`
   - 验证：编译通过
@@ -281,8 +281,8 @@ gradlew connectedDebugAndroidTest --tests "ai.nora.ui.chat.ChatScreenTest"
 ## 状态
 
 **当前 Phase**: 0（项目重生）
-**NEXT_STEP**: Phase 0 Step 3a — 包名迁移：build.gradle.kts（namespace + applicationId）
-**Phase 0 进度**: 7/18 Steps 完成（38.9%）
+**NEXT_STEP**: Phase 0 Step 3b — 包名迁移：源文件 package 声明（21 个 .kt 文件）
+**Phase 0 进度**: 8/18 Steps 完成（44.4%）
 **上次 Instrument 测试**: 2026-04-25 02:44 — 0 tests, BUILD SUCCESSFUL
 **测试通过率**: 100%（空跑，0/0）
 **效率指标**：

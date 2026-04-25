@@ -1,4 +1,4 @@
-package com.example.localagent.theme
+package ai.nora.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

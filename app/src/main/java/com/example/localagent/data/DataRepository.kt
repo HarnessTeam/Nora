@@ -1,9 +1,9 @@
-package com.example.localagent.data
+package ai.nora.data
 
-import com.example.localagent.model.ConversationEntity
-import com.example.localagent.model.MessageEntity
-import com.example.localagent.model.ChatMessage
-import com.example.localagent.model.toDomain
+import ai.nora.model.ConversationEntity
+import ai.nora.model.MessageEntity
+import ai.nora.model.ChatMessage
+import ai.nora.model.toDomain
 import kotlinx.coroutines.flow.Flow
 
 class DataRepository(

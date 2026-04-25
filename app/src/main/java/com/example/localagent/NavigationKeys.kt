@@ -1,4 +1,4 @@
-package com.example.localagent
+package ai.nora
 
 import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.NavKey

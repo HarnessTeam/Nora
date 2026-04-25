@@ -1,10 +1,10 @@
-package com.example.localagent.ui.chat
+package ai.nora.ui.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.localagent.llm.ExecuTorchEngine
-import com.example.localagent.llm.LlmEngine
-import com.example.localagent.model.ChatMessage
+import ai.nora.llm.ExecuTorchEngine
+import ai.nora.llm.LlmEngine
+import ai.nora.model.ChatMessage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

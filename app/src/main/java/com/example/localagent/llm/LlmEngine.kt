@@ -1,4 +1,4 @@
-package com.example.localagent.llm
+package ai.nora.llm
 
 import kotlinx.coroutines.flow.StateFlow
 

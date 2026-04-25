@@ -1,9 +1,9 @@
-package com.example.localagent.data
+package ai.nora.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.localagent.model.ConversationEntity
-import com.example.localagent.model.MessageEntity
+import ai.nora.model.ConversationEntity
+import ai.nora.model.MessageEntity
 
 @Database(
     entities = [ConversationEntity::class, MessageEntity::class],

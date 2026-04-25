@@ -1,4 +1,4 @@
-package com.example.localagent.model
+package ai.nora.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

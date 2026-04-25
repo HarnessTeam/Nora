@@ -1,4 +1,4 @@
-package com.example.localagent
+package ai.nora
 
 import android.app.Application
 import android.util.Log

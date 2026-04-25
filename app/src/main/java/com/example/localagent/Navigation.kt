@@ -1,4 +1,4 @@
-package com.example.localagent
+package ai.nora
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,10 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import com.example.localagent.ui.chat.ChatScreen
-import com.example.localagent.ui.chat.ChatViewModel
-import com.example.localagent.ui.setup.SetupScreen
-import com.example.localagent.ui.setup.SetupViewModel
+import ai.nora.ui.chat.ChatScreen
+import ai.nora.ui.chat.ChatViewModel
+import ai.nora.ui.setup.SetupScreen
+import ai.nora.ui.setup.SetupViewModel
 
 @Composable
 fun MainNavigation() {
@@ -21,8 +21,8 @@ fun MainNavigation() {
 
     // Shared engine and scanner instances (manual DI)
     val app = LocalAgentApp.instance
-    val engine = remember { com.example.localagent.llm.ExecuTorchEngine(app) }
-    val scanner = remember { com.example.localagent.model.ModelScanner(app) }
+    val engine = remember { ai.nora.llm.ExecuTorchEngine(app) }
+    val scanner = remember { ai.nora.model.ModelScanner(app) }
 
     NavDisplay(
         backStack = backStack,
