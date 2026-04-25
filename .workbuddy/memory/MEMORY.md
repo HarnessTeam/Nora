@@ -1,5 +1,13 @@
 # MEMORY.md — 长期记忆
 
+## Nora 设计系统（DesignKit）
+- **设计系统文件**：`C:\Users\28767\WorkBuddy\local-agent\.workbuddy\memory\nora-design-system.md`
+- **核心组件路径**：`ai/nora/ui/design/NoraIcons.kt`（NoraLogo/BreathingDot/NoraStatusIndicator）
+- **色彩系统**：`ai/nora/theme/NoraColors.kt`（PrimaryText/SecondaryText/Divider 是新属性名）
+- **圆角规范**：`ai/nora/theme/NoraShapes.kt`（InputBar=24dp, MessageBubble=16dp, Tag=8dp）
+- **Bug 记录**：ChatScreen.kt 有重复 NoraColors object（已修复），Theme.kt 引用旧颜色名（已同步）
+- **编译注意**：Material3 1.7+ (BOM 2026) Typography 不支持 displayLarge/displayMedium/displaySmall 参数
+
 ## Nora Android 项目（C:\Users\28767\WorkBuddy\local-agent）
 
 ### 项目概述

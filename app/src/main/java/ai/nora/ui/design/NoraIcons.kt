@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ai.nora.theme.NoraColors
+import ai.nora.theme.NoraShapes
 
 // ═══════════════════════════════════════════════════════
 // NoraIcons — Apple HIG + 豆包/ChatGPT 品牌图标组件
@@ -171,7 +171,7 @@ fun NoraStatusIndicator(
 
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
+        shape = NoraShapes.TagShape,
         color = color.copy(alpha = 0.15f)
     ) {
         Column(

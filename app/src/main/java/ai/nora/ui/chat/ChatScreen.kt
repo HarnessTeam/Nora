@@ -29,7 +29,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.MenuOpen
@@ -80,6 +79,7 @@ import kotlinx.coroutines.launch
 import ai.nora.model.ChatMessage
 import ai.nora.model.ConversationEntity
 import ai.nora.theme.NoraColors
+import ai.nora.theme.NoraShapes
 import ai.nora.ui.design.NoraLogo
 import ai.nora.ui.design.NoraStatus
 import ai.nora.ui.design.NoraStatusIndicator
@@ -155,7 +155,7 @@ private fun ModelStatusIndicator(status: ModelStatus) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
+            .clip(NoraShapes.TagShape)
             .background(color.copy(alpha = 0.15f))
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
@@ -258,7 +258,7 @@ private fun QuickActionCard(
         modifier = Modifier
             .width(120.dp)
             .clickable { onClick() },
-        shape = RoundedCornerShape(16.dp),
+        shape = NoraShapes.QuickActionCardShape,
         color = NoraColors.SurfaceElevated,
         shadowElevation = 0.dp
     ) {
@@ -303,7 +303,7 @@ fun MessageBubble(message: ChatMessage) {
         horizontalAlignment = if (isUser) Alignment.End else Alignment.Start
     ) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = NoraShapes.MessageBubbleShape,
             color = when {
                 isError -> MaterialTheme.colorScheme.errorContainer
                 isUser -> NoraColors.NoraOrange  // 用户消息：NoraOrange
@@ -396,7 +396,7 @@ fun NoraInputBar(
                     )
                 },
                 maxLines = 4,
-                shape = RoundedCornerShape(24.dp),  // Apple HIG 标准大圆角
+                shape = NoraShapes.InputBarShape,
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = NoraColors.NoraOrange,
                     unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant,

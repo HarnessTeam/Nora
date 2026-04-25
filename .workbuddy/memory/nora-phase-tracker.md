@@ -239,19 +239,24 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 
 > 参考：`nora-design-system.md`（Apple HIG 对齐版）
 
-- [ ] Step 1: 设计系统文件创建 ✅
+- [x] Step 1: 设计系统文件创建 ✅ (2026-04-25 15:20)
   - `nora-design-system.md`：颜色/字体/组件/动效规范
   - Apple 清晰原则落地
   - 禁止模式清单
-- [ ] Step 2: 组件库实现（DesignKit）
-  - 创建 `ai/nora/ui/design/` 包
-  - `NoraColors.kt`：完整颜色系统
-  - `NoraTypography.kt`：字号/字重规范
-  - `NoraShapes.kt`：圆角规范（24dp 输入框、16dp 气泡）
-- [ ] Step 3: 基础组件实现
-  - `NoraTopBar.kt`：56dp 标准高度，Logo + 状态
-  - `NoraInputBar.kt`：大圆角胶囊（24dp）+ ArrowUp 按钮
-  - `NoraIcon.kt`：Nora 品牌图标组件
+  - git commit 0a00abd
+- [x] Step 2: 组件库实现（DesignKit）✅ (2026-04-25 15:30)
+  - `ai/nora/theme/NoraColors.kt`：完整色彩系统（品牌色/背景色/文字色/状态色）
+  - `ai/nora/theme/NoraShapes.kt`：圆角规范（24dp输入框/16dp气泡/8dp标签）
+  - `ai/nora/theme/Typography.kt`：字号层次（headline/title/body/label 系列）
+  - Bug Fix：Theme.kt 同步使用新颜色属性名
+  - git commit 0a00abd
+- [x] Step 3: 基础组件实现 ✅ (2026-04-25 15:35)
+  - `ai/nora/ui/design/NoraIcons.kt`：NoraLogo + BreathingDot + NoraStatusIndicator
+  - 呼吸光点：1500ms LinearEasing 动画
+  - NoraStatus 四态：READY/THINKING/ERROR/OFFLINE
+  - Bug Fix：ChatScreen.kt 移除重复 NoraColors，移除设置入口，MessageBubble 样式更新
+  - git commit 0a00abd
+- [ ] Step 4: 欢迎区块（WelcomeSection）设计适配
 - [ ] Step 4: 欢迎区块（WelcomeSection）
   - Logo + 欢迎语
   - 快捷功能卡片（3张）

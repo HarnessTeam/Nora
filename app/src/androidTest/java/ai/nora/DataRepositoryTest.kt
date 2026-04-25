@@ -2,7 +2,7 @@ package ai.nora
 
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.ContextCompat
+import androidx.test.platform.app.ContextRegistry
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
@@ -23,12 +23,8 @@ class DataRepositoryTest {
 
     @Before
     fun setup() {
-        // 使用 in-memory Room 数据库，避免污染真实数据
-        val context = ContextCompat.getTestInstrumentationContext(
-            androidx.test.platform.app.ContextRegistry.getActualApplication(
-                android.app.InstrumentationRegistry.getInstrumentation().targetContext
-            )
-        )
+        // 使用 Instrumentation 的真实 targetContext
+        val context = ContextRegistry.getActualApplication()
         database = Room.inMemoryDatabaseBuilder(
             context,
             ai.nora.data.AppDatabase::class.java
@@ -51,7 +47,7 @@ class DataRepositoryTest {
     }
 
     /**
-     * 测试获取最近对话 ID
+     * 测试获取最近对话 ID（无对话时返回 null）
      */
     @Test
     fun 获取最近对话ID_无对话时返回null() {
@@ -116,7 +112,7 @@ class DataRepositoryTest {
             repository.addMessage(conv1, role = "user", content = "第一条消息")
         }
 
-        // 中间插入延迟确保 updatedAt 不同（纳秒级时间戳）
+        // 中间插入延迟确保 updatedAt 不同
         Thread.sleep(10)
 
         val conv2 = runBlocking { repository.createConversation(title = "新对话") }
