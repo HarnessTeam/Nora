@@ -24,6 +24,9 @@ fun MainNavigation() {
     val engine = remember { ai.nora.llm.ExecuTorchEngine(app) }
     val scanner = remember { ai.nora.model.ModelScanner(app) }
 
+    // Data layer injection from Application
+    val dataRepository = remember { app.dataRepository }
+
     NavDisplay(
         backStack = backStack,
         onBack = { backStack.removeLastOrNull() },
@@ -40,7 +43,7 @@ fun MainNavigation() {
             }
             entry<Chat> {
                 ChatScreen(
-                    viewModel = remember { ChatViewModel(engine) },
+                    viewModel = remember { ChatViewModel(engine, dataRepository) },
                     onUnloadModel = {
                         modelLoaded = false
                         backStack.clear()

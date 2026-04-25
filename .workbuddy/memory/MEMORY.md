@@ -13,6 +13,14 @@
 - ✅ Phase 0 Gate: Instrument 10/10 passed, 宪法合规审计 5/5 passed
 - ✅ git commit d92fb27
 - **NEXT_STEP**: Phase 1 Step 1 — Application 级初始化 Room（NoraApp.kt）
+- **Phase 6** 🔲 Pending：通知聚合 & 文件上下文（12 Steps，宪法感知维度落地）
+
+### Phase 6 概要（感知层）
+- 目标：Nora 实现「感知 (Sense)」宪法维度 — 通知监听 + 自动摘要 + 文件上下文
+- 核心技术：NotificationListenerService + WorkManager PeriodicWork + SAF + Qwen3 LLM
+- 依赖：Phase 1 (Room) → Phase 2 (Navigation) → Phase 6
+- 关键约束：INTERNET 禁令（宪法红线）、Android 15 OTP 过滤（接受）、Room ≤1000 条
+- 调研报告：`.workbuddy/memory/nora-notification-deep-research.md`
 
 ### 踩坑记录
 - FontFamily("String") 在某些 Compose 版本报错 "expected Boolean"：改用 FontFamily.Default / FontFamily.Monospace 替代
