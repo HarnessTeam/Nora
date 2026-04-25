@@ -1,6 +1,30 @@
 # nora-dev automation execution log
 
-## 2026-04-25 执行记录
+## 2026-04-25 执行记录（13:05）
+
+### 本次执行（13:05 ~ 13:10）— Phase 1 Step 5 完成
+**Phase 1 进度**: 4/7 → 5/7 Steps（71.4%）
+
+**Step 5 ✅ — 加载对话时从 Room 恢复历史消息**
+- ConversationDao: 新增 `getAllConversationsOnce()` suspend 查询（取最近对话）
+- DataRepository: 新增 `getMostRecentConversationId()` → 调用 DAO 返回最新 conversationId
+- ChatViewModel: `init` 块调用 `loadConversation(conversationId)` 恢复历史消息
+- 效果：用户关闭 App 再打开，自动恢复最后对话历史
+- 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `connectedDebugAndroidTest` 10/10 ✅
+- Git: `[master 22670e1]`
+
+**NEXT_STEP**: Phase 1 Step 6 — 新建/切换对话功能
+
+### 环境状态
+- ADB: emulator-5554 在线 ✅
+- 编译: BUILD SUCCESSFUL ✅
+- Unit 测试: BUILD SUCCESSFUL ✅
+- Instrument 测试: 10/10 passed ✅（medium_phone AVD，0 skipped, 0 failed）
+
+### Git 历史（本次新增）
+- `22670e1` Phase 1 Step 5: Load conversation history from Room on startup
+
+---
 
 ### 本次执行（10:55 ~ 11:00）— Phase 1 启动
 **Phase 状态**: Phase 0 ✅ Complete → Phase 1 🔄 IN PROGRESS

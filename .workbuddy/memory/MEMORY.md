@@ -15,8 +15,12 @@
 - ✅ Step 4: write-ahead 持久化（sendMessage/sendMessageStream）— git 4183731
   - `ensureConversation()` / `persistUserMessage()` / `persistAssistantMessage()`
   - DataRepository 新增 `updateConversationTimestamp()`
-- **NEXT_STEP**: Phase 1 Step 5 — 加载对话时从 Room 恢复历史消息
-- **Phase 1 进度**: 4/7 Steps（57.1%）
+- ✅ Step 5: 加载对话时从 Room 恢复历史消息 — git 22670e1
+  - ConversationDao: `getAllConversationsOnce()` suspend 查询
+  - DataRepository: `getMostRecentConversationId()` 返回最近对话 ID
+  - ChatViewModel: `init` 块 + `loadConversation()` 恢复历史
+- **NEXT_STEP**: Phase 1 Step 6 — 新建/切换对话功能
+- **Phase 1 进度**: 5/7 Steps（71.4%）
 
 ### Phase 0 归档
 - ✅ 全部 18 Steps 完成
@@ -30,22 +34,17 @@
 - 关键约束：INTERNET 禁令（宪法红线）、Android 15 OTP 过滤（接受）、Room ≤1000 条
 - 调研报告：`.workbuddy/memory/nora-notification-deep-research.md`
 
-### Phase 6 概要（感知层）
-- 目标：Nora 实现「感知 (Sense)」宪法维度 — 通知监听 + 自动摘要 + 文件上下文
-- 核心技术：NotificationListenerService + WorkManager PeriodicWork + SAF + Qwen3 LLM
-- 依赖：Phase 1 (Room) → Phase 2 (Navigation) → Phase 6
-- 关键约束：INTERNET 禁令（宪法红线）、Android 15 OTP 过滤（接受）、Room ≤1000 条
-- 调研报告：`.workbuddy/memory/nora-notification-deep-research.md`
-
 ### 踩坑记录
 - FontFamily("String") 在某些 Compose 版本报错 "expected Boolean"：改用 FontFamily.Default / FontFamily.Monospace 替代
+- build.bat 只执行 assembleDebug，不传参数；Instrument 测试需直接调用 gradlew.bat 并在 cmd /c 中 set 环境变量
+- MessageDao: 不存在独立文件，实为 `ConversationDao.kt` 同包内嵌的 DAO 接口
 
 ### 环境
 - JDK: `C:\Program Files\Eclipse Adoptium\jdk-17.0.18.8-hotspot`
 - Gradle opts: `-Xmx1536m`
 - ADB: `C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe`（不在 PATH，需用完整路径）
 - 模拟器: medium_phone（API 36, x86_64）
-- 编译方案: `build.bat` 脚本（PowerShell 直接调 gradlew 有环境变量问题）
+- 编译方案: `build.bat`（仅 assembleDebug）；Instrument 测试需直接调用 `cmd /c "set JAVA_HOME=...&& set ANDROID_HOME=...&& gradlew.bat connectedDebugAndroidTest"`
 
 ### GitHub 部署
 - 仓库: https://github.com/HarnessTeam/Nora
@@ -53,9 +52,8 @@
 - README.md 包含模型下载指南和 AI 助手下载提示
 - 截图: assets/screenshot.png（用户需自行提供）
 
-### 踩坑记录
-- MessageDao: 不存在独立文件，实为 `ConversationDao.kt` 同包内嵌的 DAO 接口
+### 踩坑记录（补充）
 - Type.kt / Color.kt: 已在之前 Step 中删除，无需重复操作
 - MainScreenViewModelTest.kt: 已删除，无需操作
-- 应用图标: 已替换为自定义 Nora 图标（git commit 7733221），删除了 adaptive icon（mipmap-anydpi-v26）
+- 应用图标: 已替换为自定义 Nora 图标，删除了 adaptive icon（mipmap-anydpi-v26）
 - GitHub 大文件: model.pte 超过 100MB，使用 `git filter-branch` 从历史移除

@@ -203,8 +203,12 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
   - DataRepository 新增 `updateConversationTimestamp()`
   - sendMessage / sendMessageStream 均接入 write-ahead
   - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `connectedDebugAndroidTest` 10/10 ✅ + `git commit 4183731`
-- [ ] Step 5: 加载对话时从 Room 恢复历史消息
-- [ ] Step 5: 加载对话时从 Room 恢复历史消息
+- [x] Step 5: 加载对话时从 Room 恢复历史消息 ✅ (2026-04-25 13:08)
+  - ConversationDao: 新增 `getAllConversationsOnce()` suspend 查询
+  - DataRepository: 新增 `getMostRecentConversationId()` → 返回最近对话 ID
+  - ChatViewModel: `init` 块自动加载最近对话 → `loadConversation(conversationId)`
+  - 效果：用户关闭 App 再打开，自动恢复最后对话历史
+  - 验证：`assembleDebug` ✅ + `testDebugUnitTest` ✅ + `connectedDebugAndroidTest` 10/10 ✅ + `git commit 22670e1`
 - [ ] Step 6: 新建/切换对话功能
 - [ ] Step 7: Phase 1 Instrument 测试
   - `MessagePersistenceTest.kt`：发送消息 → 关闭 App → 重新打开 → 消息仍在
@@ -392,8 +396,8 @@ C:\Users\28767\AppData\Local\Android\Sdk\platform-tools\adb.exe devices
 ## 状态
 
 **当前 Phase**: Phase 1 🔄 IN PROGRESS
-**NEXT_STEP**: Phase 1 Step 5 — 加载对话时从 Room 恢复历史消息
-**Phase 1 进度**: 4/7 Steps 完成（57.1%）
+**NEXT_STEP**: Phase 1 Step 6 — 新建/切换对话功能
+**Phase 1 进度**: 5/7 Steps 完成（71.4%）
 **Phase 0 进度**: 18/18 Steps 完成（100%）✅ Phase 0 Gate Passed
 **Phase 6 状态**: 🔲 Pending（待 Phase 1-5 完成后推进）
 **上次 Instrument 测试**: 2026-04-25 12:00 — 10 tests, 10 passed, 0 skipped, 0 failed ✅
