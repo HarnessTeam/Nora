@@ -1,0 +1,116 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+> Task :app:clean
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preSlimDebugBuild UP-TO-DATE
+> Task :app:generateSlimDebugBuildConfig
+> Task :app:generateSlimDebugResources
+> Task :app:packageSlimDebugResources
+> Task :app:processSlimDebugNavigationResources
+> Task :app:parseSlimDebugLocalResources
+> Task :app:generateSlimDebugRFile
+> Task :app:javaPreCompileSlimDebug
+> Task :app:checkSlimDebugAarMetadata
+> Task :app:compileSlimDebugNavigationResources
+> Task :app:mapSlimDebugSourceSetPaths
+> Task :app:mergeSlimDebugResources
+> Task :app:createSlimDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksSlimDebug
+> Task :app:processSlimDebugMainManifest
+> Task :app:processSlimDebugManifest
+> Task :app:processSlimDebugManifestForPackage
+> Task :app:processSlimDebugResources
+> Task :app:preSlimDebugAndroidTestBuild SKIPPED
+> Task :app:processSlimDebugAndroidTestManifest
+> Task :app:generateSlimDebugAndroidTestBuildConfig
+> Task :app:generateSlimDebugAndroidTestResources
+> Task :app:packageSlimDebugAndroidTestResources
+> Task :app:processSlimDebugAndroidTestNavigationResources
+> Task :app:parseSlimDebugAndroidTestLocalResources
+> Task :app:generateSlimDebugAndroidTestRFile
+> Task :app:javaPreCompileSlimDebugAndroidTest
+> Task :app:generateSlimDebugAssets UP-TO-DATE
+> Task :app:mergeSlimDebugAssets
+
+> Task :app:kspSlimDebugKotlin
+w: [ksp] C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/data/AppDatabase.kt:13: Schema export directory was not provided to the annotation processor so Room cannot export the schema. You can either provide `room.schemaLocation` annotation processor argument by applying the Room Gradle plugin (id 'androidx.room') OR set exportSchema to false.
+
+> Task :app:compileSlimDebugKotlin
+w: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:118:41 The corresponding parameter in the supertype 'ExtractionProgress' is named 'extractedModelPath'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/28767/WorkBuddy/local-agent/app/src/main/java/ai/nora/Navigation.kt:118:60 The corresponding parameter in the supertype 'ExtractionProgress' is named 'extractedTokenizerPath'. This may cause problems when calling this function with named arguments.
+
+> Task :app:compileSlimDebugJavaWithJavac
+> Task :app:bundleSlimDebugClassesToCompileJar
+> Task :app:kspSlimDebugAndroidTestKotlin
+> Task :app:compileSlimDebugAndroidTestKotlin
+> Task :app:compileSlimDebugAndroidTestJavaWithJavac
+> Task :app:checkSlimDebugDuplicateClasses
+> Task :app:desugarSlimDebugFileDependencies
+> Task :app:compressSlimDebugAssets
+> Task :app:mergeLibDexSlimDebug
+> Task :app:mergeExtDexSlimDebug
+> Task :app:dexBuilderSlimDebug
+> Task :app:mergeProjectDexSlimDebug
+> Task :app:processSlimDebugJavaRes
+> Task :app:mergeSlimDebugGlobalSynthetics
+> Task :app:mergeSlimDebugJniLibFolders
+> Task :app:mergeSlimDebugNativeLibs
+
+> Task :app:stripSlimDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libc++_shared.so, libdatastore_shared_counter.so, libexecutorch.so, libfbjni.so. Run with --info option to learn more.
+
+> Task :app:validateSigningSlimDebug
+> Task :app:writeSlimDebugAppMetadata
+> Task :app:writeSlimDebugSigningConfigVersions
+> Task :app:generateSlimDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeSlimDebugAndroidTestAssets
+> Task :app:compressSlimDebugAndroidTestAssets
+> Task :app:checkSlimDebugAndroidTestDuplicateClasses
+> Task :app:desugarSlimDebugAndroidTestFileDependencies
+> Task :app:mergeExtDexSlimDebugAndroidTest
+> Task :app:mergeLibDexSlimDebugAndroidTest
+> Task :app:checkSlimDebugAndroidTestAarMetadata
+> Task :app:compileSlimDebugAndroidTestNavigationResources
+> Task :app:mapSlimDebugAndroidTestSourceSetPaths
+> Task :app:mergeSlimDebugJavaResource
+> Task :app:mergeSlimDebugAndroidTestResources
+> Task :app:processSlimDebugAndroidTestResources
+> Task :app:dexBuilderSlimDebugAndroidTest
+> Task :app:mergeProjectDexSlimDebugAndroidTest
+> Task :app:mergeSlimDebugAndroidTestGlobalSynthetics
+> Task :app:processSlimDebugAndroidTestJavaRes
+> Task :app:mergeSlimDebugAndroidTestJavaResource
+> Task :app:packageSlimDebug
+> Task :app:createSlimDebugApkListingFileRedirect
+> Task :app:mergeSlimDebugAndroidTestJniLibFolders
+> Task :app:mergeSlimDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripSlimDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningSlimDebugAndroidTest
+> Task :app:writeSlimDebugAndroidTestSigningConfigVersions
+> Task :app:packageSlimDebugAndroidTest
+> Task :app:createSlimDebugAndroidTestApkListingFileRedirect
+> Task :app:connectedSlimDebugAndroidTest
+
+Starting 27 tests on medium_phone(AVD) - 16
+medium_phone(AVD) - 16 Tests 0/27 completed. (0 skipped) (0 failed)
+medium_phone(AVD) - 16 Tests 1/27 completed. (0 skipped) (0 failed)
+medium_phone(AVD) - 16 Tests 2/27 completed. (0 skipped) (0 failed)
+
+ai.nora.AppLaunchTest > Æô¶¯ºóÏÔÊ¾°²È«Îİ»òÁÄÌì½çÃæ[medium_phone(AVD) - 16] [31mFAILED [0m
+	java.lang.AssertionError: Failed: assertExists.
+	Reason: Expected exactly '1' node but found '2' nodes that satisfy: (Text + InputText + EditableText contains 'Nora' (ignoreCase: false) as substring)
+medium_phone(AVD) - 16 Tests 3/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 4/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 5/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 6/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 7/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 8/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 9/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 16/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 17/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 18/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 19/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 20/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 21/27 completed. (0 skipped) (1 failed)
+medium_phone(AVD) - 16 Tests 22/27 completed. (0 skipped) (1 failed)

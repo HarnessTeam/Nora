@@ -18,12 +18,13 @@ class AppLaunchTest : BaseAndroidTest() {
     fun 启动后显示Nora品牌标题() {
         composeTestRule.waitForIdle()
 
-        // Nora 品牌在多个位置出现，证明品牌渲染正确
+        // Phase 2：SanctuaryScreen 安全屋中 "Nora" 出现在 2+ 个节点
+        // （状态文案 + 苏醒日志等），不再要求恰好 1 个
         val nodes = composeTestRule
             .onAllNodesWithText("Nora", substring = true)
             .fetchSemanticsNodes()
 
-        assert(nodes.isNotEmpty()) { "应存在包含 'Nora' 的 UI 节点" }
+        assert(nodes.size >= 1) { "应存在包含 'Nora' 的 UI 节点（Phase 2: 安全屋多节点）" }
     }
 
     @Test
